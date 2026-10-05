@@ -211,9 +211,9 @@ namespace Arrakis.Mods
                             cachedGThrow = growing;
                             if (NetworkSystem.Instance.InRoom)
                             {
-                                PhotonNetwork.RaiseEvent(176, new object[] { growing.changeSizeEvent._eventId, scale }, 
+                                PhotonNetwork.RaiseEvent(176, new object[] { growing.changeSizeEvent._eventId, scale },
                                     new RaiseEventOptions { Receivers = ReceiverGroup.All }, new SendOptions { Encrypt = true, Reliability = false });
-                                PhotonNetwork.RaiseEvent(176, new object[] { growing.snowballThrowEvent._eventId, position, velocity, GetIncrement(position, velocity, scale) }, 
+                                PhotonNetwork.RaiseEvent(176, new object[] { growing.snowballThrowEvent._eventId, position, velocity, GetIncrement(position, velocity, scale) },
                                     new RaiseEventOptions { Receivers = ReceiverGroup.All }, new SendOptions { Encrypt = true, Reliability = false });
                             }
                         }
@@ -264,7 +264,7 @@ namespace Arrakis.Mods
         {
             if (CosmeticsV2Spawner_Dirty.isPrepared)
             {
-                var throwables = ((AllCosmeticsArraySO)CosmeticsController.instance.v2_allCosmeticsInfoAssetRef.Asset).sturdyAssetRefs.Where(x => x.obj != null 
+                var throwables = ((AllCosmeticsArraySO)CosmeticsController.instance.v2_allCosmeticsInfoAssetRef.Asset).sturdyAssetRefs.Where(x => x.obj != null
                 && x.obj.info.isThrowable).Select(x => x.obj.info.playFabID).Distinct().ToList();
                 if (snowballs == null || snowballs.Count != (throwables.Count - 3))
                 {
@@ -272,7 +272,7 @@ namespace Arrakis.Mods
                         return null;
                     if (!GorillaComputer.instance.isConnectedToMaster)
                         return null;
-                    if (!loaded && (CosmeticsV2Spawner_Dirty.materialIndexToSnowballThrowablePlayfabIdStringLeft.Count >= 1 
+                    if (!loaded && (CosmeticsV2Spawner_Dirty.materialIndexToSnowballThrowablePlayfabIdStringLeft.Count >= 1
                         && CosmeticsV2Spawner_Dirty.materialIndexToSnowballThrowablePlayfabIdStringRight.Count >= 1))
                     {
                         loaded = true;

@@ -460,7 +460,7 @@ namespace Arrakis.Mods
         {
             if (!PhotonNetwork.LocalPlayer.IsMasterClient)
             {
-                NotificationManager.SendNotification("<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> You are not master client this mod will not work."); 
+                NotificationManager.SendNotification("<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> You are not master client this mod will not work.");
                 return;
             }
             var lava = InfectionLavaController.ActiveControllers.FirstOrDefault();
@@ -517,7 +517,6 @@ namespace Arrakis.Mods
             if (!PhotonNetwork.LocalPlayer.IsMasterClient)
             {
                 NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master this mod will not work.");
-                Toggle("Destroy Lighting");
                 return;
             }
             else
@@ -525,94 +524,13 @@ namespace Arrakis.Mods
                 if (BetterDayNightManager.instance.photonView == null)
                 {
                     NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> BetterDayNightManager.instance.photonView is null.");
-                    Toggle("Destroy Lighting");
                     return;
                 }
                 PhotonNetwork.Destroy(BetterDayNightManager.instance.photonView);
             }
         }
-        private static long? mapid;
-        private static float setMapDelay;
-        public static void VirtualStumpKickAll()
-        {
-            if (!NetworkSystem.Instance.InRoom)
-            {
-                mapid = null;
-                return;
-            }
-            if (!PhotonNetwork.IsMasterClient)
-            {
-                NotificationManager.SendNotification("<color=grey>[</color><color=red>ERROR</color><color=grey>]</color> You are not master this mod will not work.");
-                Toggle("Virtual Stump Kick All");
-                return;
-            }
-            if (mapid == null && Time.time > setMapDelay)
-            {
-                setMapDelay = Time.time + 1f;
 
-                if (CustomMapsTerminal.GetDriverID() != PhotonNetwork.LocalPlayer.ActorNumber)
-                {
-                    NotificationManager.SendNotification("<color=grey>[</color><color=red>ERROR</color><color=grey>]</color> You are not the terminal controller.");
-                    Toggle("Virtual Stump Kick All");
-                    return;
-                }
-                if (CustomMapManager.IsRemotePlayerInVirtualStump(NetworkSystem.Instance.LocalPlayer.UserId))
-                {
-                    mapid =  Arrakis.Managers.CustomMaps.Manager.currentMapId == 4977315 ? 5024157 : 4977315;
-                    CustomMapsTerminal.instance.gameObject.GetComponentInChildren<PhotonView>().RPC("UpdateScreen_RPC", RpcTarget.Others, new object[]
-                    {
-                        6,
-                        mapid,
-                        CustomMapsTerminal.GetDriverID()
-                    });
-                }
-                else
-                    NotificationManager.SendNotification("<color=grey>[</color><color=red>ERROR</color><color=grey>]</color> Please enter the Virtual Stump.");
-            }
-
-            CustomMapsTerminal.instance.gameObject.GetComponentInChildren<PhotonView>().RPC("SetRoomMap_RPC", RpcTarget.Others, mapid.Value);
-
-            NotificationManager.SendNotification("<color=grey>[</color><color=green>SUCCESS</color><color=grey>]</color> Successfully kicked others.");
-            Toggle("Virtual Stump Kick All");
-        }
-        public static float LogSpamDelay = 0f;
-        public static void LogSpamAll()
-        {
-            if (PhotonNetwork.InRoom && !PhotonNetwork.IsMasterClient)
-            {
-                NotificationManager.SendNotification("<color=grey>[</color><color=red>ERROR</color><color=grey>]</color> You are not master this mod will not work.");
-                Toggle("Log Spam All");
-                return;
-            }
-            var targets = GameObject.FindObjectsByType<HitTargetNetworkState>(FindObjectsInactive.Include, 0).ToList();
-            string[] validMaps =
-            {
-                "forest", "canyon", "mountain"
-            };
-            if (!validMaps.Any(map => VRRigCache.ActiveRigs.Any(rig => rig.zoneEntity.currentZone.GetName<GTZone>() == map)))
-            {
-                NotificationManager.SendNotification("<color=grey>[</color><color=red>ERROR</color><color=grey>]</color> Someone must be in forest, canyons or mountains.");
-                Toggle("Log Spam All");
-                return;
-            }
-            foreach (var target in targets)
-            {
-                var watchableInt = Traverse.Create(target).Field("networkedScore").GetValue<WatchableIntSO>();
-                if (watchableInt.Value > -1)
-                {
-                    SetTarget(target, int.MinValue, 0f);
-                }
-            }
-            if (Time.time > LogSpamDelay)
-            {
-                LogSpamDelay = Time.time + 0.70f;
-                foreach (var target in targets)
-                {
-                    SetTarget(target, 6969, 0f);
-                }
-            }
-        }
-        public static async void SetTarget(HitTargetNetworkState target, int value, float delay = 0.70f)
+        /*public static async void SetTarget(HitTargetNetworkState target, int value, float delay = 0.70f)
         {
             if (PhotonNetwork.InRoom && !PhotonNetwork.IsMasterClient)
                 return;
@@ -624,7 +542,8 @@ namespace Arrakis.Mods
             int newValue = value == 6969 ? watchable.Value + 1 : value;
             watchable.Value = newValue;
             traverse.Field("nextHittableTimestamp").SetValue(Time.time + delay);
-        }
+        } incase you want target mods -sleepy
+        */
 
         private static HalloweenGhostChaser _lucy;
         public static HalloweenGhostChaser Lucy
@@ -632,11 +551,11 @@ namespace Arrakis.Mods
             get
             {
                 if (_lucy == null)
-                    _lucy =  GameObject.FindObjectsOfType<HalloweenGhostChaser>()[0]; // Ez who needs a fucking path -nova
+                    _lucy = GameObject.FindObjectsOfType<HalloweenGhostChaser>()[0]; // Ez who needs a fucking path -nova
                 return _lucy;
             }
         }
-        
+
         public static void SpawnBlueLucy()
         {
             if (Lucy.IsMine)
@@ -699,16 +618,33 @@ namespace Arrakis.Mods
                 NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
             }
         }
-        
+        public static void BreakLucy()
+        {
+            if (Lucy.IsMine)
+            {
+                Lucy.currentSpeed = int.MinValue;
+                Lucy.transform.position = new Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity);
+            }
+            else
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
+            }
+        }
+
         private static float lucyspaztimething = 0f;
+        private static bool lucyspazboolhing = false;
         public static void SpazLucy()
         {
             if (Lucy.IsMine)
             {
                 if (Time.time < lucyspaztimething)
                 {
-                    Lucy.currentState = Lucy.currentState == HalloweenGhostChaser.ChaseState.Dormant ? HalloweenGhostChaser.ChaseState.Gong : HalloweenGhostChaser.ChaseState.Dormant;
-                    lucyspaztimething = Time.time + 0.5f;
+                    Lucy.timeGongStarted = 0f;
+                    Lucy.timeRiseStarted = 0f;
+                    Lucy.isSummoned = true;
+                    Lucy.currentState = HalloweenGhostChaser.ChaseState.Gong;
+                    lucyspaztimething = Time.time + 0.1f;
+                    lucyspazboolhing = !lucyspazboolhing;
                 }
             }
             else
@@ -716,7 +652,6 @@ namespace Arrakis.Mods
                 NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
             }
         }
-        
         private static float lucyspaztarget = 0f;
         public static void SpazLucyTarget()
         {
@@ -734,7 +669,7 @@ namespace Arrakis.Mods
                 NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
             }
         }
-        
+
         public static void MoveLucyGun()
         {
             if (GetGunInput(false))
@@ -755,7 +690,7 @@ namespace Arrakis.Mods
                 }
             }
         }
-        
+
         public static void GrabLucy()
         {
             if (Lucy.IsMine)
@@ -821,6 +756,30 @@ namespace Arrakis.Mods
             {
                 lockTarget = null;
                 gunLocked = false;
+            }
+        }
+        public static void SpazPaintbrawl()
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                foreach (GorillaPaintbrawlManager brawl in GameObject.FindObjectsByType<GorillaPaintbrawlManager>(FindObjectsSortMode.None))
+                {
+                    foreach (NetPlayer player in NetworkSystem.Instance.PlayerListOthers)
+                    {
+                        brawl.playerLives[player.ActorNumber] = UnityEngine.Random.Range(0, 3);
+                        brawl.playerStunTimes[player.ActorNumber] = float.PositiveInfinity;
+                        if (brawl.OnRedTeam(player))
+                            brawl.playerStatusDict[player.ActorNumber] = GorillaPaintbrawlManager.PaintbrawlStatus.BlueTeam;
+                        else
+                            brawl.playerStatusDict[player.ActorNumber] = GorillaPaintbrawlManager.PaintbrawlStatus.RedTeam;
+                    }
+                }
+            }
+            else
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
+                Toggle("Spaz Paintbrawl");
+                return;
             }
         }
     }

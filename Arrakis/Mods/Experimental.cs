@@ -140,7 +140,7 @@ namespace Arrakis.Mods
             if (delay > 0f)
             {
                 List<object> copiedPayload = new List<object>(payload);
-                CRunner.instance.StartCoroutine(SerializationDelay(() => 
+                CRunner.instance.StartCoroutine(SerializationDelay(() =>
                 { PhotonNetwork.NetworkingClient.OpRaiseEvent(eventCode, copiedPayload, raiseOptions, send); }, delay));
             }
             else
@@ -190,7 +190,7 @@ namespace Arrakis.Mods
                 {
                     AntiKickEvents = true;
                     for (int i = 0; i < 3400; i++)
-                        FriendshipGroupDetection.Instance.photonView.RPC("RequestPartyGameMode", lockTarget.Creator.GetPlayerRef(), 
+                        FriendshipGroupDetection.Instance.photonView.RPC("RequestPartyGameMode", lockTarget.Creator.GetPlayerRef(),
                             new object[] { GameMode.gameModeKeyByName.Keys.ToArray()[Random.Range(0, GameMode.gameModeKeyByName.Keys.Count)] });
                     Safety.RPCProc();
                 }
@@ -225,7 +225,7 @@ namespace Arrakis.Mods
                     foreach (var plr in partyPlayers)
                     {
                         var photonPlayer = PhotonNetwork.CurrentRoom.GetPlayer(plr.ActorNumber);
-                        FriendshipGroupDetection.Instance.photonView.RPC("RequestPartyGameMode", photonPlayer, 
+                        FriendshipGroupDetection.Instance.photonView.RPC("RequestPartyGameMode", photonPlayer,
                             new object[] { GameMode.gameModeKeyByName.Keys.ToArray()[Random.Range(0, GameMode.gameModeKeyByName.Keys.Count)] });
                     }
                 }

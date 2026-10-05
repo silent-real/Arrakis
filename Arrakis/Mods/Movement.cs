@@ -89,7 +89,7 @@ namespace Arrakis.Mods
                 {
                     if (GTPlayer.Instance.transform.position.y > 1f)
                     {
-                        GorillaTagger.Instance.rigidbody.linearVelocity = new Vector3(GorillaTagger.Instance.rigidbody.linearVelocity.x, 
+                        GorillaTagger.Instance.rigidbody.linearVelocity = new Vector3(GorillaTagger.Instance.rigidbody.linearVelocity.x,
                             -15f,GorillaTagger.Instance.rigidbody.linearVelocity.z);
                     }
                 }
@@ -304,7 +304,7 @@ namespace Arrakis.Mods
 
         public static void FixRig() =>
             VRRig.LocalRig.enabled = true;
-        
+
         public static void GhostMonkey()
         {
             if (InputManager.GetInput(InputManager.InputType.Secondary, InputManager.Hand.Right, !XRSettings.isDeviceActive))
@@ -371,7 +371,7 @@ namespace Arrakis.Mods
             VRRig.LocalRig.leftHand.MapMine(VRRig.LocalRig.lastScaleFactor, VRRig.LocalRig.playerOffsetTransform);
             VRRig.LocalRig.rightHand.MapMine(VRRig.LocalRig.lastScaleFactor, VRRig.LocalRig.playerOffsetTransform);
         }
-        public static void SpazBody() => 
+        public static void SpazBody() =>
             Rotate(Random.rotation);
 
         static Vector3 normal2;
@@ -703,7 +703,7 @@ namespace Arrakis.Mods
             ToggleTorsoPatch(true, 3);
             if (VRRigTorso == null)
                 VRRigTorso = new GameObject("Arrakis_vrrigtorso");
-            VRRigTorso.transform.rotation = Quaternion.Lerp(VRRigTorso.transform.rotation, 
+            VRRigTorso.transform.rotation = Quaternion.Lerp(VRRigTorso.transform.rotation,
                 Quaternion.Euler(0f, GorillaTagger.Instance.headCollider.transform.rotation.eulerAngles.y, 0f), Time.deltaTime * 6.5f);
         }
 

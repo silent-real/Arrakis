@@ -37,13 +37,13 @@ namespace Arrakis.Mods
     public class Visual
     {
         private static int _occlusionMask;
-        private static int OcclusionMask => 
+        private static int OcclusionMask =>
             _occlusionMask != 0 ? _occlusionMask : (_occlusionMask = LayerMask.GetMask("Gorilla Object"));
-        private static Shader _textShader, 
+        private static Shader _textShader,
             _uberShader;
-        private static Shader TextShader => 
+        private static Shader TextShader =>
             _textShader != null ? _textShader : (_textShader = Shader.Find("GUI/Text Shader"));
-        private static Shader UberShader => 
+        private static Shader UberShader =>
             _uberShader != null ? _uberShader : (_uberShader = Shader.Find("GorillaTag/UberShader"));
         private static readonly Vector3[] occlusionProbes = new Vector3[5];
 
@@ -57,7 +57,7 @@ namespace Arrakis.Mods
         private static readonly Dictionary<VRRig, LimbChamState> limbChamPool = new Dictionary<VRRig, LimbChamState>();
         private static readonly List<VRRig> limbChamStale = new List<VRRig>();
         private static Material _limbChamMat;
-        private static Material LimbChamMat => 
+        private static Material LimbChamMat =>
             _limbChamMat != null ? _limbChamMat : (_limbChamMat = new Material(TextShader));
         private const int LimbSegments = 20;
         private const float LimbCheckInterval = 0.05f;
@@ -460,7 +460,7 @@ namespace Arrakis.Mods
                     continue;
                 if (!boxEspPool.TryGetValue(rig, out GameObject box))
                 {
-                    box = CreateObject(rig.transform, PrimitiveType.Cube, new Vector3(0.5f, 0.5f, 0.1f), 
+                    box = CreateObject(rig.transform, PrimitiveType.Cube, new Vector3(0.5f, 0.5f, 0.1f),
                         followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, Shader.Find("GUI/Text Shader"));
                     boxEspPool[rig] = box;
                 }
@@ -544,7 +544,6 @@ namespace Arrakis.Mods
             hollowBoxPool.Clear();
         }
 
-		
         private static Dictionary<VRRig, TextMeshPro> nameTagPool = new Dictionary<VRRig, TextMeshPro>();
         public static void NameTags()
         {
@@ -562,7 +561,7 @@ namespace Arrakis.Mods
                     {
                         if (!nameTagPool.TryGetValue(rig, out var tag))
                         {
-                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, rig.Creator.NickName.CleanString(), 
+                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, rig.Creator.NickName.CleanString(),
                                 followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 0);
                             nameTagPool.Add(rig, tag);
                         }
@@ -602,7 +601,7 @@ namespace Arrakis.Mods
                     {
                         if (!IDnameTagPool.TryGetValue(rig, out var tag))
                         {
-                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, rig.Creator.UserId, 
+                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, rig.Creator.UserId,
                                 followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 1);
                             IDnameTagPool.Add(rig, tag);
                         }
@@ -642,7 +641,7 @@ namespace Arrakis.Mods
                             ? (rig.Cosmetics().Contains("LMAKT.") ? "Quest" : "Steam") : "Quest";
                         if (!PlatformnameTagPool.TryGetValue(rig, out var tag))
                         {
-                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, platform, 
+                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, platform,
                                 followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 2);
                             PlatformnameTagPool.Add(rig, tag);
                         }
@@ -679,7 +678,7 @@ namespace Arrakis.Mods
                     {
                         if (!FpsnametagPool.TryGetValue(rig, out var tag))
                         {
-                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, "72", 
+                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, "72",
                                 followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 4);
                             FpsnametagPool.Add(rig, tag);
                         }
@@ -733,7 +732,7 @@ namespace Arrakis.Mods
                     {
                         if (!TaggednametagPool.TryGetValue(rig, out var tag))
                         {
-                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, "Not Tagged", 
+                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, "Not Tagged",
                                 followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 5);
                             TaggednametagPool.Add(rig, tag);
                         }

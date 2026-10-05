@@ -23,6 +23,7 @@ using System.Linq;
 using Arrakis.Extensions;
 using Arrakis.Managers;
 using Arrakis.Notifications;
+using Arrakis.Patches.Patchers;
 using ExitGames.Client.Photon;
 using GorillaGameModes;
 using GorillaLocomotion;
@@ -112,25 +113,47 @@ namespace Arrakis.Mods
             }
             else
             {
-                bool tagged = true;
-                foreach (VRRig rig in VRRigCache.ActiveRigs)
+                if (Settings.instanttag)
                 {
-                    if (rig != null && rig != VRRig.LocalRig)
+                    VRRig rig = VRRigCache.ActiveRigs.Where(r => !r.IsLocal() && r.IsTagged()).OrderBy(r => r.Distance(VRRig.LocalRig) + r.LatestVelocity().magnitude).FirstOrDefault();
+                    EventPatches.Override = () =>
                     {
-                        if (!VRRig.LocalRig.IsTagged() && rig.IsTagged())
+                        if (VRRig.LocalRig.IsTagged())
+                            return true;
+
+                        Experimental.MultiSerialize(true, new[] { VRRig.LocalRig.netView.GetView });
+                        Vector3 positionArchive = VRRig.LocalRig.transform.position;
+                        VRRig.LocalRig.transform.position = rig.rightHandTransform.transform.position;
+                        Experimental.SendSerialize(VRRig.LocalRig.netView.GetView,
+                            new RaiseEventOptions { TargetActors = new[] { PhotonNetwork.MasterClient.ActorNumber, rig.Creator.ActorNumber } });
+                        Safety.RPCProc();
+                        VRRig.LocalRig.transform.position = positionArchive;
+
+                        return false;
+                    };
+                }
+                else
+                {
+                    bool tagged = true;
+                    foreach (VRRig rig in VRRigCache.ActiveRigs)
+                    {
+                        if (rig != null && rig != VRRig.LocalRig)
                         {
-                            VRRig.LocalRig.enabled = false;
-                            VRRig.LocalRig.transform.position = rig.transform.position;
-                            GameMode.ReportTag(NetworkSystem.Instance.LocalPlayer);
-                            tagged = false;
+                            if (!VRRig.LocalRig.IsTagged() && rig.IsTagged())
+                            {
+                                VRRig.LocalRig.enabled = false;
+                                VRRig.LocalRig.transform.position = rig.transform.position;
+                                GameMode.ReportTag(NetworkSystem.Instance.LocalPlayer);
+                                tagged = false;
+                            }
                         }
                     }
-                }
-                if (tagged)
-                {
-                    VRRig.LocalRig.enabled = true;
-                    Toggle("Tag Self");
-                    ReloadMenu();
+                    if (tagged)
+                    {
+                        VRRig.LocalRig.enabled = true;
+                        Toggle("Tag Self");
+                        ReloadMenu();
+                    }
                 }
             }
         }
@@ -153,6 +176,37 @@ namespace Arrakis.Mods
                 else
                     VRRig.LocalRig.enabled = true;
             }
+        }
+
+        public static void InstantTagGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                RaycastHit Ray = GunData.Ray;
+                if (GetGunInput(true))
+                {
+                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                    if (rig != null && rig != VRRig.LocalRig)
+                    {
+                        TagPlayer(rig.Creator);
+                    }
+                }
+                else
+                    VRRig.LocalRig.enabled = true;
+            }
+        }
+        public static void InstantTagPlayer(NetPlayer Target)
+        {
+            if (!VRRig.LocalRig.IsTagged() || Target.VRRig2().IsTagged())
+                return;
+            Vector3 acriv = VRRig.LocalRig.transform.position;
+            VRRig.LocalRig.transform.position = GorillaGameManager.StaticFindRigForPlayer(Target).transform.position;
+            Experimental.SendSerialize(VRRig.LocalRig.netView.GetView, new RaiseEventOptions { TargetActors = new[] { PhotonNetwork.MasterClient.ActorNumber } });
+            GameMode.ReportTag(Target);
+            VRRig.LocalRig.transform.position = acriv;
+            Safety.RPCProc();
         }
 
         public static void FlickTagGun()
@@ -196,10 +250,10 @@ namespace Arrakis.Mods
                 hitboxright.GetComponent<Renderer>().material.shader = Shader.Find("GUI/Text Shader");
             }
 
-            hitboxleft.GetComponent<Renderer>().material.color = new Color(Settings.backgroundColor.GetCurrentColor().r, 
+            hitboxleft.GetComponent<Renderer>().material.color = new Color(Settings.backgroundColor.GetCurrentColor().r,
                 Settings.backgroundColor.GetCurrentColor().g, Settings.backgroundColor.GetCurrentColor().b, 0.2f);
 
-            hitboxright.GetComponent<Renderer>().material.color = new Color(Settings.backgroundColor.GetCurrentColor().r, 
+            hitboxright.GetComponent<Renderer>().material.color = new Color(Settings.backgroundColor.GetCurrentColor().r,
                 Settings.backgroundColor.GetCurrentColor().g, Settings.backgroundColor.GetCurrentColor().b, 0.2f);
         }
 
@@ -272,9 +326,9 @@ namespace Arrakis.Mods
                 }
             }
         }
-
         public static void TagPlayer(NetPlayer player)
         {
+
             if (player == null || VRRig.LocalRig == null)
                 return;
             if (!VRRig.LocalRig.IsTagged())
@@ -283,15 +337,22 @@ namespace Arrakis.Mods
                 VRRig.LocalRig.enabled = true;
                 return;
             }
-            VRRig rig = VRRigCache.ActiveRigs.FirstOrDefault(x => x != null && x.Creator == player);
-            if (rig == null || rig == VRRig.LocalRig)
-                return;
-            if (rig.IsTagged())
-                return;
-            VRRig.LocalRig.enabled = false;
-            VRRig.LocalRig.transform.position = rig.transform.position;
-            GameMode.ReportTag(player);
-            VRRig.LocalRig.enabled = true;
+            if (Settings.instanttag)
+            {
+                InstantTagPlayer(player);
+            }
+            else
+            {
+                VRRig rig = VRRigCache.ActiveRigs.FirstOrDefault(x => x != null && x.Creator == player);
+                if (rig == null || rig == VRRig.LocalRig)
+                    return;
+                if (rig.IsTagged())
+                    return;
+                VRRig.LocalRig.enabled = false;
+                VRRig.LocalRig.transform.position = rig.transform.position;
+                GameMode.ReportTag(player);
+                VRRig.LocalRig.enabled = true;
+            }
         }
         public static void Blink()
         {

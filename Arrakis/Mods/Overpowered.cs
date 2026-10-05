@@ -31,6 +31,8 @@ using GorillaLocomotion.Gameplay;
 using GorillaNetworking;
 using Photon.Pun;
 using Photon.Realtime;
+using Photon.Voice;
+using Photon.Voice.PUN;
 using UnityEngine;
 using static Arrakis.Classes.RigManager;
 using static Arrakis.Menu.Main;
@@ -212,7 +214,7 @@ namespace Arrakis.Mods
                         if (idol.manager != null && !idol.isChangingPositions)
                         {
                             GorillaGuardianZoneManager zoneManager = idol.zoneManager;
-                            if (zoneManager.IsZoneValid() && idol.manager != null && zoneManager.CurrentGuardian != null && 
+                            if (zoneManager.IsZoneValid() && idol.manager != null && zoneManager.CurrentGuardian != null &&
                                 zoneManager.CurrentGuardian == NetworkSystem.Instance.LocalPlayer)
                             {
                                 float DR = Vector3.Distance(idol.transform.position, rig.rightHandTransform.position);
@@ -315,6 +317,30 @@ namespace Arrakis.Mods
             }
         }
 
+        public static float LagMasterDelay;
+        public static void LagMaster()
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=red>ERROR</color><color=grey>]</color> You are master client, you wouldnt want to lag yourself would you?");
+                Toggle("Lag Master");
+                return;
+            }
+            if (PhotonNetwork.InRoom && Time.time > LagMasterDelay)
+            {
+                LagDelay = Time.time + 1.64f;
+                for (int i = 0; i < 730; i++)
+                {
+                    object[] data = new object[] { float.NaN };
+                    object[] evData = new object[] { float.NaN, float.NaN, data };
+                    PhotonNetwork.NetworkingClient.OpRaiseEvent(186, evData, new RaiseEventOptions
+                    {
+                        Receivers = ReceiverGroup.MasterClient
+                    }, SendOptions.SendUnreliable);
+                }
+            }
+        }
+
         public static float LagGunDelay;
         public static void LagGun()
         {
@@ -355,21 +381,6 @@ namespace Arrakis.Mods
                 gunLocked = false;
             }
         }
-
-
-        public static void SetRoomStatus(bool status) // this might've gotten patched it dosnt seem to work. -sleepy
-        {
-            var roomProperties = new Hashtable();
-            roomProperties[GamePropertyKey.IsOpen] = status;
-            roomProperties[GamePropertyKey.IsVisible] = status;
-            roomProperties[GamePropertyKey.MaxPlayers] = status ? 0 : 10;
-            var parameters = new Dictionary<byte, object>();
-            parameters.Add(OperationCode.GetProperties, roomProperties);
-            parameters.Add(OperationCode.AuthenticateOnce, null);
-            var peer = PhotonNetwork.CurrentRoom.LoadBalancingClient.LoadBalancingPeer;
-            peer.SendOperation(OperationCode.SetProperties, parameters, SendOptions.SendReliable);
-            GorillaScoreboardTotalUpdater.instance.UpdateActiveScoreboards();
-        }
         public static float RopeDelay;
         public static void RopeFlingGun()
         {
@@ -405,7 +416,92 @@ namespace Arrakis.Mods
                 }
             }
         }
+        public static void RopeUpGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                if (GetGunInput(true))
+                {
+                    GorillaRopeSwing gunTarget = GunData.Ray.collider.GetComponentInParent<GorillaRopeSwing>();
+                    if (gunTarget && Time.time > RopeDelay)
+                    {
+                        RopeDelay = Time.time + 0.25f;
+                        RopeThing(gunTarget, Vector3.up * 5);
+                    }
+                }
+            }
+        }
+        public static void RopeLeftGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                if (GetGunInput(true))
+                {
+                    GorillaRopeSwing gunTarget = GunData.Ray.collider.GetComponentInParent<GorillaRopeSwing>();
+                    if (gunTarget && Time.time > RopeDelay)
+                    {
+                        RopeDelay = Time.time + 0.25f;
+                        RopeThing(gunTarget, Vector3.left * 5);
+                    }
+                }
+            }
+        }
+        public static void RopeRightGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                if (GetGunInput(true))
+                {
+                    GorillaRopeSwing gunTarget = GunData.Ray.collider.GetComponentInParent<GorillaRopeSwing>();
+                    if (gunTarget && Time.time > RopeDelay)
+                    {
+                        RopeDelay = Time.time + 0.25f;
+                        RopeThing(gunTarget, Vector3.right * 5);
+                    }
+                }
+            }
+        }
+        public static void RopeForwardGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                if (GetGunInput(true))
+                {
+                    GorillaRopeSwing gunTarget = GunData.Ray.collider.GetComponentInParent<GorillaRopeSwing>();
+                    if (gunTarget && Time.time > RopeDelay)
+                    {
+                        RopeDelay = Time.time + 0.25f;
+                        RopeThing(gunTarget, Vector3.forward * 5);
+                    }
+                }
+            }
+        }
 
+        public static void RopeDownGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                if (GetGunInput(true))
+                {
+                    GorillaRopeSwing gunTarget = GunData.Ray.collider.GetComponentInParent<GorillaRopeSwing>();
+                    if (gunTarget && Time.time > RopeDelay)
+                    {
+                        RopeDelay = Time.time + 0.25f;
+                        RopeThing(gunTarget, Vector3.forward * 5);
+                    }
+                }
+            }
+        }
         public static Coroutine RopeCoroutine;
         public static IEnumerator RopeEnableRig()
         {
@@ -419,7 +515,7 @@ namespace Arrakis.Mods
             Velocity = Velocity.ClampMagnitudeSafe(15f);
             if (RopeSwingManager.instance.ropes.TryGetValue(RopeId, out GorillaRopeSwing Rope))
             {
-                var rope = Rope.nodes.Skip(1).Select((v, i) => new { index = i, transform = v, 
+                var rope = Rope.nodes.Skip(1).Select((v, i) => new { index = i, transform = v,
                     distance = Vector3.Distance(GorillaTagger.Instance.bodyCollider.transform.position, v.transform.position) }).OrderBy(x => x.distance).First();
                 if (rope.distance > 5f)
                 {
@@ -443,7 +539,6 @@ namespace Arrakis.Mods
                 NotificationManager.SendNotification("<color=grey>[</color><color=red>ERROR</color><color=grey>]</color> You must be in a private room.");
                 return;
             }
-            GorillaComputer.instance.friendJoinCollider.playerIDsCurrentlyTouching.Remove(PhotonNetwork.LocalPlayer.UserId);
             GorillaComputer.instance.OnGroupJoinButtonPress(0, GorillaComputer.instance.friendJoinCollider);
         }
         public static void DestroyCacheAll()
@@ -490,6 +585,61 @@ namespace Arrakis.Mods
                 lockTarget = null;
                 gunLocked = false;
             }
+        }
+        public static void LogSpamAll()
+        {
+			if (PhotonNetwork.InRoom)
+			{
+				LoadBalancingClient client = PhotonVoiceNetwork.Instance.Client;
+				object obj = new object[]
+				{
+					0, 1,
+					new object[]
+					{
+					    new Dictionary<byte, object>
+						{
+							{ 1, 0 },
+							{ 2, 0 },
+							{ 3, 0 },
+							{ 4, "ARRAKIS ON TOP " + PluginInfo.DiscordLink },
+							{ 5, 0 }
+						}
+					}
+				};
+				RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
+				raiseEventOptions.Receivers = ReceiverGroup.Others;
+				SendOptions sendOptions = default;
+				sendOptions.Reliability = false;
+				sendOptions.Channel = 0;
+				client.OpRaiseEvent(202, obj, raiseEventOptions, sendOptions);
+			}
+            else
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
+                Toggle("Log Spam All");
+            }
+        }
+        public static void Deafen(ReceiverGroup whothefuck)
+        {
+            if (PhotonNetwork.IsMasterClient && whothefuck == ReceiverGroup.MasterClient)
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=red>ERROR</color><color=grey>]</color> You are master client, you wouldnt want to deafen yourself would you?");
+                Toggle("Deafen Master");
+                return;
+            }
+            LoadBalancingTransport client = PhotonVoiceNetwork.Instance.Client;
+			for (int i = 0; i < client.VoiceClient.RemoteVoiceInfos.Count<RemoteVoiceInfo>(); i++)
+			{
+				client.OpRaiseEvent(202, new object[]
+				{
+                    0, 2,
+                    new object[]
+                    {
+                        GenerateRandomString(UnityEngine.Random.Range(2, 14))
+                    }
+                },
+                new RaiseEventOptions { Receivers = whothefuck }, SendOptions.SendUnreliable);
+			}
         }
     }
 }

@@ -148,7 +148,7 @@ namespace Arrakis.Mods
             }
         }
 
-        private static void SpawnWater(Vector3 pos, Quaternion rot, float scale, float radius, bool big, bool enter) => 
+        private static void SpawnWater(Vector3 pos, Quaternion rot, float scale, float radius, bool big, bool enter) =>
             GorillaTagger.Instance.myVRRig.SendRPC("RPC_PlaySplashEffect", Photon.Pun.RpcTarget.All, new object[] { pos, rot, scale, radius, big, enter });
 
         public static float Radius = 1.5f; // nova please name this better then me -sleepy
@@ -161,7 +161,7 @@ namespace Arrakis.Mods
         public static float _height; // nova please name this better then me -sleepy
         public static void WaterHelixSplash()
         {
-            if (Time.time > _lastUpdateTime )
+            if (Time.time > _lastUpdateTime)
             {
                 _lastUpdateTime = Time.time + 0.06f;
                 Vector3 origin = VRRig.LocalRig.transform.position;
@@ -503,7 +503,7 @@ namespace Arrakis.Mods
             }
             else
             {
-                GorillaTagger.Instance.myVRRig.SendRPC( "RPC_UpdateCosmeticsWithTryonPacked", RpcTarget.All, 
+                GorillaTagger.Instance.myVRRig.SendRPC( "RPC_UpdateCosmeticsWithTryonPacked", RpcTarget.All,
                     new object[] { cosmeticSet.ToPackedIDArray(), cosmetics.tryOnSet.ToPackedIDArray(), false });
             }
             yield return new WaitForSeconds(0.1f);
@@ -529,7 +529,7 @@ namespace Arrakis.Mods
                 List<CosmeticsController.CosmeticItem> cosmeticsList = new List<CosmeticsController.CosmeticItem>();
                 if (mode == 1 || mode == 2)
                 {
-                    cosmeticsList = cosmetics.allCosmetics.Where(item => item.canTryOn && (int)item.itemCategory != 3 && !item.isHoldable 
+                    cosmeticsList = cosmetics.allCosmetics.Where(item => item.canTryOn && (int)item.itemCategory != 3 && !item.isHoldable
                     && !item.isThrowable && (int)item.itemCategory != 6 && (int)item.itemCategory != 2 && (int)item.itemCategory != 11).ToList();
                 }
                 else if (mode == 3)
@@ -557,7 +557,7 @@ namespace Arrakis.Mods
         {
             if (Time.time > hatTryOnDelay)
             {
-                List<CosmeticsController.CosmeticItem> hats = CosmeticsController.instance.allCosmetics.Where(x => 
+                List<CosmeticsController.CosmeticItem> hats = CosmeticsController.instance.allCosmetics.Where(x =>
                 x.itemCategory == CosmeticsController.CosmeticCategory.Hat && x.canTryOn).ToList();
                 CosmeticsController.CosmeticItem item = hats[chi];
                 foreach (FittingRoomButton button in GameObject.FindObjectsByType<FittingRoomButton>(FindObjectsSortMode.None))
@@ -574,7 +574,7 @@ namespace Arrakis.Mods
         {
             if (Time.time > hatTryOnDelay)
             {
-                List<CosmeticsController.CosmeticItem> hats = CosmeticsController.instance.allCosmetics.Where(x => 
+                List<CosmeticsController.CosmeticItem> hats = CosmeticsController.instance.allCosmetics.Where(x =>
                 x.itemCategory == CosmeticsController.CosmeticCategory.Badge && x.canTryOn).ToList();
                 CosmeticsController.CosmeticItem item = hats[chi];
                 foreach (FittingRoomButton button in GameObject.FindObjectsByType<FittingRoomButton>(FindObjectsSortMode.None))
@@ -591,7 +591,7 @@ namespace Arrakis.Mods
         {
             if (Time.time > hatTryOnDelay)
             {
-                List<CosmeticsController.CosmeticItem> hats = CosmeticsController.instance.allCosmetics.Where(x => 
+                List<CosmeticsController.CosmeticItem> hats = CosmeticsController.instance.allCosmetics.Where(x =>
                 x.itemCategory == CosmeticsController.CosmeticCategory.Face && x.canTryOn).ToList();
                 CosmeticsController.CosmeticItem item = hats[chi];
                 foreach (FittingRoomButton button in GameObject.FindObjectsByType<FittingRoomButton>(FindObjectsSortMode.None))
@@ -608,7 +608,7 @@ namespace Arrakis.Mods
         {
             if (Time.time > hatTryOnDelay)
             {
-                List<CosmeticsController.CosmeticItem> hats = CosmeticsController.instance.allCosmetics.Where(x => 
+                List<CosmeticsController.CosmeticItem> hats = CosmeticsController.instance.allCosmetics.Where(x =>
                 x.itemCategory == CosmeticsController.CosmeticCategory.Arms && x.canTryOn).ToList();
                 CosmeticsController.CosmeticItem item = hats[chi];
                 foreach (FittingRoomButton button in GameObject.FindObjectsByType<FittingRoomButton>(FindObjectsSortMode.None))
@@ -796,7 +796,7 @@ namespace Arrakis.Mods
 
         public static void ForestSnowGround(bool growing) =>
             GameObject.Find("pit ground bottom").GetComponent<GorillaSurfaceOverride>().overrideIndex = !growing ? 32 : 339;
-        public static void DisableForestSnowGround() => 
+        public static void DisableForestSnowGround() =>
             GameObject.Find("pit ground bottom").GetComponent<GorillaSurfaceOverride>().overrideIndex = 7;
 
         public static void RandomColorSnowballs()
@@ -847,7 +847,7 @@ namespace Arrakis.Mods
 
         public static void BraceletToggle(bool enable, bool Lefthand)
         {
-            if (!PhotonNetwork.InRoom) 
+            if (!PhotonNetwork.InRoom)
                 return;
             GorillaTagger.Instance.myVRRig.SendRPC("EnableNonCosmeticHandItemRPC", RpcTarget.All, enable, Lefthand);
             Safety.RPCProc();
@@ -872,7 +872,7 @@ namespace Arrakis.Mods
         public static void BuyAllFree()
         {
             string mapName = GetCurrentMapName();
-            if (mapName == "City")
+            if (mapName == "City" || mapName == "Mountain")
             {
                 foreach (CosmeticsController.CosmeticItem controller in CosmeticsController.instance.allCosmetics)
                 {
@@ -885,7 +885,7 @@ namespace Arrakis.Mods
             }
             else
             {
-                NotificationManager.SendNotification("<color=red>[ERROR]</color> You are not in city.");
+                NotificationManager.SendNotification("<color=red>[ERROR]</color> You are not in city or mountains.");
             }
         }
 

@@ -20,17 +20,20 @@
 
 using Arrakis.Managers;
 using UnityEngine.XR;
+using UnityEngine;
 
 namespace Arrakis.Mods
 {
     public class Sound
     {
+        public static float SoundDelay = 0f;
         private static void PlaySound(int soundIndex, bool leftHand, float volume, bool button)
         {
             if (button)
             {
-                if (NetworkSystem.Instance.InRoom)
+                if (NetworkSystem.Instance.InRoom && Time.time > SoundDelay)
                 {
+                    SoundDelay = Time.time + 0.1f;
                     GorillaTagger.Instance.myVRRig.SendRPC("RPC_PlayHandTap", Photon.Pun.RpcTarget.All, new object[] { soundIndex, leftHand, volume });
                     Safety.RPCProc();
                 }

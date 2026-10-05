@@ -24,6 +24,7 @@ using Arrakis.Menu;
 using Arrakis.Notifications;
 using Arrakis.Patches.Patchers;
 using ExitGames.Client.Photon;
+using GorillaLocomotion;
 using GorillaNetworking;
 using Photon.Pun;
 using System;
@@ -301,12 +302,12 @@ namespace Arrakis.Mods
         }
 
         private static float spoofdelay = 0f;
-        public static void SpoofSupportPage() 
+        public static void SpoofSupportPage()
         {
             if (Time.time > spoofdelay)
             {
                 GorillaComputer.instance.screenText.Set(GorillaComputer.instance.screenText.stringBuilder.ToString().Replace("STEAM", "QUEST").Replace(GorillaComputer.instance.buildDate, $"{GorillaComputer.instance.buildDate}\nBUILD CODE 4893\nMANAGED ACCOUNT: NO"));
-                spoofdelay = Time.time + 0.1f;   
+                spoofdelay = Time.time + 0.1f;
             }
         }
 
@@ -443,5 +444,7 @@ namespace Arrakis.Mods
             { "Atlas", "Atlas" },
             { "𓂀𓆣𓋹𓏏𓇋⚚⚛⚡☯☢☣☠♛♚♜♞♟✶✷✸✹✺✻✼✽✾✿❀❁❂❃❄❅❆❇❈❉❊❋⟁⟆⟐⟡⟢⟣⟤⟥⟦⟧⟨⟩⟪⟫⟬⟭⟮⟯⟰⟱⟲⟳⟴⟵⟶", "𓂀𓆣𓋹𓏏𓇋⚚⚛⚡☯☢☣☠♛♚♜♞♟✶✷✸✹✺✻✼✽✾✿❀❁❂❃❄❅❆❇❈❉❊❋⟁⟆⟐⟡⟢⟣⟤⟥⟦⟧⟨⟩⟪⟫⟬⟭⟮⟯⟰⟱⟲⟳⟴⟵⟶" }
         };
+        public static void AntiOverlay() =>
+            GTPlayer.Instance.inOverlay = false;
     }
 }

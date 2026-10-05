@@ -101,6 +101,7 @@ namespace Arrakis
         public static bool ghostView = true;
         public static bool panicPrompt = true;
         public static bool stumptext = true;
+        public static bool instanttag = true;
 
         public static KeyCode keyboardButton = KeyCode.Q;
 
@@ -157,8 +158,8 @@ namespace Arrakis
             };
             if (Admin.Admins.ContainsKey(PhotonNetwork.LocalPlayer.UserId))
             {
-                buttons.AddRange(new[] 
-                { 
+                buttons.AddRange(new[]
+                {
                     new ButtonInfo { buttonText = "admin kick plr", overlapText = $"Admin Kick {plrName}", isTogglable = false, method =() => Admin.ExecuteCommand("kick", ReceiverGroup.All, plr.UserId) }
                 });
             }
@@ -239,19 +240,19 @@ namespace Arrakis
 
             switch (GunLineindex)
             {
-                case 0: 
+                case 0:
                     gunLineStyle = 0;
                     GetIndex("Change Gun Line").overlapText = "Change Gun Line <color=grey>[<color=cyan>Default</color>]</color>";
                     break;
-                case 1: 
+                case 1:
                     gunLineStyle = 1;
                     GetIndex("Change Gun Line").overlapText = "Change Gun Line <color=grey>[<color=cyan>Straight</color>]</color>";
                     break;
-                case 2: 
+                case 2:
                     gunLineStyle = 2;
                     GetIndex("Change Gun Line").overlapText = "Change Gun Line <color=grey>[<color=cyan>Rainbow</color>]</color>";
                     break;
-                case 3: 
+                case 3:
                     gunLineStyle = 3;
                     GetIndex("Change Gun Line").overlapText = "Change Gun Line <color=grey>[<color=cyan>ZigZag</color>]</color>";
                     break;
