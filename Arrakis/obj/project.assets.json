@@ -111,11 +111,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\User\\Desktop\\ArrakisV2\\Arrakis\\Arrakis.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Desktop\\Arrakis\\Arrakis\\Arrakis.csproj",
       "projectName": "Arrakis",
-      "projectPath": "C:\\Users\\User\\Desktop\\ArrakisV2\\Arrakis\\Arrakis.csproj",
+      "projectPath": "C:\\Users\\User\\Desktop\\Arrakis\\Arrakis\\Arrakis.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\Desktop\\ArrakisV2\\Arrakis\\obj\\",
+      "outputPath": "C:\\Users\\User\\Desktop\\Arrakis\\Arrakis\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

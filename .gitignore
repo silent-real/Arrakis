@@ -41,3 +41,9 @@ Arrakis/Directory.Build.targets
 .gitignore
 Arrakis/Directory.Packages.props
 Arrakis/Arrakis.csproj
+Arrakis/obj/project.nuget.cache
+Arrakis/obj/project.assets.json
+Arrakis/obj/Debug/netstandard2.1/Arrakis.GeneratedMSBuildEditorConfig.editorconfig
+Arrakis/obj/Debug/netstandard2.1/Arrakis.csproj.AssemblyReference.cache
+Arrakis/obj/Debug/netstandard2.1/Arrakis.assets.cache
+Arrakis/obj/Arrakis.csproj.nuget.dgspec.json
