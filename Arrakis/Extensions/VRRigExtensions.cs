@@ -22,6 +22,7 @@ using System;
 using System.Linq;
 using GorillaGameModes;
 using Photon.Pun;
+using UnityEngine;
 
 namespace Arrakis.Extensions
 {
@@ -91,5 +92,19 @@ namespace Arrakis.Extensions
             int safePing = (int)Math.Clamp(Math.Round(ping), 0, int.MaxValue);
             return safePing;
         }
+        public static VRRig VRRig2(this Photon.Realtime.Player self) => // dosnt like to work if just called VRRig, name it better if you want to -sleepy
+            GetVRRigFromPlayer(self);
+        public static VRRig VRRig2(this NetPlayer self) => // dosnt like to work if just called VRRig, name it better if you want to -sleepy
+            GetVRRigFromPlayer(self);
+        public static VRRig GetVRRigFromPlayer(NetPlayer p) =>
+            GorillaGameManager.StaticFindRigForPlayer(p);
+        public static float Distance(this VRRig rig, Vector3 position) =>
+            Vector3.Distance(rig.transform.position, position);
+        public static float Distance(this VRRig rig, VRRig otherRig) =>
+            rig.Distance(otherRig.transform.position);
+        public static float Distance(this Vector3 point, Vector3 to) =>
+            Vector3.Distance(point, to);
+        public static float Distance(this VRRig rig) =>
+            rig.Distance(GorillaTagger.Instance.bodyCollider.transform.position);
     }
 }

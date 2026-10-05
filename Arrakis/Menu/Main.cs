@@ -145,7 +145,7 @@ namespace Arrakis.Menu
                                 menu = null;
                             }
                         }
-                        else 
+                        else
                         {
                             Destroy(menu);
                             menu = null;
@@ -153,7 +153,7 @@ namespace Arrakis.Menu
 
                         Destroy(reference);
                         reference = null;
-                        
+
                         Destroy(leftReference);
                         leftReference = null;
                         Destroy(rightReference);
@@ -165,7 +165,7 @@ namespace Arrakis.Menu
             {
                 CustomConsole.Log(string.Format("{0} // Error initializing at {1}: {2}", PluginInfo.Name, exc.StackTrace, exc.Message), CustomConsole.LogType.Error);
             }
-            
+
             try
             {
                 if (GunPointer != null)
@@ -559,7 +559,7 @@ namespace Arrakis.Menu
                     title.text = keyboardInput;
                 }
             }
-            else 
+            else
             {
                 if (!disablemenutitle)
                 {
@@ -1912,7 +1912,7 @@ namespace Arrakis.Menu
             prompts.RemoveAt(0);
         public static void Prompt(string message, Action accept = null, Action decline = null, string accepbutton = "Yes", string declinebutton = "No")
         {
-            prompts.Add(new PromptData 
+            prompts.Add(new PromptData
             {
                 message = message,
                 accept = accept ?? (() => { }),

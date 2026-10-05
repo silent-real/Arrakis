@@ -153,6 +153,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Exit Advantage Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Returns to the main settings page for the menu." },
 
                 new ButtonInfo { buttonText = "Change Tag Aura Range", overlapText = "Change Tag Aura Range <color=grey>[<color=cyan>Default</color>]</color>", enableMethod =() => ChangeTagAuraDistance(), method =() => ChangeTagAuraDistance(), disableMethod =() => ChangeTagAuraDistance(false), isIncremental = true,  isTogglable = false, toolTip = "Changes the tag aura range.", ShowInArraylist = false },
+                new ButtonInfo { buttonText = "Instant Tag", enableMethod =() => Settings.instanttag = true, disableMethod =() => Settings.instanttag = false, toolTip = "Makes it so tag mods are instant.", ShowInArraylist = false },
             },
 
             new ButtonInfo[] { // Projectile Settings
@@ -283,6 +284,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Anti Stump Kick", enableMethod =() => GroupPatch.enabled = true, disableMethod =() => GroupPatch.enabled = false, toolTip = "Dosnt let you get kicked from group kick." },
                 new ButtonInfo { buttonText = "Board Spoof", method =() => Safety.BoardSpoof(), toolTip = "Spoofs your name and color every 30 secounds." },
                 new ButtonInfo { buttonText = "Nuke Mod Checkers", enableMethod =() => Safety.NukeModCheckers(), disableMethod =() => FPSPatch.enabled = false, toolTip = "Tells mod checkers that you have a high fps and alot of mods." },
+                new ButtonInfo { buttonText = "Anti Overlay", method =() => Safety.AntiOverlay(), toolTip = "Makes it so you dont go invis when you open your steam dashboard." },
             },
 
             new ButtonInfo[] { // Movement
@@ -513,15 +515,23 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Guardian Wall All", method =() => Overpowered.GuardianWallAll(), isTogglable = true, toolTip = "Brings people to death/pig wall if you are guardian." },
                 new ButtonInfo { buttonText = "Guardian Break Movement Gun", method =() => Overpowered.GuardianBreakMovementGun(), isTogglable = true, toolTip = "Breaks the movement of who you shoot if you are guardian." },
                 new ButtonInfo { buttonText = "Guardian Break Movement All", method =() => Overpowered.GuardianBreakMovementAll(), isTogglable = true, toolTip = "Breaks the movement of everyone if you are guardian." },
-                new ButtonInfo { buttonText = "Lock Room", method =() => Overpowered.SetRoomStatus(false), isTogglable = false, toolTip = "Locks the current room making it so no one else can join." },
-                new ButtonInfo { buttonText = "Unlock Room", method =() => Overpowered.SetRoomStatus(true), isTogglable = false, toolTip = "Unlocks the current room making it so people can join." },
                 new ButtonInfo { buttonText = "Rope Fling Gun", method =() => Overpowered.RopeFlingGun(), isTogglable = true, toolTip = "Flings the rope you shoot." },
                 new ButtonInfo { buttonText = "Freeze Rope Gun", method =() => Overpowered.FreezeRopeGun(), isTogglable = true, toolTip = "Freezes the rope you shoot." },
+                new ButtonInfo { buttonText = "Rope Up Gun", method =() => Overpowered.RopeUpGun(), isTogglable = true, toolTip = "Flings the rope you shoot." },
+                new ButtonInfo { buttonText = "Rope Forward Gun", method =() => Overpowered.RopeForwardGun(), isTogglable = true, toolTip = "Flings the rope you shoot." },
+                new ButtonInfo { buttonText = "Rope Left Gun", method =() => Overpowered.RopeLeftGun(), isTogglable = true, toolTip = "Flings the rope you shoot." },
+                new ButtonInfo { buttonText = "Rope Right Gun", method =() => Overpowered.RopeRightGun(), isTogglable = true, toolTip = "Flings the rope you shoot." },
+                new ButtonInfo { buttonText = "Rope Down Gun", method =() => Overpowered.RopeDownGun(), isTogglable = true, toolTip = "Flings the rope you shoot." },
                 new ButtonInfo { buttonText = "Stump Kick All <color=grey>[<color=cyan>Private</color>]</color>", method =() => Overpowered.StumpKickAll(), isTogglable = false, toolTip = "Kicks everyone in stump to a public lobby." },
                 new ButtonInfo { buttonText = "Destroy Cache All", method =() => Overpowered.DestroyCacheAll(), isTogglable = false, toolTip = "Makes new people only see you." },
                 new ButtonInfo { buttonText = "Lag All", method =() => Overpowered.LagAll(), isTogglable = true, toolTip = "Lags everyone." },
                 new ButtonInfo { buttonText = "Lag Gun", method =() => Overpowered.LagGun(), isTogglable = true, toolTip = "Lags who you shoot." },
-                new ButtonInfo { buttonText = "Schizophrenic Gun", method =() => Overpowered.SchizophrenicGun(), isTogglable = true, toolTip = "Makes who ever you shoot only see you (also might make you untaggable)." },
+                new ButtonInfo { buttonText = "Lag Master", method =() => Overpowered.LagMaster(), isTogglable = true, toolTip = "Lags the master client." },
+                new ButtonInfo { buttonText = "Schizophrenic Gun", method =() => Overpowered.SchizophrenicGun(), isTogglable = true, toolTip = "Makes who ever you shoot only see you." },
+                new ButtonInfo { buttonText = "Log Spam All", method =() => Overpowered.LogSpamAll(), isTogglable = true, toolTip = $"Spams everyones debug logs with \"ARRAKIS ON TOP + {PluginInfo.DiscordLink}\"." },
+                new ButtonInfo { buttonText = "Deafen All", method =() => Overpowered.Deafen(Photon.Realtime.ReceiverGroup.All), isTogglable = true, toolTip = "Deafens everybody." },
+                new ButtonInfo { buttonText = "Deafen Others", method =() => Overpowered.Deafen(Photon.Realtime.ReceiverGroup.Others), isTogglable = true, toolTip = "Deafens everybody but you." },
+                new ButtonInfo { buttonText = "Deafen Master", method =() => Overpowered.Deafen(Photon.Realtime.ReceiverGroup.MasterClient), isTogglable = true, toolTip = "Deafens the master client." },
             },
             new ButtonInfo[] { // Custom Maps
                 new ButtonInfo { buttonText = "Exit Custom Maps", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
@@ -539,7 +549,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Unguardian Gun", method =() => Master.UnGuardianGun(), isTogglable = true, toolTip = "Makes who you shoot not guardian." },
                 new ButtonInfo { buttonText = "Find PhotonViews", method =() => Master.GetAllPhotonViews(), disableMethod =() => Master.DisableViewTracers(), isTogglable = true, toolTip = "Shows everything with a photon view." },
                 new ButtonInfo { buttonText = "Destroy PhotonView Gun", method =() => Master.DestroyViewGun(), isTogglable = true, toolTip = "Lets you destroy a photon view." },
-                
+
                 new ButtonInfo { buttonText = "Block Crash All", method =() => Master.BlockCrashAll(), isTogglable = true, toolTip = "Crashes everyone with blocks." },
                 new ButtonInfo { buttonText = "Block Sphere", method =() => Master.BlockSphere(), isTogglable = false, toolTip = "Makes a sphere with blocks." },
                 new ButtonInfo { buttonText = "Block Freeze Gun", method =() => Master.BlockFreezeGun(), isTogglable = true, toolTip = "Freezes who ever you shoot with blocks." },
@@ -550,8 +560,6 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Empty Lava", method =() => Master.ChangeLavaState(InfectionLavaController.RisingLavaState.Drained), isTogglable = false, toolTip = "Removes the lava." },
                 new ButtonInfo { buttonText = "Erupt Lava", method =() => Master.ChangeLavaState(InfectionLavaController.RisingLavaState.Erupting), isTogglable = false, toolTip = "Erupts the lava." },
                 new ButtonInfo { buttonText = "Destroy Lighting", method =() => Master.DestroyLighting(), isTogglable = false, toolTip = "Destroys the lighting." },
-                new ButtonInfo { buttonText = "Virtual Stump Kick All", method =() => Master.VirtualStumpKickAll(), isTogglable = true, toolTip = "Kicks everyone in vstump." },
-                new ButtonInfo { buttonText = "Log Spam All", method =() => Master.LogSpamAll(), isTogglable = true, toolTip = "Spams everyones debug logs." },
 
                 new ButtonInfo { buttonText = "Spawn Blue Lucy", method =() => Master.SpawnBlueLucy(), isTogglable = false, toolTip = "Spawns the blue ghost Lucy in forest." },
                 new ButtonInfo { buttonText = "Spawn Red Lucy", method =() => Master.SpawnRedLucy(), isTogglable = false, toolTip = "Spawns the red ghost Lucy in forest." },
@@ -563,6 +571,9 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Move Lucy Gun", method =() => Master.MoveLucyGun(), isTogglable = true, toolTip = "Makes the ghost Lucy go to your gun pointer." },
                 new ButtonInfo { buttonText = "Grab Lucy", method =() => Master.GrabLucy(), isTogglable = true, toolTip = "Makes the ghost Lucy go to your hand when holding your grips." },
                 new ButtonInfo { buttonText = "Lucy Float Gun", method =() => Master.LucyFloatGun(), isTogglable = true, toolTip = "Makes the ghost Lucy float who ever you shoot." },
+                new ButtonInfo { buttonText = "Break Lucy", method =() => Master.BreakLucy(), isTogglable = false, toolTip = "Makes the ghost Lucy be really far if spawned in." },
+
+                new ButtonInfo { buttonText = "Spaz Paintbrawl", method =() => Master.SpazPaintbrawl(), isTogglable = true, toolTip = "Spazes the paintbrawl gamemode if you are master client." },
             },
 
             new ButtonInfo[] { // Experimental
@@ -576,7 +587,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Maxwell", enableMethod =() => AssetBundleLoader.LoadBundle("maxwell", VRRig.LocalRig.rightHandTransform.position, VRRig.LocalRig.rightHandTransform.rotation, "maxwell"), method =() => AssetBundleLoader.MoveObject("maxwell", VRRig.LocalRig.rightHandTransform.position, VRRig.LocalRig.rightHandTransform.rotation), disableMethod =() => AssetBundleLoader.DeleteBundle("maxwell"), isTogglable = true, toolTip = "Spawns a client sided maxwell." },
                 new ButtonInfo { buttonText = "Zelda Sword", enableMethod =() => AssetBundleLoader.LoadBundle("zeldasword", VRRig.LocalRig.rightHandTransform.position, VRRig.LocalRig.rightHandTransform.rotation, "zeldasword"), method =() => AssetBundleLoader.MoveObject("zeldasword", VRRig.LocalRig.rightHandTransform.position, VRRig.LocalRig.rightHandTransform.rotation), disableMethod =() => AssetBundleLoader.DeleteBundle("zeldasword"), isTogglable = true, toolTip = "Spawns a client sided zeldas word." },
                 new ButtonInfo { buttonText = "Spam Pride Cube", method =() => Experimental.SpamPrideCube(), isTogglable = true, toolTip = "Spams client sided cubes." },
-                new ButtonInfo { buttonText = "Switch To Tcp", enableMethod =() => Experimental.SwitchToTcp(), disableMethod =() => Experimental.SwitchToUdp(), isTogglable = true, toolTip = "Swaps the networking to tcp, this breaks somethings." },
+                new ButtonInfo { buttonText = "Switch To Tcp", enableMethod =() => Experimental.SwitchToTcp(), disableMethod =() => Experimental.SwitchToUdp(), isTogglable = true, toolTip = "Swaps the networking to tcp, this is mainly used for debugging game glitches/expoits." },
 
                 new ButtonInfo { buttonText = "Portal Gun", method =() => PortalManager.SpawnPortal(), isTogglable = true, toolTip = "Portal ghun." },
             },
