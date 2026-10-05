@@ -3,7 +3,7 @@ using static UnityEngine.Time;
  * Arrakis | Mods/Master.cs
  *
  * Copyright (C) 2026 Arrakis
- * https://github.com/nauth-studios/Arrakis
+ * https://github.com/silent-real/Arrakis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
