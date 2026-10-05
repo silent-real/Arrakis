@@ -2,7 +2,7 @@
  * Arrakis | Classes/Server/ServerData.cs
  *
  * Copyright (C) 2026 Arrakis
- * https://github.com/real-Silent/ArrakisV2
+ * https://github.com/nauth-studios/Arrakis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -178,7 +178,7 @@ namespace Arrakis.Classes
                                 NotificationManager.SendNotification("<color=cyan>[UPDATE]</color> Arrakis Needs a update please update.");
                                 Prompt($"Arrakis is on version {PluginInfo.Version} it needs to be on version {serverversion}, would you like to update the menu.", () =>
                                 {
-                                    Process.Start($"https://github.com/real-Silent/ArrakisV2/releases/tag/V{serverversion}");
+                                    Process.Start($"https://github.com/nauth-studios/Arrakis/releases/tag/V{serverversion}");
                                     NotificationManager.SendNotification("<color=cyan>[UPDATE]</color> Please check your computer for latest install.");
                                 }, () =>
                                 {

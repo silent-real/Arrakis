@@ -3,7 +3,7 @@ using static Arrakis.Managers.CustomMaps.SceneMapRegistry;
  * Arrakis | Managers/CustomMaps.cs
  *
  * Copyright (C) 2026 Arrakis
- * https://github.com/real-Silent/ArrakisV2
+ * https://github.com/nauth-studios/Arrakis
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
