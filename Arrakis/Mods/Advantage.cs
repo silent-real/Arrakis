@@ -152,7 +152,7 @@ namespace Arrakis.Mods
                     {
                         VRRig.LocalRig.enabled = true;
                         Toggle("Tag Self");
-                        ReloadMenu();
+                        return;
                     }
                 }
             }
