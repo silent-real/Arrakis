@@ -24,6 +24,7 @@ using Arrakis.Patches.Patchers;
 using GorillaExtensions;
 using GorillaLocomotion;
 using GorillaLocomotion.Climbing;
+using GorillaNetworking;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR;
@@ -761,27 +762,22 @@ namespace Arrakis.Mods
                 lineL = null;
             }
         }
-        /*
-        I feel like im missing maps, please add them if so.
-        I dont know if all of them work/load the map, if so please fix im fucking lazy.
-        You can add buttons how fucking ever idk if you want prompts or fucking a new cat
-        -Sleepy */
+
         public static void TeleportToMap(string map)
         {
             Vector3 targetPos;
-            switch (map)
+            switch (map.ToLower())
             {
-                case "Stump": targetPos = new Vector3(-66.97f, 12.48f, -83.02f); break;
-                case "Canyons": targetPos = new Vector3(-80.89f, 12.09f, -100.46f); break;
-                case "Caves": targetPos = new Vector3(-73.29f, -14.52f, -39.86f); break;
-                case "City": targetPos = new Vector3(-62.49f, 17.04f, -100.95f); break;
-                case "Beach": targetPos = new Vector3(-13.83f, 30f, -19.3f); break;
-                case "Clouds": targetPos = new Vector3(-76.34f, 164f, -98.04f); break;
-                case "Mountains": targetPos = new Vector3(-19.8f, 18.8f, -106.72f); break;
-                case "Mall": targetPos = new Vector3(-64.81f, 6.88f, -102.04f); break;
+                case "stump": targetPos = new Vector3(-66.97f, 12.48f, -83.02f); break;
+                case "canyons": targetPos = new Vector3(-80.89f, 12.09f, -100.46f); break;
+                case "caves": targetPos = new Vector3(-73.29f, -14.52f, -39.86f); break;
+                case "city": targetPos = new Vector3(-62.49f, 17.04f, -100.95f); break;
+                case "beach": targetPos = new Vector3(-13.83f, 30f, -19.3f); break;
+                case "clouds": targetPos = new Vector3(-76.34f, 164f, -98.04f); break;
+                case "mountains": targetPos = new Vector3(-19.8f, 18.8f, -106.72f); break;
+                case "mall": targetPos = new Vector3(-64.81f, 6.88f, -102.04f); break;
                 default: return;
             }
-
             GTPlayer.Instance.TeleportTo(targetPos, GTPlayer.Instance.transform.rotation, false, true);
         }
     }

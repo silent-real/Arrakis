@@ -203,6 +203,18 @@ namespace Arrakis.Menu
             new ButtonInfo[] { // Global
                 new ButtonInfo { buttonText = "Exit Global", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
+                new ButtonInfo { buttonText = "Disable Map Triggers", enableMethod =() => GameObject.Find("Environment Objects/TriggerZones_Prefab/ZoneTransitions_Prefab").SetActive(false), disableMethod =() => GameObject.Find("Environment Objects/TriggerZones_Prefab/ZoneTransitions_Prefab").SetActive(true), toolTip = "Disables the map triggers so you can goto maps without loading them." },
+                new ButtonInfo { buttonText = "Disable Network Triggers", enableMethod =() => NetworkTriggerPatch.enabled = true, disableMethod =() => NetworkTriggerPatch.enabled = false, toolTip = "Disables the network triggers so you can change maps without leaving/joining a room." },
+
+                new ButtonInfo { buttonText = "Teleport To \"Stump\"", method =() => Movement.TeleportToMap("stump"), toolTip = "Teleports you to \"stump\"." },
+                new ButtonInfo { buttonText = "Teleport To \"City\"", method =() => Movement.TeleportToMap("city"), toolTip = "Teleports you to \"city\"." },
+                new ButtonInfo { buttonText = "Teleport To \"Canyons\"", method =() => Movement.TeleportToMap("canyons"), toolTip = "Teleports you to \"canyons\"." },
+                new ButtonInfo { buttonText = "Teleport To \"Caves\"", method =() => Movement.TeleportToMap("caves"), toolTip = "Teleports you to \"caves\"." },
+                new ButtonInfo { buttonText = "Teleport To \"Beach\"", method =() => Movement.TeleportToMap("beach"), toolTip = "Teleports you to \"beach\"." },
+                new ButtonInfo { buttonText = "Teleport To \"Clouds\"", method =() => Movement.TeleportToMap("clouds"), toolTip = "Teleports you to \"clouds\"." },
+                new ButtonInfo { buttonText = "Teleport To \"Mountains\"", method =() => Movement.TeleportToMap("mountains"), toolTip = "Teleports you to \"mountains\"." },
+                new ButtonInfo { buttonText = "Teleport To \"Mall\"", method =() => Movement.TeleportToMap("mall"), toolTip = "Teleports you to \"mall\"." },
+
                 new ButtonInfo { buttonText = "Connect to <color=grey>[<color=cyan>EU</color>]</color>", method =() => Important.ConnectToRegion("EU"), isTogglable = false, toolTip = "Connects to EU region." },
                 new ButtonInfo { buttonText = "Connect to <color=grey>[<color=cyan>USW</color>]</color>", method =() => Important.ConnectToRegion("USW"), isTogglable = false, toolTip = "Connects to USW region." },
                 new ButtonInfo { buttonText = "Connect to <color=grey>[<color=cyan>US</color>]</color>", method =() => Important.ConnectToRegion("US"), isTogglable = false, toolTip = "Connects to US region." },
@@ -218,8 +230,6 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>Ambush</color>]</color>", method =() => Important.ChangeGamemode("AMBUSH"), isTogglable = false, toolTip = "Changes your current gamemode." },
                 new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>FreezeTag</color>]</color>", method =() => Important.ChangeGamemode("FREEZETAG"), isTogglable = false, toolTip = "Changes your current gamemode." },
                 new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>Custom</color>]</color>", method =() => Important.ChangeGamemode("CUSTOM"), isTogglable = false, toolTip = "Changes your current gamemode." },
-                new ButtonInfo { buttonText = "Disable Map Triggers", enableMethod =() => GameObject.Find("Environment Objects/TriggerZones_Prefab/ZoneTransitions_Prefab").SetActive(false), disableMethod =() => GameObject.Find("Environment Objects/TriggerZones_Prefab/ZoneTransitions_Prefab").SetActive(true), toolTip = "Disables the map triggers so you can goto maps without loading them."},
-                new ButtonInfo { buttonText = "Disable Network Triggers", enableMethod =() => NetworkTriggerPatch.enabled = true, disableMethod =() => NetworkTriggerPatch.enabled = false, toolTip = "Disables the network triggers so you can change maps without leaving/joining a room."},
             },
 
             new ButtonInfo[] { // Important
