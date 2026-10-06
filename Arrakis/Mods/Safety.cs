@@ -350,8 +350,6 @@ namespace Arrakis.Mods
         }
         public static void NukeModCheckers()
         {
-            FPSPatch.enabled = true;
-            FPSPatch.spoofFPSValue = 255;
             Hashtable props = new Hashtable();
             foreach (string mod in modDictionary.Keys)
                 props[mod] = true;
