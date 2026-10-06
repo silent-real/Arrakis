@@ -229,6 +229,8 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>GhostTag</color>]</color>", method =() => Important.ChangeGamemode("GHOST"), isTogglable = false, toolTip = "Changes your current gamemode." },
                 new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>Ambush</color>]</color>", method =() => Important.ChangeGamemode("AMBUSH"), isTogglable = false, toolTip = "Changes your current gamemode." },
                 new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>FreezeTag</color>]</color>", method =() => Important.ChangeGamemode("FREEZETAG"), isTogglable = false, toolTip = "Changes your current gamemode." },
+                new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>Prop Hunt</color>]</color>", method =() => Important.ChangeGamemode("PROPHUNT"), isTogglable = false, toolTip = "Changes your current gamemode." },
+                new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>Super Infection</color>]</color>", method =() => Important.ChangeGamemode("SUPERINFECT"), isTogglable = false, toolTip = "Changes your current gamemode." },
                 new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>Custom</color>]</color>", method =() => Important.ChangeGamemode("CUSTOM"), isTogglable = false, toolTip = "Changes your current gamemode." },
             },
 
