@@ -108,7 +108,7 @@ namespace Arrakis.Mods
                     if (!tag.currentInfected.Contains(NetworkSystem.Instance.LocalPlayer))
                         tag.AddInfectedPlayer(NetworkSystem.Instance.LocalPlayer);
                     Toggle("Tag Self");
-                    ReloadMenu();
+                    return;
                 }
             }
             else
