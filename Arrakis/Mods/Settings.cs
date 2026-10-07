@@ -1090,7 +1090,70 @@ namespace Arrakis
             GetIndex("Change Dig Size").overlapText = $"Change Dig Size <color=grey>[<color=cyan>{sizes[currentDigSize]}</color>]</color>";
         }
 
+        private static int currentFPS = 0;
+        private static int currentPing = 0;
 
+        public static void ChangeFPS(bool increment = true)
+        {
+            string[] names =
+            {
+                "1", "10", "20", "30", "40", "50", "60",
+                "72", "90", "120", "144", "165", "240",
+                "360", "500", "1000", "32767"
+            };
+
+            short[] values =
+            {
+                0, 10, 20, 30, 40, 50, 60,
+                72, 90, 120, 144, 165, 240,
+                360, 500, 1000, 32767
+            };
+
+            if (increment)
+            {
+                currentFPS = (currentFPS + 1) % values.Length;
+            }
+            else
+            {
+                currentFPS = (currentFPS - 1 + values.Length) % values.Length;
+            }
+
+            Arrakis.Patches.Patchers.GTPlayerStatsP.FPS = values[currentFPS];
+            Arrakis.Patches.Patchers.GTPlayerStatsP.SpoofFPS = true;
+
+            GetIndex("Change Spoofed Fps").overlapText = $"Change Spoofed Fps <color=grey>[<color=cyan>{names[currentFPS]}</color>]</color>";
+        }
+
+        public static void ChangePing(bool increment = true)
+        {
+            string[] names =
+            {
+                "1", "10", "20", "30", "40", "50",
+                "75", "100", "150", "200", "300",
+                "500", "1000", "32767"
+            };
+
+            short[] values =
+            {
+                1, 10, 20, 30, 40, 50,
+                75, 100, 150, 200, 300,
+                500, 1000, 32767
+            };
+
+            if (increment)
+            {
+                currentPing = (currentPing + 1) % values.Length;
+            }
+            else
+            {
+                currentPing = (currentPing - 1 + values.Length) % values.Length;
+            }
+
+            Arrakis.Patches.Patchers.GTPlayerStatsP.Ping = values[currentPing];
+            Arrakis.Patches.Patchers.GTPlayerStatsP.SpoofPing = true;
+
+            GetIndex("Change Spoofed Ping").overlapText = $"Change Spoofed Ping <color=grey>[<color=cyan>{names[currentPing]}</color>]</color>";
+        }
 
         public class SavedSettings
         {

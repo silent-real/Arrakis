@@ -180,6 +180,9 @@ namespace Arrakis.Menu
 
                 new ButtonInfo { buttonText = "Change Anti Report Range", overlapText = "Change Anti Report Range <color=grey>[<color=cyan>Massive</color>]</color>", enableMethod =() => ChangeAntiReportRange(), method =() => ChangeAntiReportRange(), disableMethod =() => ChangeAntiReportRange(false), isIncremental = true, isTogglable = false, toolTip = "Changes the range of the anti reports.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Disable Anti Report Visualizer", enableMethod =() => disableAntiReportVisualizer = true, disableMethod =() => disableAntiReportVisualizer = false, isTogglable = true, toolTip = "Changes the range of the anti reports.", ShowInArraylist = false },
+                new ButtonInfo { buttonText = "Change Spoofed Fps", overlapText = "Change Spoofed Fps <color=grey>[<color=cyan>1</color>]</color>", enableMethod =() => ChangeFPS(), method =() => ChangeFPS(), disableMethod =() => ChangeFPS(false), isIncremental = true, isTogglable = false, toolTip = "Changes the spoofed fps.", ShowInArraylist = false },
+                new ButtonInfo { buttonText = "Change Spoofed Ping", overlapText = "Change Spoofed Ping <color=grey>[<color=cyan>1</color>]</color>", enableMethod =() => ChangePing(), method =() => ChangePing(), disableMethod =() => ChangePing(false), isIncremental = true, isTogglable = false, toolTip = "Changes the spoofed ping.", ShowInArraylist = false },
+
             },
 
             new ButtonInfo[] { // Plugin Settings
@@ -297,6 +300,9 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Board Spoof", method =() => Safety.BoardSpoof(), toolTip = "Spoofs your name and color every 30 secounds." },
                 new ButtonInfo { buttonText = "Nuke Mod Checkers", enableMethod =() => Safety.NukeModCheckers(), toolTip = "Tells mod checkers that you have alot of mods." },
                 new ButtonInfo { buttonText = "Anti Overlay", method =() => Safety.AntiOverlay(), toolTip = "Makes it so you dont go invis when you open your steam dashboard." },
+                new ButtonInfo { buttonText = "Spoof Fps", enableMethod =() => Arrakis.Patches.Patchers.GTPlayerStatsP.SpoofFPS = true, disableMethod =() => Arrakis.Patches.Patchers.GTPlayerStatsP.SpoofFPS = false, isTogglable = true, toolTip = "Spoofs your fps to mod checkers."},
+                new ButtonInfo { buttonText = "Spoof Ping", enableMethod =() => Arrakis.Patches.Patchers.GTPlayerStatsP.SpoofPing = true, disableMethod =() => Arrakis.Patches.Patchers.GTPlayerStatsP.SpoofPing = false, isTogglable = true, toolTip = "Spoofs your ping to mod checkers."},
+
             },
 
             new ButtonInfo[] { // Movement
