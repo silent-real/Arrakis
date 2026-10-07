@@ -85,3 +85,6 @@ Arrakis/obj/Debug/netstandard2.1/Arrakis.csproj.CoreCompileInputs.cache
 Arrakis/bin/Debug/netstandard2.1/Assembly-CSharp.dll
 Arrakis/bin/Debug/netstandard2.1/Arrakis.pdb
 Arrakis/bin/Debug/netstandard2.1/Arrakis.dll
+bin/
+obj/
+References/
