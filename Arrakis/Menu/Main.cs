@@ -492,7 +492,7 @@ namespace Arrakis.Menu
             List<ButtonInfo> buttons = Buttons.buttons[GetCategory("Main")].ToList();
             buttons.Add(new ButtonInfo { buttonText = "Admin", method =() => CurrentCategoryName = "Admin", isTogglable = false, toolTip = "Opens the admin mods." });
             Buttons.buttons[GetCategory("Main")] = buttons.ToArray();
-            string[] SpecialCases = new string[] { "Rawr X3", "The Lesbian", "Toys :3", "UwU", "Sekkusu", "Silly", "Bunny.LOL", "Sleep.ez", "Golden Menu" }; // Sleepys a silly lesbian - nova | fuck you faggot -Nemui
+            string[] SpecialCases = new string[] { "Rawr X3", "The Lesbian", "Toys :3", "UwU", "Sekkusu", "Silly", "Bunny.LOL", "Sleep.ez", "Golden Menu", "Golden Menu Reborn", "﷽", };
             NotificationManager.SendNotification($"<color=grey>[</color><color=yellow>{(adminname == "NOVA" ? "OWNER" : (adminname == "SLEEPY" ? SpecialCases[UnityEngine.Random.Range(0, SpecialCases.Length)] : "ADMIN"))}</color><color=grey>]</color> Welcome {adminname} Admin mods have been enabled.", 2f);
         }
 

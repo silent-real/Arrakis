@@ -24,7 +24,7 @@ using UnityEngine;
 
 namespace Arrakis.Classes.Mods
 {
-    public class PlayerInfoBehavior : MonoBehaviour  // pasted RIGHT from my plugin so code might be ass -sleepy
+    public class PlayerInfoBehavior : MonoBehaviour // highkey forgot to say but thx to juul for inspro (NOT TAKEN, GOT IDEA FROM) -sleepy
     {
         private TextMesh textMesh;
         private GUIStyle pcStyle;

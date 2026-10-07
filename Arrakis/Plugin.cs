@@ -38,11 +38,12 @@ namespace Arrakis
         {
             HarmonyLoader.ApplyPatches();
             CustomConsole.LoadStart();
+            DiscordRpc.Initialize();
             GorillaTagger.OnPlayerSpawned(OnPlayerSpawned);
         }
         public void OnPlayerSpawned()
         {
-            SubscriptionKIDPatch.Apply(); // Keeping this here because it fixes my cosmetics -nova
+            SubscriptionKIDPatch.Apply(); // could just make a standalone mod for it but alright -sleepy
 
             Settings.LoadSettings();
 
@@ -73,7 +74,10 @@ namespace Arrakis
             }
         }
 
-        private void OnDisable() =>
+        private void OnDisable()
+        {
             HarmonyLoader.RemovePatches();
+            DiscordRpc.Shutdown();
+        }
     }
 }
