@@ -180,7 +180,7 @@ namespace Arrakis.Mods
             }
 
             CurrentProjectile = BlindColorNames[BlindColorIndex];
-            GetIndex("Change Blind Color").overlapText = $"Change Projectile <color=grey>[<color=cyan>{BlindColorNames[BlindColorIndex]}</color>]</color>";
+            GetIndex("Change Blind Color").overlapText = $"Change Blind Color <color=grey>[<color=cyan>{BlindColorNames[BlindColorIndex]}</color>]</color>";
         }
         public static void ProjectileBlindPlayer(VRRig rig) =>
             SpawnProjectile("EggRightHand_Anchor Variant", rig.headMesh.transform.position + new Vector3(0f, 0.1f, 0f), new Vector3(0f, -15f, 0f), BlindColor);

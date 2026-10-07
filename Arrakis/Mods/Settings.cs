@@ -975,7 +975,7 @@ namespace Arrakis
                     currentFont = Font.CreateDynamicFontFromOSFont("Times New Roman", 20);
                     break;
             }
-            GetIndex("Change Font").overlapText =$"Change Font <color=grey>[<color=cyan>{fontNames[fonttype]}</color>]</color>";
+            GetIndex("Change Font").overlapText = $"Change Font <color=grey>[<color=cyan>{fontNames[fonttype]}</color>]</color>";
         }
 
 
@@ -983,6 +983,10 @@ namespace Arrakis
         public static bool allowbigsnowballcolor = false;
         private static int currentprojectilecolor = 0;
         public static Color projectileColor = Color.white;
+        private static string[] ProjectileThing =
+        {
+            "White", "Red", "Blue", "Black", "Yellow"
+        };
         public static void ChangeProjectilesColor(bool increment = true)
         {
             const int value = 5;
@@ -1003,6 +1007,7 @@ namespace Arrakis
                 case 3: projectileColor = Color.black; break;
                 case 4: projectileColor = Color.yellow; break;
             }
+            GetIndex("Change Projectile Color").overlapText = $"Change Projectile Color <color=grey>[<color=cyan>{ProjectileThing[currentprojectilecolor]}</color>]</color>";
         }
 
         private static int TagAuraDistanceIndex = 0;
