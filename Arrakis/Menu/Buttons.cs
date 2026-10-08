@@ -209,6 +209,9 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Disable Map Triggers", enableMethod =() => GameObject.Find("Environment Objects/TriggerZones_Prefab/ZoneTransitions_Prefab").SetActive(false), disableMethod =() => GameObject.Find("Environment Objects/TriggerZones_Prefab/ZoneTransitions_Prefab").SetActive(true), toolTip = "Disables the map triggers so you can goto maps without loading them." },
                 new ButtonInfo { buttonText = "Disable Network Triggers", enableMethod =() => NetworkTriggerPatch.enabled = true, disableMethod =() => NetworkTriggerPatch.enabled = false, toolTip = "Disables the network triggers so you can change maps without leaving/joining a room." },
 
+                new ButtonInfo { buttonText = "Show Map Triggers", enableMethod =() => Important.ShowMapTriggers(true), disableMethod =() => Important.ShowMapTriggers(false), toolTip = "Shows you where the map triggers are." },
+                new ButtonInfo { buttonText = "Show Network Triggers", enableMethod =() => Important.ShowNetworkTriggers(true), disableMethod =() => Important.ShowNetworkTriggers(false), toolTip = "Shows you where the network triggers are." },
+
                 new ButtonInfo { buttonText = "Teleport To \"Stump\"", method =() => Movement.TeleportToMap("stump"), toolTip = "Teleports you to \"stump\".", isTogglable = false },
                 new ButtonInfo { buttonText = "Teleport To \"City\"", method =() => Movement.TeleportToMap("city"), toolTip = "Teleports you to \"city\".", isTogglable = false },
                 new ButtonInfo { buttonText = "Teleport To \"Canyons\"", method =() => Movement.TeleportToMap("canyons"), toolTip = "Teleports you to \"canyons\".", isTogglable = false },

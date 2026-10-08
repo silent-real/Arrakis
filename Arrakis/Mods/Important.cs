@@ -184,5 +184,31 @@ namespace Arrakis.Mods
                 roomName += chars[UnityEngine.Random.Range(0, chars.Length)];
             return roomName;
         }
+
+        public static void ShowNetworkTriggers(bool isShowing)
+        {
+            var triggers = GameObject.FindObjectsOfType<GorillaNetworkJoinTrigger>();
+            if (triggers == null)
+            {
+                return;
+            }
+            foreach (var trigger in triggers)
+            {
+                trigger.GetComponent<Renderer>().enabled = isShowing;
+            }
+        }
+
+        public static void ShowMapTriggers(bool isShowing)
+        {
+            var triggers = GameObject.FindObjectsOfType<GorillaNetworkJoinTrigger>();
+            if (triggers == null)
+            {
+                return;
+            }
+            foreach (var trigger in triggers)
+            {
+                trigger.GetComponent<Renderer>().enabled = isShowing;
+            }
+        }
     }
 }
