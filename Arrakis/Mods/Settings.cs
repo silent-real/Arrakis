@@ -1197,8 +1197,6 @@ namespace Arrakis
 
         public static void LoadSettings()
         {
-            NotificationManager.ClearAllNotifications();
-
             string path = Path.Combine(PluginInfo.BaseDirectory, "SavedSettings.json");
             if (!File.Exists(path))
                 return;
@@ -1251,6 +1249,7 @@ namespace Arrakis
                 quickactions.Clear();
                 foreach (var quick in settings.quickactions)
                     quickactions.Add(quick);
+                NotificationManager.ClearAllNotifications();
             }
             catch (Exception ex)
             {
