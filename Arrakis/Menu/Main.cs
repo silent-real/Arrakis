@@ -63,6 +63,19 @@ namespace Arrakis.Menu
                 PluginManager.LoadPlugins();
             }
             catch { }
+
+            try
+            {
+                if (TPC == null)
+                {
+                    try
+                    {
+                        TPC = GameObject.Find("Player Objects/Third Person Camera/Shoulder Camera").GetComponent<Camera>();
+                    }
+                    catch { TPC = GameObject.Find("Shoulder Camera").GetComponent<Camera>(); }
+                }
+            }
+            catch { }
         }
 
         public static void Prefix()
