@@ -24,7 +24,7 @@ using UnityEngine;
 namespace Arrakis.Patches
 {
     [HarmonyPatch(typeof(VRRig), nameof(VRRig.IsPositionInRange))]
-    public class DistancePatch // what the fuck did i just made dude it looks so ass its 12:30 am -sleepy
+    public class DistancePatch
     {
         public static bool enabled;
 
@@ -34,7 +34,11 @@ namespace Arrakis.Patches
             if ((enabled && __instance.isLocal) || (player != null && b(player)))
                 __result = true;
         }
-        public static bool b(NetPlayer Player) => Player == NetworkSystem.Instance.LocalPlayer;
-        public static NetPlayer g(VRRig p) => p.Creator ?? NetworkSystem.Instance.GetPlayer(NetworkSystem.Instance.GetOwningPlayerID(p.rigSerializer.gameObject));
+
+        public static bool b(NetPlayer Player) => 
+            Player == NetworkSystem.Instance.LocalPlayer;
+
+        public static NetPlayer g(VRRig p) => 
+            p.Creator ?? NetworkSystem.Instance.GetPlayer(NetworkSystem.Instance.GetOwningPlayerID(p.rigSerializer.gameObject));
     }
 }

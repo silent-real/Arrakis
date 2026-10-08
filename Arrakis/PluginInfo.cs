@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Arrakis | PluginInfo.cs
  *
  * Copyright (C) 2026 Arrakis

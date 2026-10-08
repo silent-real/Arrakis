@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections;
+using Arrakis.Classes;
 using HarmonyLib;
 using UnityEngine;
 
@@ -38,7 +39,7 @@ namespace Arrakis.Patches.Patchers
 
             if (delay != null)
             {
-                Arrakis.Classes.CRunner.instance.StartCoroutine(
+                CRunner.instance.StartCoroutine(
                     SerializationDelay(() =>
                     {
                         float oldDelay = delay.Value;
@@ -51,10 +52,8 @@ namespace Arrakis.Patches.Patchers
                         delay = oldDelay;
                     }, delay.Value)
                 );
-
                 return false;
             }
-
             return true;
         }
         public static IEnumerator SerializationDelay(Action action, float delay)

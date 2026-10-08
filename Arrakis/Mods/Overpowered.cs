@@ -36,7 +36,6 @@ using Photon.Voice.PUN;
 using UnityEngine;
 using static Arrakis.Classes.RigManager;
 using static Arrakis.Menu.Main;
-using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace Arrakis.Mods
 {

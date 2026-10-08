@@ -22,7 +22,6 @@ using Arrakis.Classes;
 using Arrakis.Extensions;
 using Arrakis.Menu;
 using Arrakis.Notifications;
-using Arrakis.Patches.Patchers;
 using ExitGames.Client.Photon;
 using GorillaLocomotion;
 using GorillaNetworking;

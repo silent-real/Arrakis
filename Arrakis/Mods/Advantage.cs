@@ -358,8 +358,8 @@ namespace Arrakis.Mods
         {
             if (InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Left, !XRSettings.isDeviceActive))
             {
-                Patches.Patchers.EventPatches.Override = () => false;
-                Patches.Patchers.PlrSerializePatch.stopSerialization = true;
+                EventPatches.Override = () => false;
+                PlrSerializePatch.stopSerialization = true;
                 if (!GetIndex("No Tag Limit").enabled)
                 {
                     GorillaTagger.Instance.maxTagDistance = float.MaxValue;
@@ -370,8 +370,8 @@ namespace Arrakis.Mods
         }
         public static void StopBlinking()
         {
-            Patches.Patchers.EventPatches.Override = null;
-            Patches.Patchers.PlrSerializePatch.stopSerialization = false;
+            EventPatches.Override = null;
+            PlrSerializePatch.stopSerialization = false;
             if (!GetIndex("No Tag Limit").enabled)
             {
                 GorillaTagger.Instance.maxTagDistance = 2.2f;

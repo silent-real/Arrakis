@@ -22,7 +22,6 @@ using Arrakis.Classes;
 using Arrakis.Managers;
 using Arrakis.Managers.CustomMaps;
 using Arrakis.Mods;
-using Arrakis.Networking;
 using Arrakis.Notifications;
 using BepInEx;
 using GorillaExtensions;

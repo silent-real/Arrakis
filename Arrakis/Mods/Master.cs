@@ -23,18 +23,12 @@ using Arrakis.Classes;
 using Arrakis.Extensions;
 using Arrakis.Managers;
 using Arrakis.Notifications;
-using GorillaTag;
 using GorillaTagScripts;
-using GorillaTagScripts.VirtualStumpCustomMaps;
-using HarmonyLib;
 using Photon.Pun;
 using Photon.Realtime;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
-using UnityEngine.Rendering;
 using UnityEngine.XR;
 using static Arrakis.Menu.Main;
 

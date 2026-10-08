@@ -55,13 +55,11 @@ namespace Arrakis.Patches.Patchers
                             rotation = Quaternion.Euler(0f, Movement.VRRigTorso.transform.rotation.eulerAngles.y, 0f);
                             break;
                     }
-
                     __instance.transform.rotation = rotation;
                     __instance.head.MapMine(__instance.scaleFactor, __instance.playerOffsetTransform);
                     __instance.leftHand.MapMine(__instance.scaleFactor, __instance.playerOffsetTransform);
                     __instance.rightHand.MapMine(__instance.scaleFactor, __instance.playerOffsetTransform);
                 }
-
                 VRRigLateUpdate?.Invoke();
             }
         }

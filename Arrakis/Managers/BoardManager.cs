@@ -18,7 +18,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using Arrakis.Classes.Menu;
 using Arrakis.Extensions;
 using Photon.Pun;
 using System.Linq;

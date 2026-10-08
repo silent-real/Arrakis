@@ -29,7 +29,7 @@ namespace Arrakis.Patches.Menu
         private static void Postfix(GameObject __result)
         {
             __result.GetComponent<Renderer>().material.shader = Shader.Find("GorillaTag/UberShader");
-            __result.GetComponent<Renderer>().material.color = Color.black;
+            __result.GetComponent<Renderer>().material.color = Settings.backgroundColor == null ? Color.black : Settings.backgroundColor.GetCurrentColor();
         }
     }
 }

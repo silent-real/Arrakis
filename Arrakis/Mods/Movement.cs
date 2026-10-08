@@ -24,7 +24,6 @@ using Arrakis.Patches.Patchers;
 using GorillaExtensions;
 using GorillaLocomotion;
 using GorillaLocomotion.Climbing;
-using GorillaNetworking;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR;
