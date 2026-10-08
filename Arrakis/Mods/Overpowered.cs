@@ -547,7 +547,7 @@ namespace Arrakis.Mods
                 PhotonNetwork.OpRemoveCompleteCacheOfPlayer(p.ActorNumber);
             }
         }
-        public static void SchizophrenicGun() // from my plugin bcz i said i would -sleepy
+        public static void SchizophrenicGun()
         {
             if (GetGunInput(false))
             {
@@ -585,6 +585,29 @@ namespace Arrakis.Mods
                 gunLocked = false;
             }
         }
+        public static void SchizophrenicMaster()
+        {
+			if (!PhotonNetwork.IsMasterClient)
+			{
+				EventPatches.Override = () =>
+                {
+                    NetPlayer target = PhotonNetwork.MasterClient;
+                    Experimental.MultiSerialize(true, new[] { VRRig.LocalRig.netView.GetView });
+                    Vector3 posArchive = VRRig.LocalRig.transform.position;
+                    Experimental.SendSerialize(VRRig.LocalRig.netView.GetView, new RaiseEventOptions { TargetActors = new[] { target.ActorNumber } });
+                    VRRig.LocalRig.transform.position = new Vector3(Random.Range(-99999f, 99999f), 99999f, Random.Range(-99999f, 99999f));
+                    Experimental.SendSerialize(VRRig.LocalRig.netView.GetView, new RaiseEventOptions { TargetActors = PhotonNetwork.PlayerList.Where(plr => plr.ActorNumber != target.ActorNumber).Select(plr => plr.ActorNumber).ToArray() });
+                    Safety.RPCProc();
+                    VRRig.LocalRig.transform.position = posArchive;
+                    return false;
+                };
+			}
+            else
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=red>ERROR</color><color=grey>]</color> You are master client");
+                Toggle("Schizophrenic Master");
+            }
+        }
         public static void LogSpamAll()
         {
 			if (PhotonNetwork.InRoom)
@@ -614,7 +637,7 @@ namespace Arrakis.Mods
 			}
             else
             {
-                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not in a room this mod wont work.");
                 Toggle("Log Spam All");
             }
         }

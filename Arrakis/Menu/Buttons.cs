@@ -548,6 +548,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Lag Gun", method =() => Overpowered.LagGun(), isTogglable = true, toolTip = "Lags who you shoot." },
                 new ButtonInfo { buttonText = "Lag Master", method =() => Overpowered.LagMaster(), isTogglable = true, toolTip = "Lags the master client." },
                 new ButtonInfo { buttonText = "Schizophrenic Gun", method =() => Overpowered.SchizophrenicGun(), isTogglable = true, toolTip = "Makes who ever you shoot only see you." },
+                new ButtonInfo { buttonText = "Schizophrenic Master", method =() => Overpowered.SchizophrenicMaster(), isTogglable = true, toolTip = "Makes the master client only see you." },
                 new ButtonInfo { buttonText = "Log Spam All", method =() => Overpowered.LogSpamAll(), isTogglable = true, toolTip = $"Spams everyones debug logs with \"ARRAKIS ON TOP + {PluginInfo.DiscordLink}\"." },
                 new ButtonInfo { buttonText = "Deafen All", method =() => Overpowered.Deafen(Photon.Realtime.ReceiverGroup.All), isTogglable = true, toolTip = "Deafens everybody." },
                 new ButtonInfo { buttonText = "Deafen Others", method =() => Overpowered.Deafen(Photon.Realtime.ReceiverGroup.Others), isTogglable = true, toolTip = "Deafens everybody but you." },
