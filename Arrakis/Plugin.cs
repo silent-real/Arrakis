@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Collections;
 using System.IO;
 using Arrakis.Classes;
 using Arrakis.Classes.Menu;
@@ -39,11 +40,36 @@ namespace Arrakis
             HarmonyLoader.ApplyPatches();
             CustomConsole.LoadStart();
             DiscordRpc.Initialize();
+            StartCoroutine(DRPC());
             GorillaTagger.OnPlayerSpawned(OnPlayerSpawned);
         }
+
+        private static IEnumerator DRPC()
+        {
+            var retry = new WaitForSeconds(10f);
+            var refresh = new WaitForSeconds(60f);
+            while (!DiscordRpc.Connected)
+            {
+                yield return retry;
+                if (!DiscordRpc.Connected)
+                    DiscordRpc.Initialize();
+            }
+            while (true)
+            {
+                yield return refresh;
+                if (DiscordRpc.Connected)
+                    DiscordRpc.Update();
+                else
+                {
+                    DiscordRpc.Initialize();
+                    yield return retry;
+                }
+            }
+        }
+
         public void OnPlayerSpawned()
         {
-            SubscriptionKIDPatch.Apply(); // could just make a standalone mod for it but alright -sleepy
+            SubscriptionKIDPatch.Apply();
 
             Settings.LoadSettings();
 
