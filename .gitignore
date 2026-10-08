@@ -88,3 +88,9 @@ Arrakis/bin/Debug/netstandard2.1/Arrakis.dll
 bin/
 obj/
 References/
+Arrakis/obj/Debug/netstandard2.1/publicized/Assembly-CSharp.dll
+Arrakis/obj/Debug/netstandard2.1/publicized/Assembly-CSharp.dll.md5
+Arrakis/obj/Debug/netstandard2.1/publicized/PhotonUnityNetworking.dll
+Arrakis/obj/Debug/netstandard2.1/publicized/PhotonUnityNetworking.dll.md5
+Arrakis/obj/Debug/netstandard2.1/publicized/PhotonVoice.dll
+Arrakis/obj/Debug/netstandard2.1/publicized/PhotonVoice.dll.md5

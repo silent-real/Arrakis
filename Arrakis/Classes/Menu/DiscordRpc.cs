@@ -194,22 +194,41 @@ namespace Arrakis.Classes.Menu
         {
             if (!connected)
                 return;
-            string details = "In Menu";
+
+            string details = "Not in a room";
             string state = "Arrakis Mod Menu";
+            bool inRoom = false;
+
             try
             {
-                if (PhotonNetwork.InRoom && PhotonNetwork.CurrentRoom != null)
+                var net = NetworkSystem.Instance;
+                if (net != null && net.InRoom)
                 {
-                    var room = PhotonNetwork.CurrentRoom;
-                    int count = room.PlayerCount;
-                    int max = room.MaxPlayers > 0 ? room.MaxPlayers : 10;
-                    string code = room.IsVisible ? room.Name : "Private";
+                    int count = net.PlayerListOthers.Length + 1;
+                    int max = PhotonNetwork.CurrentRoom != null && PhotonNetwork.CurrentRoom.MaxPlayers > 0
+                        ? PhotonNetwork.CurrentRoom.MaxPlayers
+                        : 10;
+
+                    bool visible = PhotonNetwork.CurrentRoom == null || PhotonNetwork.CurrentRoom.IsVisible;
+                    string code = visible ? net.RoomName : "Private";
+
                     details = $"Room: {code}";
                     state = $"{count}/{max} players";
+                    inRoom = true;
+                }
+                else
+                {
+                    CustomConsole.Log($"RPC: not in room (net={(net == null ? "null" : "ok")}, InRoom={net?.InRoom})", CustomConsole.LogType.Debug);
                 }
             }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                CustomConsole.Log($"RPC room read threw: {ex.Message}", CustomConsole.LogType.Warning);
+            }
+
+            string party = inRoom
+                ? "\"party\":{\"size\":[" + RoomSize() + "]},"
+                : "";
 
             string activity =
                 "{"
@@ -219,9 +238,7 @@ namespace Arrakis.Classes.Menu
                 + "\"activity\":{"
                 + "\"details\":\"" + EscapeJson(details) + "\","
                 + "\"state\":\"" + EscapeJson(state) + "\","
-                + "\"party\":{"
-                + "\"size\":[" + RoomSize() + "]"
-                + "},"
+                + party
                 + "\"assets\":{"
                 + "\"large_image\":\"arrakislogo\","
                 + "\"large_text\":\"Arrakis\""
@@ -234,6 +251,7 @@ namespace Arrakis.Classes.Menu
                 + "},"
                 + "\"nonce\":\"" + (++nonce) + "\""
                 + "}";
+
             Send(OpFrame, activity);
         }
 
@@ -241,15 +259,17 @@ namespace Arrakis.Classes.Menu
         {
             try
             {
-                if (PhotonNetwork.InRoom && PhotonNetwork.CurrentRoom != null)
+                var net = NetworkSystem.Instance;
+                if (net != null && net.InRoom)
                 {
-                    var room = PhotonNetwork.CurrentRoom;
-                    int max = room.MaxPlayers > 0 ? room.MaxPlayers : 10;
-                    return room.PlayerCount + "/" + max;
+                    int max = PhotonNetwork.CurrentRoom != null && PhotonNetwork.CurrentRoom.MaxPlayers > 0
+                        ? PhotonNetwork.CurrentRoom.MaxPlayers
+                        : 10;
+                    return (net.PlayerListOthers.Length + 1) + "," + max;
                 }
             }
             catch { }
-            return "0/0";
+            return "0,0";
         }
 
         private static bool Send(int opcode, string payload)
@@ -372,5 +392,13 @@ namespace Arrakis.Classes.Menu
             linuxSocket = null;
             windowsPipe = null;
         }
+    }
+
+    public class RpcRoomWatcher : MonoBehaviourPunCallbacks
+    {
+        public override void OnJoinedRoom() => DiscordRpc.Update();
+        public override void OnLeftRoom() => DiscordRpc.Update();
+        public override void OnPlayerEnteredRoom(Photon.Realtime.Player _) => DiscordRpc.Update();
+        public override void OnPlayerLeftRoom(Photon.Realtime.Player _) => DiscordRpc.Update();
     }
 }

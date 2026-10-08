@@ -82,6 +82,7 @@ namespace Arrakis
             holder.AddComponent<PcGui>();
             holder.AddComponent<ServerData>();
             holder.AddComponent<Admin>();
+            holder.AddComponent<RpcRoomWatcher>();
 
             if (!Directory.Exists(PluginInfo.BaseDirectory))
                 Directory.CreateDirectory(PluginInfo.BaseDirectory);
