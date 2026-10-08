@@ -67,7 +67,7 @@ namespace Arrakis
         public static bool menusounds = true;
         public static bool gunline = true;
         public static bool gunpointer = true;
-        public static bool cosmeticfinder = true;
+        public static bool utilsgui = true;
 
         public static bool showanticheatreports = false;
         public static bool showanticheatreportself = false;

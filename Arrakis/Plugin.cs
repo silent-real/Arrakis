@@ -52,7 +52,7 @@ namespace Arrakis
             holder.AddComponent<NotificationManager>();
             holder.AddComponent<CRunner>();
             holder.AddComponent<LogEvent>();
-            holder.AddComponent<CosmeticsFinder>();
+            holder.AddComponent<UtilsGUI>();
             holder.AddComponent<PcGui>();
             holder.AddComponent<ServerData>();
             holder.AddComponent<Admin>();
