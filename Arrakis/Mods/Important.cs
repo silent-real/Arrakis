@@ -187,27 +187,31 @@ namespace Arrakis.Mods
 
         public static void ShowNetworkTriggers(bool isShowing)
         {
-            var triggers = GameObject.FindObjectsOfType<GorillaNetworkJoinTrigger>();
-            if (triggers == null)
+            GameObject triggers = GameObject.Find("Environment Objects/TriggerZones_Prefab/JoinRoomTriggers_Prefab");
+            for (int i = 0; i < triggers.transform.childCount; i++)
             {
-                return;
-            }
-            foreach (var trigger in triggers)
-            {
-                trigger.GetComponent<Renderer>().enabled = isShowing;
+                try
+                {
+                    Transform child = triggers.transform.GetChild(i);
+                    if (child.gameObject.activeSelf)
+                        child.GetComponent<MeshRenderer>().enabled = isShowing;
+                }
+                catch { }
             }
         }
 
         public static void ShowMapTriggers(bool isShowing)
         {
-            var triggers = GameObject.FindObjectsOfType<GorillaNetworkJoinTrigger>();
-            if (triggers == null)
+            GameObject triggers = GameObject.Find("Environment Objects/TriggerZones_Prefab/ZoneTransitions_Prefab");
+            for (int i = 0; i < triggers.transform.childCount; i++)
             {
-                return;
-            }
-            foreach (var trigger in triggers)
-            {
-                trigger.GetComponent<Renderer>().enabled = isShowing;
+                try
+                {
+                    Transform child = triggers.transform.GetChild(i);
+                    if (child.gameObject.activeSelf)
+                        child.GetComponent<MeshRenderer>().enabled = isShowing;
+                }
+                catch { }
             }
         }
     }
