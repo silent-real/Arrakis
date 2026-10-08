@@ -153,7 +153,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Exit Advantage Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Returns to the main settings page for the menu." },
 
                 new ButtonInfo { buttonText = "Change Tag Aura Range", overlapText = "Change Tag Aura Range <color=grey>[<color=cyan>Default</color>]</color>", enableMethod =() => ChangeTagAuraDistance(), method =() => ChangeTagAuraDistance(), disableMethod =() => ChangeTagAuraDistance(false), isIncremental = true,  isTogglable = false, toolTip = "Changes the tag aura range.", ShowInArraylist = false },
-                new ButtonInfo { buttonText = "Instant Tag", enableMethod =() => Settings.instanttag = true, disableMethod =() => Settings.instanttag = false, toolTip = "Makes it so tag mods are instant.", ShowInArraylist = false },
+                new ButtonInfo { buttonText = "Instant Tag", enableMethod =() => instanttag = true, disableMethod =() => instanttag = false, toolTip = "Makes it so tag mods are instant.", ShowInArraylist = false },
             },
 
             new ButtonInfo[] { // Projectile Settings
@@ -644,7 +644,7 @@ namespace Arrakis.Menu
             new ButtonInfo[] { }, // Temporary
 
             new ButtonInfo[] { // Internal
-                new ButtonInfo { buttonText = "GlobalReturn", method = Settings.GlobalReturn, isTogglable = false, toolTip = "Returns you to the previous category." },
+                new ButtonInfo { buttonText = "GlobalReturn", method = GlobalReturn, isTogglable = false, toolTip = "Returns you to the previous category." },
                 new ButtonInfo { buttonText = "AcceptPrompt", method =() => { NotificationManager.ClearAllNotifications(); CurrentPrompt.accept?.Invoke(); StopCurrentPrompt(); }, isTogglable = false },
                 new ButtonInfo { buttonText = "DeclinePrompt", method =() => { NotificationManager.ClearAllNotifications(); CurrentPrompt.decline?.Invoke(); StopCurrentPrompt(); }, isTogglable = false },
                 new ButtonInfo { buttonText = "Search", method = Search, toolTip = "Allows you to search for mods.", isTogglable = false },
