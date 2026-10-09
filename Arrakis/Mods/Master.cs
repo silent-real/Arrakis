@@ -23,6 +23,7 @@ using Arrakis.Classes;
 using Arrakis.Extensions;
 using Arrakis.Managers;
 using Arrakis.Notifications;
+using GorillaTag.Sports;
 using GorillaTagScripts;
 using Photon.Pun;
 using Photon.Realtime;
@@ -790,6 +791,57 @@ namespace Arrakis.Mods
                 NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
                 Toggle("Spaz Paintbrawl");
                 return;
+            }
+        }
+        public static void WaterBallScore(int team)
+        {
+            if (!PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master this mod will not work.");
+                return;
+            }
+            else
+            {
+                SportScoreboard.Instance.TeamScored(team);
+                SportScoreboard.Instance.TeamScored(team);
+            }
+        }
+        }
+        public static void WaterBallScoreSpaz()
+        {
+            if (!PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master this mod will not work.");
+                return;
+            }
+            else
+            {
+                SportScoreboard.Instance.TeamScored(1);
+                SportScoreboard.Instance.TeamScored(0);
+            }
+        }
+        public static void WaterBallEndGame()
+        {
+            if (!PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master this mod will not work.");
+                return;
+            }
+            else
+            {
+                CRunner.instance.StartCoroutine(SportScoreboard.Instance.MatchEndCoroutine(UnityEngine.Random.Range(0, 1)));
+            }
+        }
+        public static void WaterBallResetScores()
+        {
+            if (!PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master this mod will not work.");
+                return;
+            }
+            else
+            {
+                SportScoreboard.Instance.ResetScores();
             }
         }
     }
