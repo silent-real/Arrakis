@@ -46,6 +46,8 @@ namespace Arrakis
 
         private static IEnumerator DRPC()
         {
+            if (Settings.disablediscordrpc)
+                CRunner.instance.StopCoroutine(DRPC());
             var retry = new WaitForSeconds(10f);
             var refresh = new WaitForSeconds(60f);
             while (!DiscordRpc.Connected)

@@ -129,6 +129,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Disable Panic Prompt", enableMethod =() => panicPrompt = false, disableMethod =() => panicPrompt = true, toolTip = "Disables the prompt you get when you use panic.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "On GUI Menu", enableMethod =() => PcGui.OnGUIMenu = true, disableMethod =() => PcGui.OnGUIMenu = false, toolTip = "Makes the menu be a pc gui.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Show On Screen Stuff", enableMethod =() => PcGui.ShowOnScreenStuff = true, disableMethod =() => PcGui.ShowOnScreenStuff = false, enabled = true, toolTip = "Shows the stuff on your pc screen like arraylist/info bar.", ShowInArraylist = false },
+                new ButtonInfo { buttonText = "Disable Discord RPC", enableMethod =() => disablediscordrpc = true, disableMethod =() => disablediscordrpc = false, enabled = false, toolTip = "Disables the discord rpc.", ShowInArraylist = true },
                 new ButtonInfo { buttonText = "Log Photon Events", enableMethod =() => logphotonevents = true, disableMethod =() => logphotonevents = false, toolTip = "Logs all photon events to your console." },
                 new ButtonInfo { buttonText = "Save Preferences", method =() => SaveSettings(), isTogglable = false, toolTip = "Saves your settings and enabled mods to a file." },
                 new ButtonInfo { buttonText = "Load Preferences", method =() => LoadSettings(), isTogglable = false, toolTip = "Loads your settings and enabled mods from a file." },
@@ -584,6 +585,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Empty Lava", method =() => Master.ChangeLavaState(InfectionLavaController.RisingLavaState.Drained), isTogglable = false, toolTip = "Removes the lava." },
                 new ButtonInfo { buttonText = "Erupt Lava", method =() => Master.ChangeLavaState(InfectionLavaController.RisingLavaState.Erupting), isTogglable = false, toolTip = "Erupts the lava." },
                 new ButtonInfo { buttonText = "Destroy Lighting", method =() => Master.DestroyLighting(), isTogglable = false, toolTip = "Destroys the lighting." },
+                new ButtonInfo { buttonText = "Destroy Critters", method =() => Master.DestroyCritters(), isTogglable = false, toolTip = "Destroys the critters manager." },
 
                 new ButtonInfo { buttonText = "Spawn Blue Lucy", method =() => Master.SpawnBlueLucy(), isTogglable = false, toolTip = "Spawns the blue ghost Lucy in forest." },
                 new ButtonInfo { buttonText = "Spawn Red Lucy", method =() => Master.SpawnRedLucy(), isTogglable = false, toolTip = "Spawns the red ghost Lucy in forest." },

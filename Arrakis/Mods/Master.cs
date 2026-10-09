@@ -523,7 +523,23 @@ namespace Arrakis.Mods
                 PhotonNetwork.Destroy(BetterDayNightManager.instance.photonView);
             }
         }
-
+        public static void DestroyCritters()
+        {
+            if (!PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master this mod will not work.");
+                return;
+            }
+            else
+            {
+                if (CrittersManager.instance.GetView == null)
+                {
+                    NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> CrittersManager.instance.GetView is null.");
+                    return;
+                }
+                PhotonNetwork.Destroy(CrittersManager.instance.GetView);
+            }
+        }
         /*public static async void SetTarget(HitTargetNetworkState target, int value, float delay = 0.70f)
         {
             if (PhotonNetwork.InRoom && !PhotonNetwork.IsMasterClient)

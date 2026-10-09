@@ -102,6 +102,7 @@ namespace Arrakis
         public static bool panicPrompt = true;
         public static bool stumptext = true;
         public static bool instanttag = true;
+        public static bool disablediscordrpc = true;
 
         public static KeyCode keyboardButton = KeyCode.Q;
 

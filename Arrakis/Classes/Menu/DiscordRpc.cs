@@ -46,6 +46,8 @@ namespace Arrakis.Classes.Menu
 
         public static void Initialize()
         {
+            if (!Settings.disablediscordrpc)
+                return;
             CustomConsole.Log("Initializing Discord RPC...", CustomConsole.LogType.Debug);
             if (TryLinux() || TryWindows())
             {
