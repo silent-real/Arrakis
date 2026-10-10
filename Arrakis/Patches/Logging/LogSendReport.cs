@@ -1,5 +1,5 @@
 ﻿/*
- * Arrakis | Patches/Logging/SendReport.cs
+ * Arrakis | Patches/Logging/LogSendReport.cs
  *
  * Copyright (C) 2026 Arrakis
  * https://github.com/silent-real/Arrakis
@@ -25,7 +25,7 @@ using static Arrakis.Settings;
 namespace Arrakis.Patches
 {
     [HarmonyPatch(typeof(MonkeAgent), nameof(MonkeAgent.SendReport))]
-    internal class SendReport
+    internal class LogSendReport
     {
         private static void Prefix(string susReason, string susId, string susNick)
         {
