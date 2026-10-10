@@ -35,19 +35,23 @@ namespace Arrakis
     public class Plugin : BaseUnityPlugin
     {
         public static GameObject holder;
-        private void Awake()
+        private static Coroutine discordC;
+
+        public void Awake()
         {
             HarmonyLoader.ApplyPatches();
             CustomConsole.LoadStart();
+
             DiscordRpc.Initialize();
-            StartCoroutine(DRPC());
+            discordC = StartCoroutine(DRPC());
+
             GorillaTagger.OnPlayerSpawned(OnPlayerSpawned);
         }
 
         private static IEnumerator DRPC()
         {
-            if (Settings.disablediscordrpc)
-                CRunner.instance.StopCoroutine(DRPC());
+            if (Settings.disablediscordrpc && discordC != null)
+                CRunner.instance.StopCoroutine(discordC);
             var retry = new WaitForSeconds(10f);
             var refresh = new WaitForSeconds(60f);
             while (!DiscordRpc.Connected)
