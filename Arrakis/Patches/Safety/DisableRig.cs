@@ -1,5 +1,5 @@
 ﻿/*
- * Arrakis | Patches/Patchers/DisableRig.cs
+ * Arrakis | Patches/Safety/DisableRig.cs
  *
  * Copyright (C) 2026 Arrakis
  * https://github.com/silent-real/Arrakis
@@ -20,7 +20,7 @@
 
 using HarmonyLib;
 
-namespace Arrakis.Patches
+namespace Arrakis.Patches.Safety
 {
     [HarmonyPatch(typeof(VRRig), nameof(VRRig.OnDisable))]
     public class OnDisable

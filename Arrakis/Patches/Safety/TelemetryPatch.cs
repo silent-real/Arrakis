@@ -1,5 +1,5 @@
 /*
- * Arrakis | Patches/Patchers/TelemetryPatches.cs
+ * Arrakis | Patches/Safety/TelemetryPatches.cs
  *
  * Copyright (C) 2026 Arrakis
  * https://github.com/silent-real/Arrakis
@@ -25,7 +25,7 @@ using PlayFab.EventsModels;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace Arrakis.Patches.Patchers
+namespace Arrakis.Patches.Safety
 {
     public class TelemetryPatches
     {

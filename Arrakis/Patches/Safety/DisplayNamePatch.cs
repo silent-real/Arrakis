@@ -1,5 +1,5 @@
 ﻿/*
- * Arrakis | Patches/Patchers/DisplayNamePatch.cs
+ * Arrakis | Patches/Safety/DisplayNamePatch.cs
  *
  * Copyright (C) 2026 Arrakis
  * https://github.com/silent-real/Arrakis
@@ -24,7 +24,7 @@ using HarmonyLib;
 using PlayFab.ClientModels;
 using PlayFab;
 
-namespace Arrakis.Patches
+namespace Arrakis.Patches.Safety
 {
     [HarmonyPatch(typeof(PlayFabClientAPI), "UpdateUserTitleDisplayName")]
     public class DisplayNamePatch

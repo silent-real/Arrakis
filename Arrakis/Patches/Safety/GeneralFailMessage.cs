@@ -1,5 +1,5 @@
 ﻿/*
- * Arrakis | Patches/Patchers/GeneralFailMessage.cs
+ * Arrakis | Patches/Safety/GeneralFailMessage.cs
  *
  * Copyright (C) 2026 Arrakis
  * https://github.com/silent-real/Arrakis
@@ -27,7 +27,7 @@ using GorillaNetworking;
 using HarmonyLib;
 using PlayFab;
 
-namespace Arrakis.Patches
+namespace Arrakis.Patches.Safety
 {
     internal static class BanState
     {

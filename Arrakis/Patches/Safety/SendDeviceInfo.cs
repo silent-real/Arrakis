@@ -1,5 +1,5 @@
 ﻿/*
- * Arrakis | Patches/Patchers/PlayFabInfoPatch.cs
+ * Arrakis | Patches/Safety/PlayFabInfoPatch.cs
  *
  * Copyright (C) 2026 Arrakis
  * https://github.com/silent-real/Arrakis
@@ -21,7 +21,7 @@
 using HarmonyLib;
 using PlayFab.Internal;
 
-namespace Arrakis.Patches
+namespace Arrakis.Patches.Safety
 {
     [HarmonyPatch(typeof(PlayFabDeviceUtil), "SendDeviceInfoToPlayFab")]
     public class PlayFabInfoPatch
