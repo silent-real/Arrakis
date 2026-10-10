@@ -806,7 +806,6 @@ namespace Arrakis.Mods
                 SportScoreboard.Instance.TeamScored(team);
             }
         }
-        }
         public static void WaterBallScoreSpaz()
         {
             if (!PhotonNetwork.LocalPlayer.IsMasterClient)
