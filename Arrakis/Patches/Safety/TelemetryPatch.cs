@@ -58,5 +58,19 @@ namespace Arrakis.Patches.Patchers
             private static bool Prefix(WriteEventsRequest request, System.Action<WriteEventsResponse> resultCallback, System.Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null) =>
                 !enabled;
         }
+
+        [HarmonyPatch(typeof(GorillaTelemetry), nameof(GorillaTelemetry.EnqueueZoneEvent))]
+        public class NoZoneEvent
+        {
+            public static bool Prefix() =>
+                !enabled;
+        }
+
+        [HarmonyPatch(typeof(GorillaTelemetry), nameof(GorillaTelemetry.PostGameModeEvent))]
+        public class NoGameModeEvent
+        {
+            public static bool Prefix() =>
+                !enabled;
+        }
     }
 }
