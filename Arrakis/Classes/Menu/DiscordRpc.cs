@@ -48,34 +48,34 @@ namespace Arrakis.Classes.Menu
         {
             if (!Settings.disablediscordrpc)
                 return;
-            CustomConsole.Log("Initializing Discord RPC...", CustomConsole.LogType.Debug);
+            CustomConsole.Log("Loading Discord RPC", CustomConsole.LogType.Debug);
             if (TryLinux() || TryWindows())
             {
                 connected = true;
                 if (!SendHandshake())
                 {
-                    CustomConsole.Log("Discord handshake failed.", CustomConsole.LogType.Warning);
+                    //CustomConsole.Log("Discord handshake failed.", CustomConsole.LogType.Warning);
                     Shutdown();
                     return;
                 }
                 if (!ReadFrame(out _, out string ready))
                 {
-                    CustomConsole.Log("No handshake reply from Discord.", CustomConsole.LogType.Warning);
+                    //CustomConsole.Log("No handshake reply from Discord.", CustomConsole.LogType.Warning);
                     Shutdown();
                     return;
                 }
-                CustomConsole.Log("Discord RPC connected and ready.", CustomConsole.LogType.Info);
+                CustomConsole.Log("Discord RPC Loaded.", CustomConsole.LogType.Info);
                 Update();
                 return;
             }
-            CustomConsole.Log("Could not connect to Discord IPC.", CustomConsole.LogType.Warning);
+            //CustomConsole.Log("Could not connect to Discord IPC.", CustomConsole.LogType.Warning);
         }
 
         private static bool TryLinux()
         {
             foreach (string path in GetLinuxPaths())
             {
-                CustomConsole.Log($"Trying Linux Discord IPC socket: {path}", CustomConsole.LogType.Debug);
+                //CustomConsole.Log($"Trying Linux Discord IPC socket: {path}", CustomConsole.LogType.Debug);
                 try
                 {
                     linuxSocket = new Socket(AddressFamily.Unix, SocketType.Stream, ProtocolType.Unspecified)
@@ -87,7 +87,7 @@ namespace Arrakis.Classes.Menu
                     if (!result.AsyncWaitHandle.WaitOne(1000) || !linuxSocket.Connected)
                         throw new TimeoutException("connect timed out");
                     linuxSocket.EndConnect(result);
-                    CustomConsole.Log($"Linux Discord IPC connected: {path}", CustomConsole.LogType.Debug);
+                    //CustomConsole.Log($"Linux Discord IPC connected: {path}", CustomConsole.LogType.Debug);
                     return true;
                 }
                 catch (Exception ex)
@@ -97,7 +97,7 @@ namespace Arrakis.Classes.Menu
                     linuxSocket = null;
                 }
             }
-            CustomConsole.Log("No usable Linux Discord IPC socket found.", CustomConsole.LogType.Debug);
+            //CustomConsole.Log("No usable Linux Discord IPC socket found.", CustomConsole.LogType.Debug);
             return false;
         }
 
@@ -107,13 +107,12 @@ namespace Arrakis.Classes.Menu
             {
                 try
                 {
-                    CustomConsole.Log($"Trying Windows Discord IPC pipe {i}...", CustomConsole.LogType.Debug);
-
+                    //CustomConsole.Log($"Trying Windows Discord IPC pipe {i}...", CustomConsole.LogType.Debug);
                     windowsPipe = new NamedPipeClientStream(".", "discord-ipc-" + i, PipeDirection.InOut);
                     windowsPipe.Connect(1000);
                     if (windowsPipe.IsConnected)
                     {
-                        CustomConsole.Log($"Windows Discord IPC connected to pipe {i}.", CustomConsole.LogType.Debug);
+                        //CustomConsole.Log($"Windows Discord IPC connected to pipe {i}.", CustomConsole.LogType.Debug);
                         return true;
                     }
                 }
@@ -134,18 +133,18 @@ namespace Arrakis.Classes.Menu
             string runtime = Environment.GetEnvironmentVariable("XDG_RUNTIME_DIR");
             if (!string.IsNullOrEmpty(runtime))
             {
-                CustomConsole.Log($"XDG_RUNTIME_DIR = {runtime}", CustomConsole.LogType.Debug);
+                //CustomConsole.Log($"XDG_RUNTIME_DIR = {runtime}", CustomConsole.LogType.Debug);
                 AddDiscordSockets(paths, runtime);
             }
             else
             {
-                CustomConsole.Log("XDG_RUNTIME_DIR is not set. Falling back to /run/user/<uid>.", CustomConsole.LogType.Debug);
+                //CustomConsole.Log("XDG_RUNTIME_DIR is not set. Falling back to /run/user/<uid>.", CustomConsole.LogType.Debug);
             }
             string uid = GetUserId();
             if (!string.IsNullOrEmpty(uid))
             {
                 string userRuntime = "/run/user/" + uid;
-                CustomConsole.Log($"Using user runtime directory: {userRuntime}", CustomConsole.LogType.Debug);
+                //CustomConsole.Log($"Using user runtime directory: {userRuntime}", CustomConsole.LogType.Debug);
                 AddDiscordSockets(paths, userRuntime);
             }
             return paths.ToArray();
@@ -217,10 +216,6 @@ namespace Arrakis.Classes.Menu
                     details = $"Room: {code}";
                     state = $"{count}/{max} players";
                     inRoom = true;
-                }
-                else
-                {
-                    CustomConsole.Log($"RPC: not in room (net={(net == null ? "null" : "ok")}, InRoom={net?.InRoom})", CustomConsole.LogType.Debug);
                 }
             }
             catch (Exception ex)
