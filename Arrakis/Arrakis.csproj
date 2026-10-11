@@ -102,6 +102,9 @@
 		<Reference Include="BepInEx.Preloader">
 			<HintPath>$(ProjectDir)References\core\BepInEx.Preloader.dll</HintPath>
 		</Reference>
+		<Reference Include="com.rlabrecque.steamworks.net">
+		  <HintPath>D:\SteamLibrary\steamapps\common\Gorilla Tag\Gorilla Tag_Data\Managed\com.rlabrecque.steamworks.net.dll</HintPath>
+		</Reference>
 		<Reference Include="Modio">
 			<HintPath>$(ProjectDir)References\Managed\Modio.dll</HintPath>
 		</Reference>
