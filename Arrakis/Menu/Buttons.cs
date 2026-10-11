@@ -607,6 +607,9 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Water Ball End Game", method =() => Master.WaterBallEndGame(), isTogglable = false, toolTip = "Ends the water ball game if you are master client." },
                 new ButtonInfo { buttonText = "Water Ball Break Audio All", method =() => Master.WaterBallEndGame(), isTogglable = true, toolTip = "Spam ends the water ball game if you are master client." },
                 new ButtonInfo { buttonText = "Water Ball Reset Game", method =() => Master.WaterBallResetScores(), isTogglable = false, toolTip = "Resets the water ball game if you are master client." },
+                new ButtonInfo { buttonText = "Water Ball Nuke", method =() => Master.WaterBallBreak(), isTogglable = false, toolTip = "Breaks/nukes the water ball game if you are master client." },
+                new ButtonInfo { buttonText = "Water Ball Nuke V2 [forces no scoring]", method =() => Master.WaterBallBreakV2(), isTogglable = false, toolTip = "Breaks/nukes the water ball game if you are master client." },
+                new ButtonInfo { buttonText = "Water Ball Set Scores [69 | 69]", method =() => Master.WaterBallSetScores(69, 69), isTogglable = false, toolTip = "Sets the water ball game scores if you are master client." },
             },
 
             new ButtonInfo[] { // Experimental

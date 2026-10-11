@@ -803,7 +803,6 @@ namespace Arrakis.Mods
             else
             {
                 SportScoreboard.Instance.TeamScored(team);
-                SportScoreboard.Instance.TeamScored(team);
             }
         }
         public static void WaterBallScoreSpaz()
@@ -841,6 +840,48 @@ namespace Arrakis.Mods
             else
             {
                 SportScoreboard.Instance.ResetScores();
+            }
+        }
+        public static void WaterBallBreak()
+        {
+            if (!PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master this mod will not work.");
+                return;
+            }
+            else
+            {
+                SportScoreboard.Instance.matchEndScore = int.MaxValue;
+            }
+        }
+        public static void WaterBallBreakV2()
+        {
+            if (!PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master this mod will not work.");
+                return;
+            }
+            else
+            {
+                SportScoreboard.Instance.teamParameters = null;
+            }
+        }
+        public static void WaterBallSetScores(int score1, int score2)
+        {
+            if (!PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master this mod will not work.");
+                return;
+            }
+            else
+            {
+                WaterBallResetScores();
+                if (score1 > 3 || score2 > 3)
+                    WaterBallBreak();
+                for (int i = 0; i < score1; i++)
+                    SportScoreboard.Instance.TeamScored(0);
+                for (int i = 0; i < score1; i++)
+                    SportScoreboard.Instance.TeamScored(1);
             }
         }
     }
