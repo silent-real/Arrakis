@@ -80,14 +80,19 @@ namespace Arrakis
             Settings.LoadSettings();
 
             holder = new GameObject("Arrakis");
-            holder.AddComponent<BoardManager>();
+
             holder.AddComponent<NotificationManager>();
+            holder.AddComponent<BoardManager>();
+
             holder.AddComponent<CRunner>();
             holder.AddComponent<LogEvent>();
+
             holder.AddComponent<UtilsGUI>();
             holder.AddComponent<PcGui>();
+
             holder.AddComponent<ServerData>();
             holder.AddComponent<Admin>();
+
             holder.AddComponent<RpcRoomWatcher>();
 
             if (!Directory.Exists(PluginInfo.BaseDirectory))
