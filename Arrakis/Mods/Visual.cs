@@ -24,13 +24,18 @@ using System.Text;
 using Arrakis.Classes;
 using Arrakis.Classes.Mods;
 using Arrakis.Extensions;
+using Arrakis.Managers;
 using Arrakis.Menu;
 using GorillaExtensions;
+using GorillaLocomotion;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.XR;
+using static Arrakis.Managers.InputManager;
 using static Arrakis.Menu.Main;
 using static Arrakis.Settings;
+using Hand = Arrakis.Managers.InputManager.Hand;
 
 namespace Arrakis.Mods
 {
@@ -916,6 +921,42 @@ namespace Arrakis.Mods
                 lockTarget = null;
                 gunLocked = false;
                 Object.Destroy(ACam);
+            }
+        }
+        private static Vector3 CameraVelocity;
+        public static void Freecam()
+        {
+            if (InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Left, !XRSettings.isDeviceActive))
+            {
+                if (ACam == null)
+                {
+                    ACam = new GameObject("Arrakis Camera");
+                    ACam.transform.position = GorillaTagger.Instance.headCollider.transform.position;
+                }
+                Camera FreeCamera = ACam.GetOrAddComponent<Camera>();
+                FreeCamera.nearClipPlane = 0.01f;
+                FreeCamera.cameraType = CameraType.Game;
+                Vector3 inputDirection = new Vector3(InputManager.GetAxis(Hand.Left).x, InputManager.GetAxis(Hand.Right).y, InputManager.GetAxis(Hand.Left).y);
+                Vector3 playerForward = GTPlayer.Instance.bodyCollider.transform.forward.X_Z();
+                Vector3 playerRight = GTPlayer.Instance.bodyCollider.transform.right.X_Z();
+                Vector3 velocity = inputDirection.x * playerRight + inputDirection.y * Vector3.up + inputDirection.z * playerForward;
+                velocity *= Settings.flyspeed;
+                CameraVelocity = Vector3.Lerp(CameraVelocity, velocity, 0.12875f);
+                ACam.transform.position += CameraVelocity * Time.unscaledDeltaTime;
+                ACam.transform.rotation = GorillaTagger.Instance.headCollider.transform.rotation;
+            }
+            else
+            {
+                FixCamera();
+            }
+        }
+        public static void FixCamera()
+        {
+            if (ACam != null)
+            {
+                Object.Destroy(ACam.GetComponent<Camera>());
+                Object.Destroy(ACam);
+                ACam = null;
             }
         }
         public static float EmissionSpeed = 1f;
