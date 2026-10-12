@@ -712,7 +712,7 @@ namespace Arrakis.Mods
                     Lucy.currentState = HalloweenGhostChaser.ChaseState.Chasing;
                     Lucy.transform.position = VRRig.LocalRig.rightHandTransform.position;
                 }
-                if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
+                if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Left, !XRSettings.isDeviceActive))
                 {
                     Lucy.targetPlayer = null;
                     Lucy.currentState = HalloweenGhostChaser.ChaseState.Chasing;
