@@ -492,7 +492,7 @@ namespace Arrakis.Mods
         {
             if (!SubscriptionManager.Instance.subData[VRRig.LocalRig.Creator].active)
             {
-                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not a VIM subscriber this mod will not work.");
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not a VIM subscriber this mod will not work. [Unlock vim sub mod will NOT make this work.]");
                 return;
             }
             if (!PhotonNetwork.LocalPlayer.IsMasterClient)
@@ -541,28 +541,13 @@ namespace Arrakis.Mods
                 PhotonNetwork.Destroy(CrittersManager.instance.GetView);
             }
         }
-        /*public static async void SetTarget(HitTargetNetworkState target, int value, float delay = 0.70f)
-        {
-            if (PhotonNetwork.InRoom && !PhotonNetwork.IsMasterClient)
-                return;
-            Traverse traverse = Traverse.Create(target);
-            float nextUpdateTime = traverse.Field("nextHittableTimestamp").GetValue<float>(); // nextHittableTimestamp or _maxHoldTime, i havent tested and it somehow pulled both -sleepy
-            if (Time.time <= nextUpdateTime)
-                return;
-            WatchableIntSO watchable = traverse.Field("networkedScore").GetValue<WatchableIntSO>();
-            int newValue = value == 6969 ? watchable.Value + 1 : value;
-            watchable.Value = newValue;
-            traverse.Field("nextHittableTimestamp").SetValue(Time.time + delay);
-        } incase you want target mods -sleepy
-        */
-
         private static HalloweenGhostChaser _lucy;
         public static HalloweenGhostChaser Lucy
         {
             get
             {
                 if (_lucy == null)
-                    _lucy = GameObject.FindObjectsOfType<HalloweenGhostChaser>()[0]; // Ez who needs a fucking path -nova
+                    _lucy = GameObject.FindObjectsOfType<HalloweenGhostChaser>()[0];
                 return _lucy;
             }
         }
