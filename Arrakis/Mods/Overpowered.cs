@@ -276,6 +276,52 @@ namespace Arrakis.Mods
                 NotificationManager.SendNotification("<color=grey>[<color=yellow>ARRAKIS</color><color=grey>]</color> You are not guardian this mod wont work.");
             }
         }
+        public static void GuardianFreezeAll()
+        {
+            GorillaGuardianManager guard = (GorillaGuardianManager)GorillaGameManager.instance;
+            if (guard.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
+            {
+                foreach (VRRig rig in VRRigCache.ActiveRigs)
+                {
+                    if (!rig.IsLocal())
+                    {
+                        float theonefloatidkwhattonameit = UnityEngine.Random.Range(-1f, 1f);
+                        GetNetworkViewFromVRRig(rig).SendRPC("GrabbedByPlayer", rig.Creator, true, false, false);
+                        GetNetworkViewFromVRRig(rig).SendRPC("DroppedByPlayer", rig.Creator, Vector3.zero);
+                    }
+                }
+            }
+            else
+            {
+                NotificationManager.SendNotification("<color=grey>[<color=yellow>ARRAKIS</color><color=grey>]</color> You are not guardian this mod wont work.");
+            }
+        }
+        public static void GuardianFreezeGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                RaycastHit Ray = GunData.Ray;
+                if (GetGunInput(true))
+                {
+                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                    if (!rig.IsLocal())
+                    {
+                        GorillaGuardianManager guard = (GorillaGuardianManager)GorillaGameManager.instance;
+                        if (guard.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
+                        {
+                            GetNetworkViewFromVRRig(rig).SendRPC("GrabbedByPlayer", rig.Creator, true, false, false);
+                            GetNetworkViewFromVRRig(rig).SendRPC("DroppedByPlayer", rig.Creator, Vector3.zero);
+                        }
+                        else
+                        {
+                            NotificationManager.SendNotification("<color=grey>[<color=yellow>ARRAKIS</color><color=grey>]</color> You are not guardian this mod wont work.");
+                        }
+                    }
+                }
+            }
+        }
         public static void AlwaysGuardian()
         {
             foreach (TappableGuardianIdol idol in GetAllTappables())

@@ -555,6 +555,8 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Guardian Wall All", method =() => Overpowered.GuardianWallAll(), isTogglable = true, toolTip = "Brings people to death/pig wall if you are guardian." },
                 new ButtonInfo { buttonText = "Guardian Break Movement Gun", method =() => Overpowered.GuardianBreakMovementGun(), isTogglable = true, toolTip = "Breaks the movement of who you shoot if you are guardian." },
                 new ButtonInfo { buttonText = "Guardian Break Movement All", method =() => Overpowered.GuardianBreakMovementAll(), isTogglable = true, toolTip = "Breaks the movement of everyone if you are guardian." },
+                new ButtonInfo { buttonText = "Guardian Freeze Gun", method =() => Overpowered.GuardianFreezeGun(), isTogglable = true, toolTip = "Sets the person you shoot velocity to 0." },
+                new ButtonInfo { buttonText = "Guardian Freeze All", method =() => Overpowered.GuardianFreezeAll(), isTogglable = true, toolTip = "Sets everybodys velocity to 0." },
                 new ButtonInfo { buttonText = "Rope Fling Gun", method =() => Overpowered.RopeFlingGun(), isTogglable = true, toolTip = "Flings the rope you shoot." },
                 new ButtonInfo { buttonText = "Freeze Rope Gun", method =() => Overpowered.FreezeRopeGun(), isTogglable = true, toolTip = "Freezes the rope you shoot." },
                 new ButtonInfo { buttonText = "Rope Up Gun", method =() => Overpowered.RopeUpGun(), isTogglable = true, toolTip = "Flings the rope you shoot." },
