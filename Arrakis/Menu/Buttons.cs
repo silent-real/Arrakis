@@ -308,6 +308,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Anti Crash", method =() => Safety.AntiCrash(), isTogglable = true, toolTip = "Attemts to bypass laggers/crashers by clearing the rpc queue." },
                 new ButtonInfo { buttonText = "Anti Guardian Grab", enableMethod =() => GardGrabPatch.enabled = true, disableMethod =() => GardGrabPatch.enabled = false, isTogglable = true, toolTip = "Dosnt let players pick you up in guardian." },
                 new ButtonInfo { buttonText = "Anti Knockback", enableMethod =() => KnockbackPatch.enabled = true, disableMethod =() => KnockbackPatch.enabled = false, isTogglable = true, toolTip = "Dosnt let anything knock you back." },
+                new ButtonInfo { buttonText = "Anti Name Warn/Ban", enableMethod =() => NameBanPatch.enabled = true, disableMethod =() => NameBanPatch.enabled = false, isTogglable = true, toolTip = "lets you set your name to anything   ." },
                 new ButtonInfo { buttonText = "Spoof Platform", enableMethod =() => Safety.SpoofPlatform(true), disableMethod =() => Safety.SpoofPlatform(false), isTogglable = true, toolTip = "Spoofs your platform to mod checkers." },
                 new ButtonInfo { buttonText = "Spoof Support Page", method =() => Safety.SpoofSupportPage(), isTogglable = true, toolTip = "Spoofs the support page on the computer." },
                 new ButtonInfo { buttonText = "Anti Memory Leak", method =() => Safety.AntiMemoryLeak(), isTogglable = true, toolTip = "Makes it so you cant have memory leaks." },
