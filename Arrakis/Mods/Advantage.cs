@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Arrakis.Extensions;
@@ -375,6 +376,28 @@ namespace Arrakis.Mods
             if (!GetIndex("No Tag Limit").enabled)
             {
                 GorillaTagger.Instance.maxTagDistance = 2.2f;
+            }
+        }
+        public static void LagRange()
+        {
+            if (GetIndex("Fake Lag").enabled || GetIndex("Smooth Rig").enabled)
+            {
+                GetIndex("Fake Lag").enabled = false;
+                GetIndex("Smooth Rig").enabled = false;
+            }
+            float closestDistance = 9f;
+            foreach (VRRig rig in VRRigCache.ActiveRigs)
+            {
+                if (rig == null || rig.isLocal || (VRRig.LocalRig.IsTagged() ? rig.IsTagged() : !rig.IsTagged()))
+                    continue;
+                float distance = Vector3.Distance(rig.transform.position, GorillaTagger.Instance.bodyCollider.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestRig = rig;
+                    float Power = Mathf.Clamp(distance, 1f, 15f) / 15f;
+                    PhotonNetwork.SerializationRate = 4 + (int)Math.Ceiling(Power * 5f);
+                }
             }
         }
     }

@@ -430,6 +430,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "No Tag Limit", enableMethod =() => GorillaTagger.Instance.maxTagDistance = float.MaxValue, disableMethod =() => GorillaTagger.Instance.maxTagDistance = 2.2f, isTogglable = true, toolTip = "Makes it so flick tagging is back." },
                 new ButtonInfo { buttonText = "Anti Tag", method =() => Advantage.AntiTag(), isTogglable = true, toolTip = "Makes it so you cant be tagged." },
                 new ButtonInfo { buttonText = "Blink <color=grey>[<color=cyan>T</color>]</color>", method =() => Advantage.Blink(), disableMethod =() => Advantage.StopBlinking(), isTogglable = true, toolTip = "Lets you freeze other players when holding <color=grey>[<color=cyan>T</color>]</color>." },
+                new ButtonInfo { buttonText = "Lag Range", method =() => Advantage.LagRange(), disableMethod =() => PhotonNetwork.SerializationRate = 10, isTogglable = true, toolTip = "Changes how much your rig updates when you are near other players." },
             },
 
             new ButtonInfo[] { // Sound
