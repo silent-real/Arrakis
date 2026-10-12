@@ -852,10 +852,25 @@ namespace Arrakis.Mods
             GorillaTagger.Instance.myVRRig.SendRPC("EnableNonCosmeticHandItemRPC", RpcTarget.All, enable, Lefthand);
             Safety.RPCProc();
         }
-        public static void RainbowMonkey()
+        public static void StrobeMonkey()
         {
             Vector3 color = new Vector3(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
             CosmeticsController.instance.UpdateMonkeColor(color, false);
+        }
+        public static void RainbowMonkey()
+        {
+            float time = UnityEngine.Time.time * 0.7f;
+            float r = Mathf.Sin(time) * 0.5f + 0.5f;
+            float g = Mathf.Sin(time + 2.094f) * 0.5f + 0.5f;
+            float b = Mathf.Sin(time + 4.188f) * 0.5f + 0.5f;
+            Vector3 color = new Vector3(r, g, b);
+            CosmeticsController.instance.UpdateMonkeColor(color, false);
+        }
+        public static void MenuThemeMonkey()
+        {
+            UnityEngine.Color color = Settings.backgroundColor.GetCurrentColor();
+            Vector3 veccolor = new Vector3(color.r, color.g, color.b);
+            CosmeticsController.instance.UpdateMonkeColor(veccolor, false);
         }
         public static void MonkeyBlocksSizeChanger()
         {

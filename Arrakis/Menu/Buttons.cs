@@ -510,7 +510,9 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Random Color Snowballs", method =() => Fun.RandomColorSnowballs(), disableMethod  =() => Fun.ResetSnowball(), isTogglable = true, toolTip = "Makes snowballs gay." },
                 new ButtonInfo { buttonText = "Get Right Bracelet", enableMethod =() => Fun.BraceletToggle(true, false),disableMethod  =() =>  Fun.BraceletToggle(false, false), isTogglable = true, toolTip = "Gives you a bracelet." },
                 new ButtonInfo { buttonText = "Get Left Bracelet", enableMethod =() => Fun.BraceletToggle(true, true),disableMethod  =() =>  Fun.BraceletToggle(false, true), isTogglable = true, toolTip = "Gives you a bracelet." },
-                new ButtonInfo { buttonText = "Rainbow Monkey <color=grey>[<color=cyan>Wardrobes</color>]</color>", method =() => Fun.RainbowMonkey(), isTogglable = true, toolTip = "Makes you server sided rainbow monkey at any of the wardrobes." },
+                new ButtonInfo { buttonText = "Strobe Monkey <color=grey>[<color=cyan>Wardrobes</color>]</color>", method =() => Fun.StrobeMonkey(), isTogglable = true, toolTip = "Makes you server sided strobinig at any of the wardrobes." },
+                new ButtonInfo { buttonText = "Rainbow Monkey <color=grey>[<color=cyan>Wardrobes</color>]</color>", method =() => Fun.RainbowMonkey(), isTogglable = true, toolTip = "Makes you server sided rainbow at any of the wardrobes." },
+                new ButtonInfo { buttonText = "Menu Theme Monkey <color=grey>[<color=cyan>Wardrobes</color>]</color>", method =() => Fun.MenuThemeMonkey(), isTogglable = true, toolTip = "Makes you server sided the menu color at any of the wardrobes." },
 
                 new ButtonInfo { buttonText = "Spawn Block Gun", method =() => Master.SpawnBlockGun(), isTogglable = true, toolTip = "Spawns a random block where ever you shoot." },
                 new ButtonInfo { buttonText = "Overlap Blocks", enableMethod =() => OverlapPatch.enabled = true, disableMethod  =() => OverlapPatch.enabled = false, isTogglable = true, toolTip = "Lets you overlap blocks in monkey blocks." },

@@ -394,7 +394,6 @@ namespace Arrakis.Mods
                 if (distance < closestDistance)
                 {
                     closestDistance = distance;
-                    closestRig = rig;
                     float Power = Mathf.Clamp(distance, 1f, 15f) / 15f;
                     PhotonNetwork.SerializationRate = 4 + (int)Math.Ceiling(Power * 5f);
                 }
