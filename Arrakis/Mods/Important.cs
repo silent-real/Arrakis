@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using Arrakis.Managers;
 using Arrakis.Notifications;
 using ExitGames.Client.Photon;
 using GorillaNetworking;
@@ -51,16 +52,20 @@ namespace Arrakis.Mods
             });
         }
 
-        public static void ChangeName(string newname)
+        public static void ChangeName(string newname, bool save = true)
         {
-            PhotonNetwork.LocalPlayer.NickName = newname;
-            GorillaComputer.instance.savedName = newname;
-            GorillaComputer.instance.currentName = newname;
             GorillaTagger.Instance.offlineVRRig.SetNameTagText(newname);
-            PlayerPrefs.SetString("playerName", newname);
-            PlayerPrefs.Save();
+            PhotonNetwork.LocalPlayer.NickName = newname;
+            if (save)
+            {
+                GorillaComputer.instance.savedName = newname;
+                GorillaComputer.instance.currentName = newname;
+                PlayerPrefs.SetString("playerName", newname);
+                PlayerPrefs.Save();
+            }
         }
-
+        public static void CustomChangeName() =>
+            KeyboardManager.Input("Enter a name", name => Prompt($"Do you want {name.ToUpper()} to save?", () => ChangeName(name.ToUpper(), true), () => ChangeName(name.ToUpper(), false)));
         public static void Disconnect() =>
             NetworkSystem.Instance.ReturnToSinglePlayer();
 
@@ -108,7 +113,8 @@ namespace Arrakis.Mods
 
         public static void JoinRoom(string roomCode) =>
             PhotonNetworkController.Instance.AttemptToJoinSpecificRoom(roomCode, JoinType.Solo);
-
+        public static void JoinCustomRoom() =>
+            KeyboardManager.Input("Enter a room code", room => JoinRoom(room.ToUpper()));
         public static void DisableAFKKick() =>
             PhotonNetworkController.Instance.disableAFKKick = true;
         public static void EnsableAFKKick() =>

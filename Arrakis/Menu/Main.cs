@@ -35,6 +35,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -93,7 +94,8 @@ namespace Arrakis.Menu
                     GameObject.Destroy(menu);
             }
 
-            UpdateKeyboard();
+            //UpdateKeyboard();
+            KeyboardManager.UpdateKeyboard();
 
             try
             {
@@ -102,6 +104,13 @@ namespace Arrakis.Menu
 
                 if (menu == null)
                 {
+                    if (KeyboardManager.MenuPinned)
+                    {
+                        CreateMenu();
+                        KeyboardManager.PositionMenu(menu);
+                        if (reference == null)
+                            CreateReference();
+                    }
                     if (toOpen || keyboardOpen)
                     {
                         if (menusounds)
@@ -118,9 +127,12 @@ namespace Arrakis.Menu
                     }
                 }
                 else
-                {
+                {   if (KeyboardManager.MenuPinned)
+                        KeyboardManager.PositionMenu(menu);
                     if (toOpen || keyboardOpen)
                         RecenterMenu(rightHanded, keyboardOpen);
+                    else if (KeyboardManager.KeepMenuOpen || KeyboardManager.InputActive)
+                    { }
                     else
                     {
                         GameObject.Find("Shoulder Camera").transform.Find("CM vcam1").gameObject.SetActive(true);
@@ -786,7 +798,20 @@ namespace Arrakis.Menu
                     ShowPrompt();
                 else
                 {
-                    switch (CurrentCategoryName)
+                    if (KeyboardManager.InputActive)
+                    {
+                        buttonIndexOffset = 1;
+                        AddSearchInputBox(0.1f * 0.1f);
+                    }
+                    if (KeyboardManager.KeyboardEnabled)
+                    {
+                        buttonIndexOffset = 1;
+                        int perPage = Math.Max(1, buttonsPerPage - buttonIndexOffset);
+                        renderButtons = KeyboardManager.GetResults(keyboardInput)
+                            .Skip(pageNumber * perPage).Take(perPage).ToArray();
+                        AddSearchInputBox(0.1f * 0.1f);
+                    }
+                    else switch (CurrentCategoryName)
                     {
                         case "Enabled":
                             enabledMods = new List<ButtonInfo>() { GetIndex("Exit Enabled") };
@@ -1065,6 +1090,33 @@ namespace Arrakis.Menu
             {
                 MenuNetwork.SendTransform(menu.transform.position, menu.transform.rotation);
             }*/
+        }
+        private static void AddSearchInputBox(float offset)
+        {
+            GameObject box = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            UnityEngine.Object.Destroy(box.GetComponent<BoxCollider>());
+            box.transform.parent = menu.transform;
+            box.transform.rotation = Quaternion.identity;
+            box.transform.localScale = new Vector3(0.09f, 0.9f, 0.08f);
+            box.transform.localPosition = new Vector3(0.56f, 0f, 0.28f - offset);
+            box.GetOrAddComponent<Renderer>().material.color = buttonColors[0].GetCurrentColor();
+
+            searchInputText = new GameObject { transform = { parent = canvasObject.transform } }.GetOrAddComponent<Text>();
+            searchInputText.font = currentFont;
+            searchInputText.fontSize = 1;
+            searchInputText.fontStyle = currentStyle;
+            searchInputText.supportRichText = true;
+            searchInputText.alignment = TextAnchor.MiddleCenter;
+            searchInputText.resizeTextForBestFit = true;
+            searchInputText.resizeTextMinSize = 0;
+            searchInputText.color = textColors[0];
+            searchInputText.text = KeyboardManager.InputDisplay();
+
+            searchInputText.GetOrAddComponent<RectTransform>(out RectTransform rt);
+            rt.localPosition = Vector3.zero;
+            rt.sizeDelta = new Vector2(0.2f, 0.03f);
+            rt.localPosition = new Vector3(.064f, 0f, .111f - offset / 2.6f);
+            rt.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
         }
         public static GameObject leftReference;
         public static GameObject rightReference;
@@ -1554,21 +1606,28 @@ namespace Arrakis.Menu
 
         public static void Search()
         {
-            searching = !searching;
-            pageNumber = 0;
-            keyboardInput = "";
-
-            if (searching)
+            if (XRSettings.isDeviceActive)
             {
-                lastPressedKeys = detectedKeys.Where(k => UnityEngine.InputSystem.Keyboard.current[k].isPressed).ToList();
+                KeyboardManager.Search();
             }
             else
             {
-                lastPressedKeys.Clear();
-                keyPressedTimes.Clear();
-            }
+                searching = !searching;
+                pageNumber = 0;
+                keyboardInput = "";
 
-            ReloadMenu();
+                if (searching)
+                {
+                    lastPressedKeys = detectedKeys.Where(k => UnityEngine.InputSystem.Keyboard.current[k].isPressed).ToList();
+                }
+                else
+                {
+                    lastPressedKeys.Clear();
+                    keyPressedTimes.Clear();
+                }
+
+                ReloadMenu();
+            }
         }
 
         public static bool searching = false;
@@ -2249,5 +2308,11 @@ namespace Arrakis.Menu
             stumpText.fontSize = 1.2f;
             stumpText.text = $"<color=yellow>[ARRAKIS]</color>\nThank you for using arrakis\nVersion: <color=#00ffff>[{PluginInfo.Version}]</color> | Status: <color=#00ffff>[{ServerData.menustate.ToUpper()}]</color>";
         }
+        public static string NoRichtextTags(string input, string replace = "")
+        {
+            Regex notags = new Regex("<.*?>", RegexOptions.IgnoreCase);
+            return notags.Replace(input, replace);
+        }
+        public static Text searchInputText;
     }
 }

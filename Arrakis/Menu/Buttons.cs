@@ -287,10 +287,12 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Join 'GROUND'", method =() => Important.JoinRoom("GROUND"), isTogglable = false, toolTip = "Attempts to make you join a certain room." },
                 new ButtonInfo { buttonText = "Join 'LUCIO'", method =() => Important.JoinRoom("LUCIO"), isTogglable = false, toolTip = "Attempts to make you join a certain room." },
                 new ButtonInfo { buttonText = "Join 'SOLAR'", method =() => Important.JoinRoom("SOLAR"), isTogglable = false, toolTip = "Attempts to make you join a certain room." },
-                new ButtonInfo { buttonText = "Join Random Private Room", method =() => Important.JoinRoom(Main.GenerateRandomString(UnityEngine.Random.Range(4, 8))), isTogglable = false, toolTip = "Attempts to make you join a certain room." },
+                new ButtonInfo { buttonText = "Join Custom Room", method =() => Important.JoinCustomRoom(), isTogglable = false, toolTip = "Attempts to make you join a certain room." },
+                new ButtonInfo { buttonText = "Join Random Private Room", method =() => Important.JoinRoom(Main.GenerateRandomString(UnityEngine.Random.Range(1, 12))), isTogglable = false, toolTip = "Attempts to make you join a certain room." },
                 new ButtonInfo { buttonText = "Create '<color=red>ARRAKIS</color>'", method =() => Important.CreatePublicLobby("<color=red>ARRAKIS</color>"), isTogglable = false, toolTip = "Attempts to make a public room." },
                 new ButtonInfo { buttonText = "Create '❤️❤️❤️'", method =() => Important.CreatePublicLobby("<size=90><color=red>❤️❤️❤️</color></size>"), isTogglable = false, toolTip = "Attempts to make a public room." },
                 new ButtonInfo { buttonText = $"Create '{PluginInfo.DiscordLink}'", method =() => Important.CreatePublicLobby($"<color=red>{PluginInfo.DiscordLink}</color>"), isTogglable = false, toolTip = "Attempts to make a public room." },
+                new ButtonInfo { buttonText = "Custom Change Name", method =() => Important.CustomChangeName(), isTogglable = false, toolTip = "Lets you pick your user name without going to computer." },
             },
 
             new ButtonInfo[] { // Safety
