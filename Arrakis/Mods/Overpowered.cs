@@ -36,6 +36,7 @@ using Photon.Voice.PUN;
 using UnityEngine;
 using static Arrakis.Classes.RigManager;
 using static Arrakis.Menu.Main;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace Arrakis.Mods
 {
@@ -585,6 +586,43 @@ namespace Arrakis.Mods
                 return;
             }
             GorillaComputer.instance.OnGroupJoinButtonPress(0, GorillaComputer.instance.friendJoinCollider);
+        }
+        public static void ElevatorKickAll()
+        {
+            GRElevatorManager elevatorManager = GRElevatorManager._instance;
+            if (elevatorManager == null || elevatorManager.photonView == null) return;
+            if (PhotonNetwork.IsMasterClient)
+            {
+                Hashtable rpcHash = new Hashtable()
+                {
+                    { 0, elevatorManager.photonView.ViewID },
+                    { 2, PhotonNetwork.ServerTimestamp - 750 },
+                    { 3, "RemoteActivateTeleport" },
+                    {
+                        4,
+                        new object[]
+                        {
+                            (int)elevatorManager.currentLocation, 2,
+                            GRElevatorManager.LowestActorNumberInElevator(),
+                        }
+                    },
+                };
+
+                if (elevatorManager.photonView.Prefix > 0)
+                    rpcHash[1] = (short)elevatorManager.photonView.Prefix;
+                if (PhotonNetwork.PhotonServerSettings.RpcList.Contains("RemoteActivateTeleport"))
+                    rpcHash[5] = (byte)PhotonNetwork.PhotonServerSettings.RpcList.IndexOf("RemoteActivateTeleport");
+
+                PhotonNetwork.NetworkingClient.LoadBalancingPeer.OpRaiseEvent(
+                    200, rpcHash, new RaiseEventOptions { Receivers = ReceiverGroup.Others, },
+                    new SendOptions { Reliability = true, DeliveryMode = DeliveryMode.ReliableUnsequenced, Encrypt = false, });
+            }
+            else
+            {
+                elevatorManager.SendRPC(
+                    "RemoteElevatorButtonPress", RpcTarget.MasterClient,
+                    3, (int)elevatorManager.currentLocation );
+            }
         }
         public static void DestroyCacheAll()
         {

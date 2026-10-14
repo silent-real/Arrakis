@@ -567,6 +567,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Rope Right Gun", method =() => Overpowered.RopeRightGun(), isTogglable = true, toolTip = "Flings the rope you shoot." },
                 new ButtonInfo { buttonText = "Rope Down Gun", method =() => Overpowered.RopeDownGun(), isTogglable = true, toolTip = "Flings the rope you shoot." },
                 new ButtonInfo { buttonText = "Stump Kick All <color=grey>[<color=cyan>Private</color>]</color>", method =() => Overpowered.StumpKickAll(), isTogglable = false, toolTip = "Kicks everyone in stump to a public lobby." },
+                new ButtonInfo { buttonText = "Elevator Kick All", method =() => Overpowered.ElevatorKickAll(), isTogglable = false, toolTip = "Kicks everyone in elevator to a map." },
                 new ButtonInfo { buttonText = "Destroy Cache All", method =() => Overpowered.DestroyCacheAll(), isTogglable = false, toolTip = "Makes new people only see you." },
                 new ButtonInfo { buttonText = "Lag All", method =() => Overpowered.LagAll(), isTogglable = true, toolTip = "Lags everyone." },
                 new ButtonInfo { buttonText = "Lag Gun", method =() => Overpowered.LagGun(), isTogglable = true, toolTip = "Lags who you shoot." },
