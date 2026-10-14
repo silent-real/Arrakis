@@ -620,6 +620,12 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Lucy Float Gun", method =() => Master.LucyFloatGun(), isTogglable = true, toolTip = "Makes the ghost Lucy float who ever you shoot." },
                 new ButtonInfo { buttonText = "Break Lucy", method =() => Master.BreakLucy(), isTogglable = false, toolTip = "Makes the ghost Lucy be really far if spawned in." },
 
+                new ButtonInfo { buttonText = "Fast Broom Sticks", method =() => Master.ReallyFastBroomSticks(), isTogglable = false, toolTip = "Makes the broom sticks really fast." },
+                new ButtonInfo { buttonText = "Really Fast Broom Sticks", method =() => Master.FastBroomSticks(), isTogglable = false, toolTip = "Makes the broom sticks faster." },
+                new ButtonInfo { buttonText = "Slow Broom Sticks", method =() => Master.SlowBroomSticks(), isTogglable = false, toolTip = "Makes the broom sticks slower." },
+                new ButtonInfo { buttonText = "Normal Speed Broom Sticks", method =() => Master.NormalSpeedBroomSticks(), isTogglable = false, toolTip = "Makes the broom sticks normal speed." },
+                new ButtonInfo { buttonText = "Grab Broom Sticks", method =() => Master.GrabBroomSticks(), isTogglable = true, toolTip = "Makes it so you can grab the broomsticks." },
+
                 new ButtonInfo { buttonText = "Spaz Paintbrawl", method =() => Master.SpazPaintbrawl(), isTogglable = true, toolTip = "Spazes the paintbrawl gamemode if you are master client." },
 
                 new ButtonInfo { buttonText = "Water Ball Score Orange", method =() => Master.WaterBallScore(1), isTogglable = false, toolTip = "Scores in water ball in beach if you are master client." },

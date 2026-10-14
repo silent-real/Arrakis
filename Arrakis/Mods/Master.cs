@@ -23,6 +23,7 @@ using Arrakis.Classes;
 using Arrakis.Extensions;
 using Arrakis.Managers;
 using Arrakis.Notifications;
+using GorillaLocomotion.Gameplay;
 using GorillaTag.Sports;
 using GorillaTagScripts;
 using Photon.Pun;
@@ -693,13 +694,11 @@ namespace Arrakis.Mods
             {
                 if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
                 {
-                    Lucy.targetPlayer = null;
                     Lucy.currentState = HalloweenGhostChaser.ChaseState.Chasing;
                     Lucy.transform.position = VRRig.LocalRig.rightHandTransform.position;
                 }
                 if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Left, !XRSettings.isDeviceActive))
                 {
-                    Lucy.targetPlayer = null;
                     Lucy.currentState = HalloweenGhostChaser.ChaseState.Chasing;
                     Lucy.transform.position = VRRig.LocalRig.leftHandTransform.position;
                 }
@@ -867,6 +866,92 @@ namespace Arrakis.Mods
                     SportScoreboard.Instance.TeamScored(0);
                 for (int i = 0; i < score1; i++)
                     SportScoreboard.Instance.TeamScored(1);
+            }
+        }
+        private static NoncontrollableBroomstick[] _broomSticks;
+        public static NoncontrollableBroomstick[] BroomSticks
+        {
+            get
+            {
+                return _broomSticks ??= new NoncontrollableBroomstick[]
+                {
+                    GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest/2026_Halloween_Forest/Broomsticks/Broomstick2/NoncontrollableBroomstick").GetComponent<NoncontrollableBroomstick>(),
+                    GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest/2026_Halloween_Forest/Broomsticks/Broomstick3/NoncontrollableBroomstick").GetComponent<NoncontrollableBroomstick>()
+                };
+            }
+        }
+        public static void FastBroomSticks()
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                foreach (var broomstick in BroomSticks)
+                {
+                    broomstick.duration = 10f;
+                }
+            }
+            else
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
+            }
+        }
+        public static void ReallyFastBroomSticks()
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                foreach (var broomstick in BroomSticks)
+                {
+                    broomstick.duration = 0.1f;
+                }
+            }
+            else
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
+            }
+        }
+        public static void SlowBroomSticks()
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                foreach (var broomstick in BroomSticks)
+                {
+                    broomstick.duration = 60;
+                }
+            }
+            else
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
+            }
+        }
+        public static void NormalSpeedBroomSticks()
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                foreach (var broomstick in BroomSticks)
+                {
+                    broomstick.duration = 30;
+                }
+            }
+            else
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
+            }
+        }
+        public static void GrabBroomSticks()
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
+                {
+                    BroomSticks[0].transform.position = VRRig.LocalRig.rightHandTransform.position;
+                }
+                if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Left, !XRSettings.isDeviceActive))
+                {
+                    BroomSticks[1].transform.position = VRRig.LocalRig.leftHandTransform.position;
+                }
+            }
+            else
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
             }
         }
     }
