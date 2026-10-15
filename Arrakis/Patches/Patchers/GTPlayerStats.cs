@@ -23,7 +23,7 @@ using HarmonyLib;
 namespace Arrakis.Patches.Patchers
 {
     [HarmonyPatch(typeof(GTPlayerStats), nameof(GTPlayerStats.DelayedUpdate))]
-    public class GTPlayerStatsP // nova im lazy so add a setting for both of them like 0, 10, 20 to like 144 ig idk and maybe short.maxvalue (32767)
+    public class GTPlayerStatsP
     {
         public static bool SpoofFPS;
         public static bool SpoofPing;
