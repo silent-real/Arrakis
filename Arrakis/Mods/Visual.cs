@@ -1452,6 +1452,72 @@ namespace Arrakis.Mods
         }
         public static void fullBright(bool fullBright) =>
             GameLightingManager.instance.SetCustomDynamicLightingEnabled(fullBright);
+
+        public static Vector3 Direction = new Vector3(1f, 0f, 0.3f).normalized;
+        public static float Speed = 12f;
+        public static float Density = 60f;
+        public static float GustAmount = 0.5f;
+        public static float GustSpeed = 0.4f;
+        public static Color WindColor = new Color(1f, 1f, 1f, 0.35f);
+        private static GameObject obj;
+        private static ParticleSystem ps;
+        private static readonly float seed = Random.value * 100f;
+        public static void EnableWind()
+        {
+            Camera cam = Camera.main;
+            if (cam == null) return;
+            if (ps == null)
+            {
+                obj = new GameObject("WindVisual");
+                Object.DontDestroyOnLoad(obj);
+                ps = obj.AddComponent<ParticleSystem>();
+                ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                var rawr = ps.main;
+                rawr.loop = true;
+                rawr.simulationSpace = ParticleSystemSimulationSpace.World;
+                rawr.startLifetime = 1.6f;
+                rawr.startSize = 0.04f;
+                rawr.startColor = WindColor;
+                rawr.maxParticles = 500;
+                var shape = ps.shape;
+                shape.shapeType = ParticleSystemShapeType.Box;
+                shape.scale = new Vector3(20f, 8f, 0.5f);
+
+                var col = ps.colorOverLifetime;
+                col.enabled = true;
+                Gradient g = new Gradient();
+                g.SetKeys(
+                    new[] { new GradientColorKey(Color.white, 0f), new GradientColorKey(Color.white, 1f) },
+                    new[] { new GradientAlphaKey(0f, 0f), new GradientAlphaKey(1f, 0.2f),
+                            new GradientAlphaKey(1f, 0.8f), new GradientAlphaKey(0f, 1f) });
+                col.color = g;
+                var rend = obj.GetComponent<ParticleSystemRenderer>();
+                rend.renderMode = ParticleSystemRenderMode.Stretch;
+                rend.lengthScale = 6f;
+                rend.velocityScale = 0.05f;
+                rend.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                rend.receiveShadows = false;
+                Shader sh = Shader.Find("Sprites/Default")
+                    ?? Shader.Find("Legacy Shaders/Particles/Alpha Blended")
+                    ?? Shader.Find("Universal Render Pipeline/Unlit");
+                rend.material = new Material(sh);
+            }
+            Vector3 dir = Direction.normalized;
+            obj.transform.position = cam.transform.position - dir * 8f;
+            obj.transform.rotation = Quaternion.LookRotation(dir);
+            float noise = Mathf.PerlinNoise(Time.time * GustSpeed, seed);
+            float gust = 1f + (noise - 0.5f) * 2f * GustAmount;
+            var main = ps.main;
+            main.startSpeed = Speed * gust;
+            var emission = ps.emission;
+            emission.rateOverTime = Density * gust;
+            if (!ps.isEmitting) ps.Play();
+        }
+        public static void DisableWind()
+        {
+            if (ps != null && ps.isEmitting)
+                ps.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        }
     }
 
     public class WireframeRenderer : MonoBehaviour

@@ -418,6 +418,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Fps boost", enableMethod =() => QualitySettings.globalTextureMipmapLimit = int.MaxValue, disableMethod =() => QualitySettings.globalTextureMipmapLimit = 1, toolTip = "Makes everything low quality to boost your FPS.", isTogglable = true },
                 new ButtonInfo { buttonText = "Full Bright", enableMethod =() => Visual.fullBright(true), disableMethod =() => Visual.fullBright(false), toolTip = "Makes everything bright.", isTogglable = true },
                 new ButtonInfo { buttonText = "Breadcrumbs", method =() => Visual.Breadcrumbs(), disableMethod =() => Visual.DisableBreadcrumbs(), toolTip = "Puts trails on players.", isTogglable = true },
+                new ButtonInfo { buttonText = "Wind", method =() => Visual.EnableWind(), disableMethod =() => Visual.DisableWind(), toolTip = "Creates client sided wind.", isTogglable = true },
             },
 
             new ButtonInfo[] { // Advantage
