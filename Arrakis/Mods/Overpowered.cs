@@ -205,11 +205,11 @@ namespace Arrakis.Mods
 
         public static void GuardianProtector()
         {
-            foreach (VRRig rig in VRRigCache.ActiveRigs)
+            foreach (TappableGuardianIdol idol in GetAllTappables())
             {
-                if (rig != null && rig != GorillaTagger.Instance.offlineVRRig)
+                foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
-                    foreach (TappableGuardianIdol idol in GetAllTappables())
+                    if (rig != null && rig != GorillaTagger.Instance.offlineVRRig)
                     {
                         if (idol.manager != null && !idol.isChangingPositions)
                         {
