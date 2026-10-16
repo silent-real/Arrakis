@@ -222,7 +222,7 @@ namespace Arrakis.Mods
                                 if (DR < 2.55f || DL < 2.55f)
                                 {
                                     GetNetworkViewFromVRRig(rig).SendRPC("GrabbedByPlayer", rig.Creator, true, false, false);
-                                    GetNetworkViewFromVRRig(rig).SendRPC("DroppedByPlayer", rig.Creator, new Vector3(500f, 500f, 500f));
+                                    GetNetworkViewFromVRRig(rig).SendRPC("DroppedByPlayer", rig.Creator, new Vector3(20f, 20f, 20f));
                                 }
                             }
                         }
