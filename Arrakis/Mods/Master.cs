@@ -656,8 +656,9 @@ namespace Arrakis.Mods
             {
                 if (Time.time < lucyspaztarget)
                 {
+                    VRRig random = VRRigCache.ActiveRigs[Random.Range(0, VRRigCache.ActiveRigs.Count - 1)];
                     Lucy.currentState = HalloweenGhostChaser.ChaseState.Chasing;
-                    Lucy.targetPlayer = RigManager.GetRandomVRRig(true).Creator;
+                    Lucy.targetPlayer = random.Creator;
                     lucyspaztarget = Time.time + 0.5f;
                 }
             }
@@ -725,8 +726,6 @@ namespace Arrakis.Mods
                         Lucy.grabbedPlayer = lockTarget.Creator;
                         Lucy.followTarget = lockTarget.head.rigTarget;
                         Lucy.currentState = HalloweenGhostChaser.ChaseState.Grabbing;
-                        Lucy.grabTime = Time.time;
-                        Lucy.grabDuration = 999999f;
                         Lucy.isSummoned = true;
                         if (Lucy.ghostBody.activeSelf)
                             Lucy.ghostBody.SetActive(false);
