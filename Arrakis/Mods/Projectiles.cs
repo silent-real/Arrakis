@@ -181,7 +181,7 @@ namespace Arrakis.Mods
             GetIndex("Change Blind Color").overlapText = $"Change Blind Color <color=grey>[<color=cyan>{BlindColorNames[BlindColorIndex]}</color>]</color>";
         }
         public static void ProjectileBlindPlayer(VRRig rig) =>
-            SpawnProjectile("EggRightHand_Anchor Variant", rig.headMesh.transform.position + new Vector3(0f, 0.1f, 0f), new Vector3(0f, -15f, 0f), BlindColor);
+            SpawnProjectile("EggRightHand_Anchor Variant", rig.headMesh.transform.position + new Vector3(0f, 0.1f, 0f), new Vector3(0f, 0f, 0f), BlindColor);
 
         private static SnowballThrowable cachedThrow = null;
         private static GrowingSnowballThrowable cachedGThrow = null;
