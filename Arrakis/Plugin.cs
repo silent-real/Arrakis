@@ -24,6 +24,7 @@ using Arrakis.Classes;
 using Arrakis.Classes.Menu;
 using Arrakis.Managers;
 using Arrakis.Menu;
+using Arrakis.Mods;
 using Arrakis.Notifications;
 using Arrakis.Patches;
 using BepInEx;
@@ -116,6 +117,7 @@ namespace Arrakis
         {
             HarmonyLoader.RemovePatches();
             DiscordRpc.Shutdown();
+            Advantage.TagOnJoin(); // mightve fixed the resetting name + color + sending to tut when closing game with notagonjoin
         }
     }
 }
