@@ -18,9 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using Arrakis;
 using Arrakis.Classes;
-using Arrakis.Mods;
 using Arrakis.Notifications;
 using System;
 using System.Collections.Generic;
