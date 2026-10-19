@@ -595,7 +595,6 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Set Guardian Gun", method =() => Master.SetGuardianGun(), isTogglable = true, toolTip = "Makes who you shoot guardian." },
                 new ButtonInfo { buttonText = "Unguardian Gun", method =() => Master.UnGuardianGun(), isTogglable = true, toolTip = "Makes who you shoot not guardian." },
                 new ButtonInfo { buttonText = "Find PhotonViews", method =() => Master.GetAllPhotonViews(), disableMethod =() => Master.DisableViewTracers(), isTogglable = true, toolTip = "Shows everything with a photon view." },
-                new ButtonInfo { buttonText = "Destroy PhotonView Gun", method =() => Master.DestroyViewGun(), isTogglable = true, toolTip = "Lets you destroy a photon view." },
 
                 new ButtonInfo { buttonText = "Block Crash All", method =() => Master.BlockCrashAll(), isTogglable = true, toolTip = "Crashes everyone with blocks." },
                 new ButtonInfo { buttonText = "Block Sphere", method =() => Master.BlockSphere(), isTogglable = false, toolTip = "Makes a sphere with blocks." },
@@ -606,8 +605,6 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Drain Lava", method =() => Master.ChangeLavaState(InfectionLavaController.RisingLavaState.Draining), isTogglable = false, toolTip = "Drain the lava." },
                 new ButtonInfo { buttonText = "Empty Lava", method =() => Master.ChangeLavaState(InfectionLavaController.RisingLavaState.Drained), isTogglable = false, toolTip = "Removes the lava." },
                 new ButtonInfo { buttonText = "Erupt Lava", method =() => Master.ChangeLavaState(InfectionLavaController.RisingLavaState.Erupting), isTogglable = false, toolTip = "Erupts the lava." },
-                new ButtonInfo { buttonText = "Destroy Lighting", method =() => Master.DestroyLighting(), isTogglable = false, toolTip = "Destroys the lighting." },
-                new ButtonInfo { buttonText = "Destroy Critters", method =() => Master.DestroyCritters(), isTogglable = false, toolTip = "Destroys the critters manager." },
 
                 new ButtonInfo { buttonText = "Spawn Blue Lucy", method =() => Master.SpawnBlueLucy(), isTogglable = false, toolTip = "Spawns the blue ghost Lucy in forest." },
                 new ButtonInfo { buttonText = "Spawn Red Lucy", method =() => Master.SpawnRedLucy(), isTogglable = false, toolTip = "Spawns the red ghost Lucy in forest." },
