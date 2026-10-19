@@ -51,7 +51,7 @@ namespace Arrakis
 
         private static IEnumerator DRPC()
         {
-            if (Settings.disablediscordrpc || discordC == null) // nova just dont fucking touch it -sleepy
+            if (Settings.disablediscordrpc || discordC == null)
                 CRunner.instance.StopCoroutine(discordC);
             var retry = new WaitForSeconds(10f);
             var refresh = new WaitForSeconds(60f);
