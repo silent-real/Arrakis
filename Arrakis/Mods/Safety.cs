@@ -219,6 +219,7 @@ namespace Arrakis.Mods
             {
                 GameObject.Destroy(KIDManager.Instance);
             }
+            PromptSingle("Only people in the lobby will be able to hear you.\nrestart your game to fully bypass the ban.");
         }
 
         public static void AntiModerator()
