@@ -117,7 +117,7 @@ namespace Arrakis
         {
             HarmonyLoader.RemovePatches();
             DiscordRpc.Shutdown();
-            Advantage.TagOnJoin(); // mightve fixed the resetting name + color + sending to tut when closing game with notagonjoin
+            Advantage.TagOnJoin();
         }
     }
 }
