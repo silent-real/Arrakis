@@ -113,7 +113,7 @@ namespace Arrakis
             }
         }
 
-        private void OnDisable()
+        public void OnDisable()
         {
             HarmonyLoader.RemovePatches();
             DiscordRpc.Shutdown();
