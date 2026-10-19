@@ -543,7 +543,7 @@ namespace Arrakis.Mods
                     if (gunTarget && Time.time > RopeDelay)
                     {
                         RopeDelay = Time.time + 0.25f;
-                        RopeThing(gunTarget, Vector3.forward * 5);
+                        RopeThing(gunTarget, Vector3.down * 5);
                     }
                 }
             }
