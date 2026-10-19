@@ -94,8 +94,11 @@ namespace Arrakis.Menu
                     GameObject.Destroy(menu);
             }
 
-            //UpdateKeyboard();
-            KeyboardManager.UpdateKeyboard();
+            // Fixes pc keyboard -nova
+            if (XRSettings.isDeviceActive)
+                KeyboardManager.UpdateKeyboard();
+            else
+                UpdateKeyboard();
 
             try
             {
