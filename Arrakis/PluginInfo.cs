@@ -25,7 +25,7 @@ namespace Arrakis
         public const string GUID = "org.nova.arrakis";
         public const string Name = "Arrakis";
         public const string Description = "Created by nova (@s1lnt). and Sleepy (@deadrnlol)";
-        public const string Version = "2.7.0"; // use /arraiis version cmd when updating -nova | my fault i forgot -sleepy (dont remove pls)
+        public const string Version = "2.7.1"; // use /arraiis version cmd when updating -nova | my fault i forgot -sleepy (dont remove pls)
         public const string BaseDirectory = "Arrakis";
         public const string ServerApi = "https://novax.lol/arrakis/api";
         public const string DiscordLink = "https://discord.gg/dtQdz59FJG";
