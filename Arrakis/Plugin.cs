@@ -1,4 +1,5 @@
 ﻿/*
+using static Arrakis.HarmonyLoader;
  * Arrakis | Plugin.cs
  *
  * Copyright (C) 2026 Arrakis
@@ -101,7 +102,7 @@ namespace Arrakis
             if (!Directory.Exists($"{PluginInfo.BaseDirectory}\\Rooms"))
                 Directory.CreateDirectory($"{PluginInfo.BaseDirectory}\\Rooms");
             if (!File.Exists($"{PluginInfo.BaseDirectory}/CustomTitle.txt"))
-                File.WriteAllText($"{PluginInfo.BaseDirectory}/CustomTitle.txt", "your title");
+                KeyboardManager.Input("What do you want the title to be?", thing => File.WriteAllText($"{PluginInfo.BaseDirectory}/CustomTitle.txt", thing));
 
             Patches.CosmeticPatch.enabled = true;
             if (Main.OneIn(500))
