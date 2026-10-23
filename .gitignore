@@ -32,3 +32,4 @@ References/
 *.unityproj
 Arrakis/obj/
 Arrakis/bin/
+Arrakis/Directory.Build.props
