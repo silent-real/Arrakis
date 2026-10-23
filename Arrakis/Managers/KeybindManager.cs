@@ -21,9 +21,8 @@
 using UnityEngine;
 using System;
 
-public class KeybindManager // Made on phone gonna make better when home -nova
+public class KeybindManager
 {
-    // use custom binds from qcm for help
     public static void SetBind(string keybind, string control)
     {
 
@@ -34,7 +33,7 @@ public class KeybindManager // Made on phone gonna make better when home -nova
         switch (control)
         {
             case "rightPrimary": return false;
-            default: false;
+            default: return false;
         }
     }
 }
