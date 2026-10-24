@@ -29,25 +29,30 @@ namespace Arrakis.Managers
     public class BoardManager : MonoBehaviour
     {
         public static BoardManager Instance;
+
         private GameObject motdObj;
-        private static TextMeshPro motdTMP;
         private GameObject cocText;
         private GameObject cocHeading;
+        private GameObject monitorObj;
+        public GameObject motdTextObj;
+        private GameObject HeadOutside;
+        private GameObject WelcomeToGorilllaTagHeadingText;
+
+        private static TextMeshPro motdTMP;
         private TextMeshPro cocTextTMP;
         private TextMeshPro cocHeadingTMP;
         private TextMeshPro WelcomeToGorilllaTagHeadingTextTMP;
         private TextMeshPro HeadOutsideTMP;
-        private GameObject monitorObj;
+        public TextMeshPro motdTextTMP;
+
         private MeshRenderer boardRenders;
+
         private Material boardmat;
+        private Material ogboardmat;
+        private Material oldMonitorMat;
+
         private string ogHeadoutsideText;
         private string ogWelcomeToGorilllaTagHeadingText;
-        private Material ogboardmat;
-        public GameObject motdTextObj;
-        public TextMeshPro motdTextTMP;
-        private Material oldMonitorMat;
-        private GameObject HeadOutside;
-        private GameObject WelcomeToGorilllaTagHeadingText;
 
         public void Awake()
         {
