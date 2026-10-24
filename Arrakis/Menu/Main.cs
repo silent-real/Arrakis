@@ -79,7 +79,7 @@ namespace Arrakis.Menu
             catch { }
 
             NetworkSystem.Instance.OnJoinedRoomEvent += OnRoomJoined;
-            NetworkSystem.Instance.OnPreLeavingRoom += OnLeftRoom;
+            NetworkSystem.Instance.OnReturnedToSinglePlayer += OnLeftRoom;
             NetworkSystem.Instance.OnMasterClientSwitchedEvent += OnMasterClientSwitch;
 
             NetworkSystem.Instance.OnPlayerJoined += OnPlayerJoined;
@@ -2585,7 +2585,10 @@ namespace Arrakis.Menu
         public static void OnMasterClientSwitch(NetPlayer plr)
         {
             GetIndex("MasterLabel").overlapText = NetworkSystem.Instance.LocalPlayer.IsMasterClient ? "You are master client" : "You are not master client";
-            NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are now master client", 3f);
+            if (NetworkSystem.Instance.LocalPlayer.IsMasterClient)
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are now master client", 3f);
+            }
         }
 
         public static void OnPlayerJoined(NetPlayer plr)
