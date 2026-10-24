@@ -590,6 +590,8 @@ namespace Arrakis.Menu
             new ButtonInfo[] { // Master
                 new ButtonInfo { buttonText = "Exit Master", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
+                new ButtonInfo { buttonText = "MasterLabel", label = true },
+
                 new ButtonInfo { buttonText = "Untag All", method =() => Master.UntagAll(), isTogglable = false, toolTip = "Untags everyone in the current lobby." },
                 new ButtonInfo { buttonText = "Untag Self", method =() => Master.UntagSelf(), isTogglable = false, toolTip = "Untags your self." },
                 new ButtonInfo { buttonText = "Untag Gun", method =() => Master.UntagGun(), isTogglable = true, toolTip = "Untags the person you shoot." },

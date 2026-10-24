@@ -77,6 +77,13 @@ namespace Arrakis.Menu
                 }
             }
             catch { }
+
+            NetworkSystem.Instance.OnJoinedRoomEvent += OnRoomJoined;
+            NetworkSystem.Instance.OnPreLeavingRoom += OnLeftRoom;
+            NetworkSystem.Instance.OnMasterClientSwitchedEvent += OnMasterClientSwitch;
+
+            NetworkSystem.Instance.OnPlayerJoined += OnPlayerJoined;
+            NetworkSystem.Instance.OnPlayerLeft += OnPlayerLeft;
         }
 
         public static void Prefix()
@@ -327,29 +334,6 @@ namespace Arrakis.Menu
                 MenuNetwork.Update();
             }
             catch { }*/
-
-            if (NetworkSystem.Instance.InRoom)
-            {
-                if (currentRoomName != PhotonNetwork.CurrentRoom.Name)
-                {
-                    currentRoomName = PhotonNetwork.CurrentRoom.Name;
-                    if (!disableroomnotifications)
-                        NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> Joined room {currentRoomName}");
-                }
-                if (reconnectingRoomName != PhotonNetwork.CurrentRoom.Name)
-                    reconnectingRoomName = PhotonNetwork.CurrentRoom.Name;
-            }
-            else
-            {
-                if (currentRoomName != "")
-                {
-                    if (!disableroomnotifications)
-                        NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> Left room {currentRoomName}");
-                    if (clearNotificationsOnDisconnect)
-                        NotificationManager.ClearAllNotifications();
-                    currentRoomName = "";
-                }
-            }
 
             shouldBePC = !XRSettings.isDeviceActive;
 
@@ -2571,6 +2555,41 @@ namespace Arrakis.Menu
         {
             Regex notags = new Regex("<.*?>", RegexOptions.IgnoreCase);
             return notags.Replace(input, replace);
+        }
+
+        // Player Events
+        public static void OnRoomJoined()
+        {
+            currentRoomName = PhotonNetwork.CurrentRoom.Name;
+            if (!disableroomnotifications)
+                NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> Joined room {currentRoomName}");
+            reconnectingRoomName = PhotonNetwork.CurrentRoom.Name;
+            OnMasterClientSwitch(NetworkSystem.Instance.MasterClient);
+        }
+
+        public static void OnLeftRoom()
+        {
+            if (!disableroomnotifications)
+                NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> Left room {currentRoomName}");
+            if (clearNotificationsOnDisconnect)
+                NotificationManager.ClearAllNotifications();
+            currentRoomName = "";
+        }
+
+        public static void OnMasterClientSwitch(NetPlayer plr)
+        {
+            GetIndex("MasterLabel").overlapText = NetworkSystem.Instance.LocalPlayer.IsMasterClient ? "You are master client" : "You are not master client";
+            NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are now master client", 3f);
+        }
+
+        public static void OnPlayerJoined(NetPlayer plr)
+        {
+            NotificationManager.SendNotification("<color=grey>[</color><color=cyan>JOIN</color><color=grey>] </color><color=white>Name: " + plr.NickName + "</color>");
+        }
+
+        public static void OnPlayerLeft(NetPlayer plr)
+        {
+            NotificationManager.SendNotification("<color=grey>[</color><color=cyan>LEAVE</color><color=grey>]</color> <color=white>Name: " + plr.NickName + "</color>");
         }
     }
 }
