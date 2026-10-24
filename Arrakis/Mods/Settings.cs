@@ -284,6 +284,18 @@ namespace Arrakis
             }
         }
 
+        public static void ExampleGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                if (GetGunInput(true))
+                {
+
+                }
+            }
+        }
+
         private static int AntiReportIndexRange = 0;
         public static float AntiReportRange = 0.55f;
         public static void ChangeAntiReportRange(bool increment = true)
