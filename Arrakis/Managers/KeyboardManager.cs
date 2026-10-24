@@ -397,7 +397,7 @@ namespace Arrakis.Managers // ported from JupiterX (https://user44504.na.imgto.l
         private static void Copy()
         {
             GUIUtility.systemCopyBuffer = query;
-            NotificationManager.SendNotification("<color=grey>[</color><color=cyan>ARRAKIS  </color><color=grey>]</color> Copied text.", 2f);
+            NotificationManager.SendNotification("<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> Copied text.", 2f);
         }
 
         private static void Paste() => Append(GUIUtility.systemCopyBuffer);
