@@ -94,7 +94,6 @@ namespace Arrakis.Menu
                     GameObject.Destroy(menu);
             }
 
-            // Fixes pc keyboard -nova
             if (XRSettings.isDeviceActive)
                 KeyboardManager.UpdateKeyboard();
             else
@@ -430,7 +429,7 @@ namespace Arrakis.Menu
             }
             catch { }
 
-            try
+            try // remove
             {
                 if (lockTarget != null)
                 {
@@ -460,8 +459,12 @@ namespace Arrakis.Menu
             catch { }
 
             ServerPos = ServerPos == Vector3.zero ? ServerSyncPos : Vector3.Lerp(ServerPos, VRRig.LocalRig.SanitizeVector3(ServerSyncPos), VRRig.LocalRig.lerpValueBody * 0.66f);
-            ServerLeftHandPos = ServerLeftHandPos == Vector3.zero ? ServerSyncLeftHandPos : Vector3.Lerp(ServerLeftHandPos, VRRig.LocalRig.SanitizeVector3(ServerSyncLeftHandPos), VRRig.LocalRig.lerpValueBody);
-            ServerRightHandPos = ServerRightHandPos == Vector3.zero ? ServerSyncRightHandPos : Vector3.Lerp(ServerRightHandPos, VRRig.LocalRig.SanitizeVector3(ServerSyncRightHandPos), VRRig.LocalRig.lerpValueBody);
+
+            ServerLeftHandPos = ServerLeftHandPos == Vector3.zero ? ServerSyncLeftHandPos :
+                Vector3.Lerp(ServerLeftHandPos, VRRig.LocalRig.SanitizeVector3(ServerSyncLeftHandPos), VRRig.LocalRig.lerpValueBody);
+
+            ServerRightHandPos = ServerRightHandPos == Vector3.zero ? ServerSyncRightHandPos :
+                Vector3.Lerp(ServerRightHandPos, VRRig.LocalRig.SanitizeVector3(ServerSyncRightHandPos), VRRig.LocalRig.lerpValueBody);
         }
 
         private static IEnumerator OpenMenu()
@@ -520,7 +523,7 @@ namespace Arrakis.Menu
             buttons.Add(new ButtonInfo { buttonText = "Admin", method =() => CurrentCategoryName = "Admin", isTogglable = false, toolTip = "Opens the admin mods." });
             Buttons.buttons[GetCategory("Main")] = buttons.ToArray();
             string[] SpecialCases = new string[] { "Rawr X3", "The Lesbian", "Toys :3", "UwU", "Sekkusu", "Silly", "Bunny.LOL", "Sleep.ez", "Golden Menu", "Golden Menu Reborn", "﷽", };
-            NotificationManager.SendNotification($"<color=grey>[</color><color=yellow>{(adminname == "NOVA" ? "OWNER" : (adminname == "SLEEPY" ? SpecialCases[UnityEngine.Random.Range(0, SpecialCases.Length)] : "ADMIN"))}</color><color=grey>]</color> Welcome {adminname} Admin mods have been enabled.", 2f);
+            NotificationManager.SendNotification($"<color=grey>[</color><color=yellow>{(adminname == "NOVA" ? "OWNER": (adminname == "SLEEPY" ? SpecialCases[UnityEngine.Random.Range(0, SpecialCases.Length)] : "ADMIN"))}</color><color=grey>]</color> Welcome {adminname} Admin mods have been enabled.", 2f);
         }
 
         public static void CreateMenu()
@@ -577,14 +580,7 @@ namespace Arrakis.Menu
             title.font = currentFont;
             if (searching)
             {
-                if (string.IsNullOrEmpty(keyboardInput))
-                {
-                    title.text = "Search";
-                }
-                else
-                {
-                    title.text = keyboardInput;
-                }
+                title.text = string.IsNullOrEmpty(keyboardInput) ? "Search" : keyboardInput;
             }
             else
             {
@@ -595,10 +591,12 @@ namespace Arrakis.Menu
                         if (!File.Exists($"{PluginInfo.BaseDirectory}/CustomTitle.txt"))
                             File.WriteAllText($"{PluginInfo.BaseDirectory}/CustomTitle.txt", "your title");
                         else
-                            title.text = File.ReadAllText($"{PluginInfo.BaseDirectory}/CustomTitle.txt") + (disablepagenumber ? "" : " <color=grey>[</color><color=white>" + (pageNumber + 1).ToString() + "</color><color=grey>]</color>");
+                            title.text = File.ReadAllText($"{PluginInfo.BaseDirectory}/CustomTitle.txt") + (disablepagenumber ? "" :
+                                " <color=grey>[</color><color=white>" + (pageNumber + 1).ToString() + "</color><color=grey>]</color>");
                     }
-                    else // sussy - ccmv2 moment | why did i spell movement 😭 - nova
-                        title.text = ((Sussy ? "Sussy" : RareChance ? "Awwakis uwu 🥺✨" : PluginInfo.Name) + (disablepagenumber ? "" : " <color=grey>[</color><color=white>" + (pageNumber + 1).ToString() + "</color><color=grey>]</color>"));
+                    else
+                        title.text = ((Sussy ? "Sussy" : RareChance ? "Awwakis uwu 🥺✨" : PluginInfo.Name) + (disablepagenumber ? ""
+                            : " <color=grey>[</color><color=white>" + (pageNumber + 1).ToString() + "</color><color=grey>]</color>"));
                 }
                 else
                     title.text = "";
@@ -820,7 +818,7 @@ namespace Arrakis.Menu
                             enabledMods = new List<ButtonInfo>() { GetIndex("Exit Enabled") };
                             enabledMods.AddRange(Buttons.buttons.SelectMany(buttonlist => buttonlist).Where(v => v.enabled));
                             if (enabledMods.Count == 1)
-                                enabledMods.Add(new ButtonInfo { buttonText = "you have no enabled mods", label = true });
+                                enabledMods.Add(new ButtonInfo { buttonText = "No Enabled Mods", label = true });
                             renderButtons = enabledMods.ToArray();
                             break;
                         case "Favorites":
@@ -1121,6 +1119,7 @@ namespace Arrakis.Menu
             rt.localPosition = new Vector3(.064f, 0f, .111f - offset / 2.6f);
             rt.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
         }
+
         public static GameObject leftReference;
         public static GameObject rightReference;
         public static SphereCollider leftButtonCollider;
@@ -1286,15 +1285,18 @@ namespace Arrakis.Menu
         public static void ToggleIncremental(string buttonText, bool increment)
         {
             string realButtonName = buttonText;
+
             if (buttonText.StartsWith("Increment_"))
                 realButtonName = buttonText.Substring("Increment_".Length);
             if (buttonText.StartsWith("Decrement_"))
                 realButtonName = buttonText.Substring("Decrement_".Length);
+
             ButtonInfo target = GetIndex(realButtonName);
             if (target == null)
                 return;
             if (target.label)
                 return;
+
             if (increment)
             {
                 if (target.enableMethod != null)
@@ -1322,7 +1324,7 @@ namespace Arrakis.Menu
             ReloadMenu();
         }
 
-        private static readonly Dictionary<string, (int Category, int Index)> cacheGetIndex = new Dictionary<string, (int Category, int Index)>(); // Looping through 800 elements is not a light task :/
+        private static readonly Dictionary<string, (int Category, int Index)> cacheGetIndex = new Dictionary<string, (int Category, int Index)>();
         public static ButtonInfo GetIndex(string buttonText)
         {
             if (buttonText == null)
@@ -1375,13 +1377,15 @@ namespace Arrakis.Menu
         public static (Vector3 position, Quaternion rotation, Vector3 up, Vector3 forward, Vector3 right) TrueLeftHand()
         {
             Quaternion rot = GorillaTagger.Instance.leftHandTransform.rotation * GTPlayer.Instance.LeftHand.handRotOffset;
-            return (GorillaTagger.Instance.leftHandTransform.position + GorillaTagger.Instance.leftHandTransform.rotation * GTPlayer.Instance.LeftHand.handOffset, rot, rot * Vector3.up, rot * Vector3.forward, rot * Vector3.right);
+            return (GorillaTagger.Instance.leftHandTransform.position + GorillaTagger.Instance.leftHandTransform.rotation *
+                GTPlayer.Instance.LeftHand.handOffset, rot, rot * Vector3.up, rot * Vector3.forward, rot * Vector3.right);
         }
 
         public static (Vector3 position, Quaternion rotation, Vector3 up, Vector3 forward, Vector3 right) TrueRightHand()
         {
             Quaternion rot = GorillaTagger.Instance.rightHandTransform.rotation * GTPlayer.Instance.RightHand.handRotOffset;
-            return (GorillaTagger.Instance.rightHandTransform.position + GorillaTagger.Instance.rightHandTransform.rotation * GTPlayer.Instance.RightHand.handOffset, rot, rot * Vector3.up, rot * Vector3.forward, rot * Vector3.right);
+            return (GorillaTagger.Instance.rightHandTransform.position + GorillaTagger.Instance.rightHandTransform.rotation *
+                GTPlayer.Instance.RightHand.handOffset, rot, rot * Vector3.up, rot * Vector3.forward, rot * Vector3.right);
         }
 
         public static void WorldScale(GameObject obj, Vector3 targetWorldScale)
@@ -1426,10 +1430,13 @@ namespace Arrakis.Menu
         public static int NoInvisLayerMask()
         {
             noInvisLayerMask ??= ~(1 << LayerMask.NameToLayer("TransparentFX") |
-                1 << LayerMask.NameToLayer("Ignore Raycast") | 1 << LayerMask.NameToLayer("Zone") | 1 << LayerMask.NameToLayer("Gorilla Trigger") |
-                1 << LayerMask.NameToLayer("Gorilla Boundary") | 1 << LayerMask.NameToLayer("GorillaCosmetics") | 1 << LayerMask.NameToLayer("GorillaParticle"));
+                1 << LayerMask.NameToLayer("Ignore Raycast") | 1 << LayerMask.NameToLayer("Zone")
+                | 1 << LayerMask.NameToLayer("Gorilla Trigger") |
+                1 << LayerMask.NameToLayer("Gorilla Boundary") | 1 << LayerMask.NameToLayer("GorillaCosmetics")
+                | 1 << LayerMask.NameToLayer("GorillaParticle"));
             return noInvisLayerMask ?? GTPlayer.Instance.locomotionEnabledLayers;
         }
+
         public static bool gunLocked;
         public static VRRig lockTarget;
         public static int gunLineStyle = 0;
@@ -1441,7 +1448,8 @@ namespace Arrakis.Menu
 
         public static bool GetGunInput(bool isShooting)
         {
-            return isShooting ? ControllerInputPoller.instance.rightControllerTriggerButton || Mouse.current.leftButton.isPressed : ControllerInputPoller.instance.rightGrab || Mouse.current.rightButton.isPressed;
+            return isShooting ? ControllerInputPoller.instance.rightControllerTriggerButton || Mouse.current.leftButton.isPressed :
+                ControllerInputPoller.instance.rightGrab|| Mouse.current.rightButton.isPressed;
         }
 
         public static Vector3 MidPosition;
@@ -1895,7 +1903,7 @@ namespace Arrakis.Menu
 
                 if (searching)
                 {
-                    lastPressedKeys = detectedKeys.Where(k => UnityEngine.InputSystem.Keyboard.current[k].isPressed).ToList();
+                    lastPressedKeys = detectedKeys.Where(k => Keyboard.current[k].isPressed).ToList();
                 }
                 else
                 {
@@ -1909,59 +1917,29 @@ namespace Arrakis.Menu
 
         public static bool searching = false;
         public static string keyboardInput = "";
-        public static List<UnityEngine.InputSystem.Key> lastPressedKeys = new List<UnityEngine.InputSystem.Key>();
-        public static readonly Dictionary<UnityEngine.InputSystem.Key, (float, float)> keyPressedTimes = new Dictionary<UnityEngine.InputSystem.Key, (float, float)>();
-        public static readonly UnityEngine.InputSystem.Key[] detectedKeys =
+        public static List<Key> lastPressedKeys = new List<Key>();
+
+        public static readonly Dictionary<Key, (float, float)> keyPressedTimes = new Dictionary<Key, (float, float)>();
+        public static readonly Key[] detectedKeys =
         {
-            UnityEngine.InputSystem.Key.A,
-            UnityEngine.InputSystem.Key.B,
-            UnityEngine.InputSystem.Key.C,
-            UnityEngine.InputSystem.Key.D,
-            UnityEngine.InputSystem.Key.E,
-            UnityEngine.InputSystem.Key.F,
-            UnityEngine.InputSystem.Key.G,
-            UnityEngine.InputSystem.Key.H,
-            UnityEngine.InputSystem.Key.I,
-            UnityEngine.InputSystem.Key.J,
-            UnityEngine.InputSystem.Key.K,
-            UnityEngine.InputSystem.Key.L,
-            UnityEngine.InputSystem.Key.M,
-            UnityEngine.InputSystem.Key.N,
-            UnityEngine.InputSystem.Key.O,
-            UnityEngine.InputSystem.Key.P,
-            UnityEngine.InputSystem.Key.Q,
-            UnityEngine.InputSystem.Key.R,
-            UnityEngine.InputSystem.Key.S,
-            UnityEngine.InputSystem.Key.T,
-            UnityEngine.InputSystem.Key.U,
-            UnityEngine.InputSystem.Key.V,
-            UnityEngine.InputSystem.Key.W,
-            UnityEngine.InputSystem.Key.X,
-            UnityEngine.InputSystem.Key.Y,
-            UnityEngine.InputSystem.Key.Z,
+            Key.A, Key.B, Key.C, Key.D, Key.E, Key.F, Key.G, Key.H,
+            Key.I, Key.J, Key.K, Key.L, Key.M, Key.N, Key.O, Key.P, Key.Q,
+            Key.R,Key.S, Key.T, Key.U, Key.V, Key.W, Key.X, Key.Y, Key.Z,
 
-            UnityEngine.InputSystem.Key.Digit0,
-            UnityEngine.InputSystem.Key.Digit1,
-            UnityEngine.InputSystem.Key.Digit2,
-            UnityEngine.InputSystem.Key.Digit3,
-            UnityEngine.InputSystem.Key.Digit4,
-            UnityEngine.InputSystem.Key.Digit5,
-            UnityEngine.InputSystem.Key.Digit6,
-            UnityEngine.InputSystem.Key.Digit7,
-            UnityEngine.InputSystem.Key.Digit8,
-            UnityEngine.InputSystem.Key.Digit9,
+            Key.Digit0, Key.Digit1, Key.Digit2, Key.Digit3, 
+            Key.Digit4, Key.Digit5, Key.Digit6, Key.Digit7, 
+            Key.Digit8, Key.Digit9,
 
-            UnityEngine.InputSystem.Key.Space,
-            UnityEngine.InputSystem.Key.Backspace,
-            UnityEngine.InputSystem.Key.Enter,
-            UnityEngine.InputSystem.Key.Escape
+            Key.Space, Key.Backspace,Key.Enter, Key.Escape
         };
+
         public static string[] allowedKeys = new string[]
         {
             "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l",
             "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x",
             "y", "z"
         };
+
         private static void UpdateKeyboard()
         {
             if (!searching)
@@ -1970,10 +1948,10 @@ namespace Arrakis.Menu
                 keyPressedTimes.Clear();
                 return;
             }
-            List<UnityEngine.InputSystem.Key> keysPressed = new List<UnityEngine.InputSystem.Key>();
+            List<Key> keysPressed = new List<Key>();
             foreach (var key in detectedKeys)
             {
-                if (!UnityEngine.InputSystem.Keyboard.current[key].isPressed)
+                if (!Keyboard.current[key].isPressed)
                 {
                     keyPressedTimes.Remove(key);
                     continue;
@@ -1999,20 +1977,20 @@ namespace Arrakis.Menu
                 if (lastPressedKeys.Contains(key))
                     continue;
 
-                bool ctrl = UnityEngine.InputSystem.Keyboard.current.leftCtrlKey.isPressed || UnityEngine.InputSystem.Keyboard.current.rightCtrlKey.isPressed;
+                bool ctrl = Keyboard.current.leftCtrlKey.isPressed || Keyboard.current.rightCtrlKey.isPressed;
                 if (ctrl)
                 {
                     switch (key)
                     {
-                        case UnityEngine.InputSystem.Key.A:
+                        case Key.A:
                             keyboardInput = "";
                             pageNumber = 0;
                             ReloadMenu();
                             break;
-                        case UnityEngine.InputSystem.Key.C:
+                        case Key.C:
                             GUIUtility.systemCopyBuffer = keyboardInput;
                             break;
-                        case UnityEngine.InputSystem.Key.V:
+                        case Key.V:
                             string clipboard = GUIUtility.systemCopyBuffer ?? "";
                             foreach (char c in clipboard)
                             {
@@ -2033,26 +2011,26 @@ namespace Arrakis.Menu
 
                 switch (key)
                 {
-                    case UnityEngine.InputSystem.Key.Backspace:
+                    case Key.Backspace:
                         if (!string.IsNullOrEmpty(keyboardInput))
                             keyboardInput = keyboardInput.Substring(0, keyboardInput.Length - 1);
                         break;
-                    case UnityEngine.InputSystem.Key.Escape:
+                    case Key.Escape:
                         searching = false;
                         keyboardInput = "";
                         ReloadMenu();
                         break;
-                    case UnityEngine.InputSystem.Key.Enter:
+                    case Key.Enter:
                         HandleSearch();
                         break;
-                    case UnityEngine.InputSystem.Key.Space:
+                    case Key.Space:
                         keyboardInput += " ";
                         break;
                     default:
                         string keyName = key.ToString();
                         if (keyName.Length == 1 && allowedKeys.Contains(keyName.ToLower()))
                         {
-                            bool shift = UnityEngine.InputSystem.Keyboard.current.leftShiftKey.isPressed || UnityEngine.InputSystem.Keyboard.current.rightShiftKey.isPressed;
+                            bool shift = Keyboard.current.leftShiftKey.isPressed || Keyboard.current.rightShiftKey.isPressed;
                             keyboardInput += shift ? keyName.ToUpper() : keyName.ToLower();
                         }
                         else if (keyName.StartsWith("Digit"))
@@ -2102,7 +2080,10 @@ namespace Arrakis.Menu
         public static GameObject ghostSphereR;
         public static GameObject ghostSphereL;
 
+        public static Text searchInputText;
+
         public static int pageNumber = 0;
+
         public static int GetCategory(string categoryName) =>
            Buttons.categoryNames.ToList().IndexOf(categoryName);
 
@@ -2244,6 +2225,7 @@ namespace Arrakis.Menu
             public Action accept;
             public Action decline;
         }
+
         public static List<PromptData> prompts = new List<PromptData>();
         public static PromptData CurrentPrompt
         {
@@ -2257,6 +2239,7 @@ namespace Arrakis.Menu
         }
         public static void StopCurrentPrompt() =>
             prompts.RemoveAt(0);
+
         public static void Prompt(string message, Action accept = null, Action decline = null, string accepbutton = "Yes", string declinebutton = "No")
         {
             prompts.Add(new PromptData
@@ -2557,7 +2540,7 @@ namespace Arrakis.Menu
         }
         public static readonly Dictionary<VRRig, int> playerPing = new Dictionary<VRRig, int>();
         private static void OnPlayerSerialize(VRRig rig) =>
-            playerPing[rig] = rig.GetPing(); // mainly used for debuging, might make a ping nametags later -sleepy
+            playerPing[rig] = rig.GetPing();
 
         public static Vector3 ServerSyncPos;
         public static Vector3 ServerSyncLeftHandPos;
@@ -2589,6 +2572,5 @@ namespace Arrakis.Menu
             Regex notags = new Regex("<.*?>", RegexOptions.IgnoreCase);
             return notags.Replace(input, replace);
         }
-        public static Text searchInputText;
     }
 }
