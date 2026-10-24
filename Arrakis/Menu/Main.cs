@@ -1544,7 +1544,7 @@ namespace Arrakis.Menu
                         GunLine.startColor = Color.HSVToRGB(Mathf.Repeat(Time.time * 0.4f, 1f), 1f, 1f);
                         GunLine.endColor = Color.HSVToRGB(Mathf.Repeat(Time.time * 0.4f + 0.5f, 1f), 1f, 1f);
                         break;
-                    case 3: // Zigline ?
+                    case 3: // Zigline
                         points[0] = startPos;
                         points[steps - 1] = endPos;
                         for (int i = 1; i < steps - 1; i++)
@@ -1566,6 +1566,98 @@ namespace Arrakis.Menu
                             points[i] = Vector3.Lerp(startPos, endPos, t);
                         }
                         break;
+                    case 5: // Spiral / Helix
+                        {
+                            Vector3 dir = (endPos - startPos).normalized;
+                            Vector3 pA = Vector3.Cross(dir, Vector3.up);
+                            if (pA.sqrMagnitude < 0.001f) pA = Vector3.Cross(dir, Vector3.right);
+                            pA.Normalize();
+                            Vector3 pB = Vector3.Cross(dir, pA).normalized;
+                            float coils = 5f;
+                            float radius = 0.12f;
+                            for (int i = 0; i < steps; i++)
+                            {
+                                float t = (float)i / (steps - 1);
+                                float a = t * Mathf.PI * 2f * coils + Time.time * 6f;
+                                float r = radius * Mathf.Sin(t * Mathf.PI); // taper at both ends
+                                Vector3 basePoint = Vector3.Lerp(startPos, endPos, t);
+                                points[i] = basePoint + pA * (Mathf.Cos(a) * r) + pB * (Mathf.Sin(a) * r);
+                            }
+                            break;
+                        }
+                    case 6: // Sine Wave
+                        {
+                            Vector3 dir = (endPos - startPos).normalized;
+                            Vector3 pA = Vector3.Cross(dir, Vector3.up);
+                            if (pA.sqrMagnitude < 0.001f) pA = Vector3.Cross(dir, Vector3.right);
+                            pA.Normalize();
+                            float amp = 0.1f;
+                            float freq = 4f;
+                            for (int i = 0; i < steps; i++)
+                            {
+                                float t = (float)i / (steps - 1);
+                                Vector3 basePoint = Vector3.Lerp(startPos, endPos, t);
+                                float wave = Mathf.Sin(t * Mathf.PI * 2f * freq - Time.time * 8f) * amp * Mathf.Sin(t * Mathf.PI);
+                                points[i] = basePoint + pA * wave;
+                            }
+                            break;
+                        }
+                    case 7: // Lightning
+                        {
+                            Vector3 dir = (endPos - startPos).normalized;
+                            Vector3 pA = Vector3.Cross(dir, Vector3.up);
+                            if (pA.sqrMagnitude < 0.001f) pA = Vector3.Cross(dir, Vector3.right);
+                            pA.Normalize();
+                            Vector3 pB = Vector3.Cross(dir, pA).normalized;
+                            points[0] = startPos;
+                            points[steps - 1] = endPos;
+                            float flicker = Mathf.Floor(Time.time * 20f); // re-roll jitter 20x/sec
+                            for (int i = 1; i < steps - 1; i++)
+                            {
+                                float t = (float)i / (steps - 1);
+                                Vector3 basePoint = Vector3.Lerp(startPos, endPos, t);
+                                float envelope = Mathf.Sin(t * Mathf.PI); // pinch the ends to the gun/target
+                                float jx = (Mathf.PerlinNoise(i * 1.7f, flicker) - 0.5f) * 0.3f * envelope;
+                                float jy = (Mathf.PerlinNoise(flicker, i * 1.7f) - 0.5f) * 0.3f * envelope;
+                                points[i] = basePoint + pA * jx + pB * jy;
+                            }
+                            break;
+                        }
+                    case 8: // Heartbeat / ECG
+                        {
+                            Vector3 dir = (endPos - startPos).normalized;
+                            Vector3 pA = Vector3.Cross(dir, Vector3.up);
+                            if (pA.sqrMagnitude < 0.001f) pA = Vector3.Cross(dir, Vector3.right);
+                            pA.Normalize();
+                            float amp = 0.18f;
+                            float scroll = Time.time * 0.6f;
+                            for (int i = 0; i < steps; i++)
+                            {
+                                float t = (float)i / (steps - 1);
+                                Vector3 basePoint = Vector3.Lerp(startPos, endPos, t);
+                                float p = Mathf.Repeat(t * 3f + scroll, 1f); // repeating QRS complex
+                                float spike = 0f;
+                                if (p > 0.45f && p < 0.5f) spike = (p - 0.45f) / 0.05f;        // up
+                                else if (p >= 0.5f && p < 0.55f) spike = 1f - (p - 0.5f) / 0.05f * 2f; // sharp down past zero
+                                else if (p >= 0.55f && p < 0.6f) spike = -1f + (p - 0.55f) / 0.05f; // recover
+                                points[i] = basePoint + pA * spike * amp;
+                            }
+                            break;
+                        }
+                    case 9: // Comet (tapered width)
+                        {
+                            for (int i = 0; i < steps; i++)
+                            {
+                                float t = (float)i / (steps - 1);
+                                points[i] = Vector3.Lerp(startPos, endPos, t);
+                            }
+                            float head = 0.02f + Mathf.Sin(Time.time * 4f) * 0.005f;
+                            GunLine.widthCurve = new AnimationCurve(
+                                new Keyframe(0f, gunLineWidth * 0.1f),
+                                new Keyframe(1f, head)
+                            );
+                            break;
+                        }
                 }
                 if (gunLineStyle != 2)
                 {

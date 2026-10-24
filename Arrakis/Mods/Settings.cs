@@ -226,10 +226,11 @@ namespace Arrakis
             }
             GetIndex("Change Click Volume").overlapText = $"Change Click Volume <color=grey>[<color=cyan>{buttonclickvolume}f</color>]</color>";
         }
+
         private static int GunLineindex = 0;
         public static void ChangeGunline(bool increment = true)
         {
-            const int value = 5;
+            const int value = 10;
             if (increment)
             {
                 GunLineindex = (GunLineindex + 1) % value;
@@ -238,7 +239,6 @@ namespace Arrakis
             {
                 GunLineindex = (GunLineindex - 1 + value) % value;
             }
-
             switch (GunLineindex)
             {
                 case 0:
@@ -260,6 +260,26 @@ namespace Arrakis
                 case 4:
                     gunLineStyle = 4;
                     GetIndex("Change Gun Line").overlapText = "Change Gun Line <color=grey>[<color=cyan>Pulse</color>]</color>";
+                    break;
+                case 5:
+                    gunLineStyle = 5;
+                    GetIndex("Change Gun Line").overlapText = "Change Gun Line <color=grey>[<color=cyan>Spiral</color>]</color>";
+                    break;
+                case 6:
+                    gunLineStyle = 6;
+                    GetIndex("Change Gun Line").overlapText = "Change Gun Line <color=grey>[<color=cyan>Sine Wave</color>]</color>";
+                    break;
+                case 7:
+                    gunLineStyle = 7;
+                    GetIndex("Change Gun Line").overlapText = "Change Gun Line <color=grey>[<color=cyan>Lightning</color>]</color>";
+                    break;
+                case 8:
+                    gunLineStyle = 8;
+                    GetIndex("Change Gun Line").overlapText = "Change Gun Line <color=grey>[<color=cyan>Heartbeat</color>]</color>";
+                    break;
+                case 9:
+                    gunLineStyle = 9;
+                    GetIndex("Change Gun Line").overlapText = "Change Gun Line <color=grey>[<color=cyan>Comet</color>]</color>";
                     break;
             }
         }
