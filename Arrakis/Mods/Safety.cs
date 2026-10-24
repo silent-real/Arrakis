@@ -139,14 +139,14 @@ namespace Arrakis.Mods
                 {
                     foreach (ButtonInfo v in b)
                     {
-                        if (v.enabled)
+                        if (v.enabled && !v.DontPanic)
                             Toggle(v.buttonText);
                     }
                 }
             }
             else
             {
-                if (Settings.panicPrompt)
+                if (panicPrompt)
                 {
                     Prompt("Would you like to disable all your mods ?", () =>
                     {
@@ -154,7 +154,7 @@ namespace Arrakis.Mods
                         {
                             foreach (ButtonInfo v in b)
                             {
-                                if (v.enabled)
+                                if (v.enabled && !v.DontPanic)
                                     Toggle(v.buttonText);
                             }
                         }
@@ -166,7 +166,7 @@ namespace Arrakis.Mods
                     {
                         foreach (ButtonInfo v in b)
                         {
-                            if (v.enabled)
+                            if (v.enabled && !v.DontPanic)
                                 Toggle(v.buttonText);
                         }
                     }
