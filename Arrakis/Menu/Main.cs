@@ -2492,6 +2492,12 @@ namespace Arrakis.Menu
         }
         public static void DestroyMenu()
         {
+            NetworkSystem.Instance.OnJoinedRoomEvent -= OnRoomJoined;
+            NetworkSystem.Instance.OnReturnedToSinglePlayer -= OnLeftRoom;
+
+            NetworkSystem.Instance.OnPlayerJoined -= OnPlayerJoined;
+            NetworkSystem.Instance.OnPlayerLeft -= OnPlayerLeft;
+
             Safety.Panic(true);
             BoardManager.DisableBoards();
             GameObject.Destroy(menu);
