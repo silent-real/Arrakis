@@ -101,7 +101,7 @@ namespace Arrakis
                 Directory.CreateDirectory(PluginInfo.BaseDirectory);
             if (!Directory.Exists($"{PluginInfo.BaseDirectory}\\Rooms"))
                 Directory.CreateDirectory($"{PluginInfo.BaseDirectory}\\Rooms");
-            if (!File.Exists($"{PluginInfo.BaseDirectory}/CustomTitle.txt"))
+            if (!File.Exists($"{PluginInfo.BaseDirectory}/CustomTitle.txt") && Main.GetIndex("Custom Menu Title").enabled)
                 KeyboardManager.Input("What do you want the title to be?", thing => File.WriteAllText($"{PluginInfo.BaseDirectory}/CustomTitle.txt", thing));
 
             Patches.CosmeticPatch.enabled = true;
