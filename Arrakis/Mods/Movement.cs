@@ -78,7 +78,7 @@ namespace Arrakis.Mods
         public static void SlideControl() =>
             GTPlayer.Instance.slideControl = 1.5f;
         public static void FixSlideControl() =>
-            GTPlayer.Instance.slideControl = 0.0035429f;
+            GTPlayer.Instance.slideControl = 0.00425f;
 
         public static void PSA()
         {
