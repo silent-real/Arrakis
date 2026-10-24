@@ -1843,8 +1843,7 @@ namespace Arrakis.Menu
         public static string CurrentCategoryName
         {
             get => Buttons.categoryNames[currentCategoryIndex];
-            set =>
-                currentCategoryIndex = GetCategory(value);
+            set => currentCategoryIndex = GetCategory(value);
         }
 
         private static readonly Dictionary<PhotonView, GameObject> views = new Dictionary<PhotonView, GameObject>();
