@@ -948,7 +948,7 @@ namespace Arrakis.Mods
                 }
                 else
                 {
-                    CrittersGrabber lg = GameObject.FindObjectsOfType<CrittersGrabber>().FirstOrDefault(g => g.rigPlayerId == PhotonNetwork.LocalPlayer.ActorNumber && g.isLeft);
+                    CrittersGrabber lg = GameObject.FindObjectsByType<CrittersGrabber>(FindObjectsSortMode.None).FirstOrDefault(g => g.rigPlayerId == PhotonNetwork.LocalPlayer.ActorNumber && g.isLeft);
                     var bodyPos = GorillaTagger.Instance.bodyCollider.transform.position;
                     List<CrittersPawn> critters = CrittersManager.instance.crittersPawns.Where(c => c != null).OrderBy(c => Vector3.Distance(c.transform.position, bodyPos) switch
                     {

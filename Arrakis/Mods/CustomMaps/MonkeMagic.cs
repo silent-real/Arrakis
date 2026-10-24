@@ -47,14 +47,16 @@ namespace Arrakis.Mods.CustomMaps
             PhotonNetwork.RaiseEvent(180, new object[] { "SummonThunder", (double)ActorNumber }, new RaiseEventOptions { Receivers = ReceiverGroup.All }, SendOptions.SendReliable);
             Safety.RPCProc();
         }
+
         private static float lucyDelay;
         public static void SpawnLucy(int ActorNumber)
         {
             if (!(Time.time > lucyDelay)) return;
-            lightningDelay = Time.time + 0.2f;
+            lucyDelay = Time.time + 0.2f;
             PhotonNetwork.RaiseEvent(180, new object[] { "SummonLucy", (double)ActorNumber }, new RaiseEventOptions { Receivers = ReceiverGroup.All }, SendOptions.SendReliable);
             Safety.RPCProc();
         }
+
         private static float materialDelay;
         public static void ChangeMaterial(int ActorNumber)
         {

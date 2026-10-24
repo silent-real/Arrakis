@@ -548,7 +548,7 @@ namespace Arrakis.Mods
             get
             {
                 if (_lucy == null)
-                    _lucy = GameObject.FindObjectsOfType<HalloweenGhostChaser>()[0];
+                    _lucy = GameObject.FindObjectsByType<HalloweenGhostChaser>(FindObjectsSortMode.None)[0];
                 return _lucy;
             }
         }

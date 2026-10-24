@@ -1855,7 +1855,7 @@ namespace Arrakis.Menu
             if (!cached && cachedViews != null)
                 return cachedViews;
             views.Clear();
-            PhotonView[] foundViews = GameObject.FindObjectsOfType<PhotonView>(true);
+            PhotonView[] foundViews = GameObject.FindObjectsByType<PhotonView>(FindObjectsSortMode.None);
             foreach (PhotonView view in foundViews)
             {
                 if (view == null)

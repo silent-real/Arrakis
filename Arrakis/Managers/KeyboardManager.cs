@@ -578,7 +578,7 @@ namespace Arrakis.Managers // ported from JupiterX (https://user44504.na.imgto.l
             tmp.enableAutoSizing = true;
             tmp.fontSizeMin = 0.05f;
             tmp.fontSizeMax = maxSize;
-            tmp.enableWordWrapping = false;
+            tmp.textWrappingMode = TextWrappingModes.NoWrap;
             tmp.richText = true;
             tmp.alignment = align;
             tmp.color = Color.white;

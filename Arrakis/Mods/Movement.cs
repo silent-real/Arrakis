@@ -314,7 +314,6 @@ namespace Arrakis.Mods
                 VRRig.LocalRig.enabled = true;
         }
 
-        private static bool toggled;
         private static bool ghostButtonLast;
         private static bool invisButtonLast;
         public static void ToggleGhostMonkey()
@@ -376,15 +375,13 @@ namespace Arrakis.Mods
             Rotate(Random.rotation);
 
         static Vector3 normal2;
-        static Vector3 vel1;
         static Vector3 vel2;
         static float dist2;
         static int layers;
-        static bool LeftClose2;
         static bool DoOnce2;
         static float maxD2;
         public static float WallWalkPower = 8.8f;
-        public static void WallWalk() // this works i sent sleper a vid -nova
+        public static void WallWalk()
         {
             if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
@@ -407,7 +404,6 @@ namespace Arrakis.Mods
                 {
                     normal2 = raycastHit2.normal;
                     dist2 = raycastHit2.distance;
-                    LeftClose2 = true;
                 }
                 if (dist2 < maxD2)
                 {

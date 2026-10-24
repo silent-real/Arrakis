@@ -1525,11 +1525,6 @@ namespace Arrakis.Mods
         public VRRig targetRig;
         public Color wireColor = Color.cyan;
         private Material wireMat;
-        private struct MeshEdgeCache
-        {
-            public Mesh bakedMesh;
-            public (int, int)[] edges;
-        }
         private SkinnedMeshRenderer skin;
         private Mesh baked;
         private (int, int)[] edgeCache;

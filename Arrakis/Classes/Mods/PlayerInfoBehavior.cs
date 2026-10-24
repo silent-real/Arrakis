@@ -79,7 +79,7 @@ namespace Arrakis.Classes.Mods
                 Rigidbody rb = GetComponent<Rigidbody>();
                 if (rb != null)
                 {
-                    Vector3 vel = rb.velocity;
+                    Vector3 vel = rb.linearVelocity;
                     velocity = $"({vel.x:F2}, {vel.y:F2}, {vel.z:F2}) | Speed: {vel.magnitude:F2}";
                 }
                 else
