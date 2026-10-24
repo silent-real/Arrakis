@@ -1413,12 +1413,6 @@ namespace Arrakis.Menu
             for (int i = 0; i < localPositions.Length; i++)
             {
                 GameObject side = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                try
-                {
-                    if (platform.GetComponent<GorillaSurfaceOverride>() != null)
-                        side.AddComponent<GorillaSurfaceOverride>().overrideIndex = platform.GetComponent<GorillaSurfaceOverride>().overrideIndex;
-                }
-                catch { }
                 float size = 0.025f;
                 side.transform.SetParent(platform.transform);
                 side.transform.position = localPositions[i] * (size / 2);
