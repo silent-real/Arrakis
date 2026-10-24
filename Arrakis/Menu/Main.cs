@@ -1579,7 +1579,7 @@ namespace Arrakis.Menu
                             {
                                 float t = (float)i / (steps - 1);
                                 float a = t * Mathf.PI * 2f * coils + Time.time * 6f;
-                                float r = radius * Mathf.Sin(t * Mathf.PI); // taper at both ends
+                                float r = radius * Mathf.Sin(t * Mathf.PI);
                                 Vector3 basePoint = Vector3.Lerp(startPos, endPos, t);
                                 points[i] = basePoint + pA * (Mathf.Cos(a) * r) + pB * (Mathf.Sin(a) * r);
                             }
@@ -1611,12 +1611,12 @@ namespace Arrakis.Menu
                             Vector3 pB = Vector3.Cross(dir, pA).normalized;
                             points[0] = startPos;
                             points[steps - 1] = endPos;
-                            float flicker = Mathf.Floor(Time.time * 20f); // re-roll jitter 20x/sec
+                            float flicker = Mathf.Floor(Time.time * 20f);
                             for (int i = 1; i < steps - 1; i++)
                             {
                                 float t = (float)i / (steps - 1);
                                 Vector3 basePoint = Vector3.Lerp(startPos, endPos, t);
-                                float envelope = Mathf.Sin(t * Mathf.PI); // pinch the ends to the gun/target
+                                float envelope = Mathf.Sin(t * Mathf.PI);
                                 float jx = (Mathf.PerlinNoise(i * 1.7f, flicker) - 0.5f) * 0.3f * envelope;
                                 float jy = (Mathf.PerlinNoise(flicker, i * 1.7f) - 0.5f) * 0.3f * envelope;
                                 points[i] = basePoint + pA * jx + pB * jy;
@@ -1635,11 +1635,11 @@ namespace Arrakis.Menu
                             {
                                 float t = (float)i / (steps - 1);
                                 Vector3 basePoint = Vector3.Lerp(startPos, endPos, t);
-                                float p = Mathf.Repeat(t * 3f + scroll, 1f); // repeating QRS complex
+                                float p = Mathf.Repeat(t * 3f + scroll, 1f);
                                 float spike = 0f;
-                                if (p > 0.45f && p < 0.5f) spike = (p - 0.45f) / 0.05f;        // up
-                                else if (p >= 0.5f && p < 0.55f) spike = 1f - (p - 0.5f) / 0.05f * 2f; // sharp down past zero
-                                else if (p >= 0.55f && p < 0.6f) spike = -1f + (p - 0.55f) / 0.05f; // recover
+                                if (p > 0.45f && p < 0.5f) spike = (p - 0.45f) / 0.05f;
+                                else if (p >= 0.5f && p < 0.55f) spike = 1f - (p - 0.5f) / 0.05f * 2f;
+                                else if (p >= 0.55f && p < 0.6f) spike = -1f + (p - 0.55f) / 0.05f;
                                 points[i] = basePoint + pA * spike * amp;
                             }
                             break;
@@ -1672,7 +1672,6 @@ namespace Arrakis.Menu
                                 float t = (float)i / (steps - 1);
                                 float a = t * Mathf.PI * 2f * coils + Time.time * 5f;
                                 float r = radius * Mathf.Sin(t * Mathf.PI);
-                                // alternate strands each point for a woven look on a single renderer
                                 float phase = (i % 2 == 0) ? 0f : Mathf.PI;
                                 Vector3 basePoint = Vector3.Lerp(startPos, endPos, t);
                                 points[i] = basePoint + pA * (Mathf.Cos(a + phase) * r) + pB * (Mathf.Sin(a + phase) * r);
@@ -1691,7 +1690,6 @@ namespace Arrakis.Menu
                             {
                                 float t = (float)i / (steps - 1);
                                 Vector3 basePoint = Vector3.Lerp(startPos, endPos, t);
-                                // flip side every link so the line braids back and forth
                                 float swing = Mathf.Abs(Mathf.Sin(t * Mathf.PI * links + Time.time * 4f)) * amp;
                                 float side = Mathf.Sign(Mathf.Sin(t * Mathf.PI * links * 0.5f));
                                 points[i] = basePoint + pA * swing * side;
@@ -1710,7 +1708,7 @@ namespace Arrakis.Menu
                             {
                                 float t = (float)i / (steps - 1);
                                 Vector3 basePoint = Vector3.Lerp(startPos, endPos, t);
-                                float grow = t * 0.22f; // widens toward the target like a tongue of flame
+                                float grow = t * 0.22f;
                                 float nx = (Mathf.PerlinNoise(i * 0.25f, climb) - 0.5f) * grow;
                                 float ny = (Mathf.PerlinNoise(climb, i * 0.25f) - 0.5f) * grow;
                                 points[i] = basePoint + pA * nx + pB * ny;
@@ -1752,14 +1750,104 @@ namespace Arrakis.Menu
                                 float t = (float)i / (steps - 1);
                                 Vector3 basePoint = Vector3.Lerp(startPos, endPos, t);
                                 int seg = Mathf.FloorToInt(t * segs);
-                                // quantized right-angle offset that reshuffles on each tick
                                 float level = (Mathf.PerlinNoise(seg * 0.9f, tick) > 0.5f ? 1f : -1f);
                                 points[i] = basePoint + pA * level * amp;
                             }
                             break;
                         }
+                    case 15: // Orbit
+                        {
+                            Vector3 dir = (endPos - startPos).normalized;
+                            Vector3 pA = Vector3.Cross(dir, Vector3.up);
+                            if (pA.sqrMagnitude < 0.001f) pA = Vector3.Cross(dir, Vector3.right);
+                            pA.Normalize();
+                            Vector3 pB = Vector3.Cross(dir, pA).normalized;
+                            float rings = 3f;
+                            for (int i = 0; i < steps; i++)
+                            {
+                                float t = (float)i / (steps - 1);
+                                Vector3 basePoint = Vector3.Lerp(startPos, endPos, t);
+                                float r = (0.05f + Mathf.Abs(Mathf.Sin(t * Mathf.PI * rings)) * 0.1f);
+                                float a = t * Mathf.PI * 2f * 6f + Time.time * 7f;
+                                points[i] = basePoint + pA * (Mathf.Cos(a) * r) + pB * (Mathf.Sin(a) * r * 0.4f);
+                            }
+                            break;
+                        }
+                    case 16: // Glitch
+                        {
+                            Vector3 dir = (endPos - startPos).normalized;
+                            Vector3 pA = Vector3.Cross(dir, Vector3.up);
+                            if (pA.sqrMagnitude < 0.001f) pA = Vector3.Cross(dir, Vector3.right);
+                            pA.Normalize();
+                            Vector3 pB = Vector3.Cross(dir, pA).normalized;
+                            float frame = Mathf.Floor(Time.time * 15f);
+                            for (int i = 0; i < steps; i++)
+                            {
+                                float t = (float)i / (steps - 1);
+                                Vector3 basePoint = Vector3.Lerp(startPos, endPos, t);
+                                float roll = Mathf.PerlinNoise(i * 2.3f, frame);
+                                float kick = roll > 0.7f ? (roll - 0.7f) * 1.5f : 0f;
+                                float sign = (Mathf.PerlinNoise(frame, i * 2.3f) > 0.5f) ? 1f : -1f;
+                                points[i] = basePoint + pA * kick * sign * 0.4f + pB * kick * 0.1f;
+                            }
+                            break;
+                        }
+                    case 17: // Breathing
+                        {
+                            Vector3 dir = (endPos - startPos).normalized;
+                            Vector3 pA = Vector3.Cross(dir, Vector3.up);
+                            if (pA.sqrMagnitude < 0.001f) pA = Vector3.Cross(dir, Vector3.right);
+                            pA.Normalize();
+                            float breath = (Mathf.Sin(Time.time * 2f) * 0.5f + 0.5f);
+                            float amp = 0.04f + breath * 0.14f;
+                            float freq = 3f;
+                            for (int i = 0; i < steps; i++)
+                            {
+                                float t = (float)i / (steps - 1);
+                                Vector3 basePoint = Vector3.Lerp(startPos, endPos, t);
+                                float wave = Mathf.Sin(t * Mathf.PI * 2f * freq) * amp * Mathf.Sin(t * Mathf.PI);
+                                points[i] = basePoint + pA * wave;
+                            }
+                            break;
+                        }
+                    case 18: // Sawtooth
+                        {
+                            Vector3 dir = (endPos - startPos).normalized;
+                            Vector3 pA = Vector3.Cross(dir, Vector3.up);
+                            if (pA.sqrMagnitude < 0.001f) pA = Vector3.Cross(dir, Vector3.right);
+                            pA.Normalize();
+                            float amp = 0.12f;
+                            float teeth = 7f;
+                            float scroll = Time.time * 1.5f;
+                            for (int i = 0; i < steps; i++)
+                            {
+                                float t = (float)i / (steps - 1);
+                                Vector3 basePoint = Vector3.Lerp(startPos, endPos, t);
+                                float saw = Mathf.Repeat(t * teeth + scroll, 1f);
+                                points[i] = basePoint + pA * (saw - 0.5f) * amp * Mathf.Sin(t * Mathf.PI);
+                            }
+                            break;
+                        }
+                    case 19: // Starfield
+                        {
+                            Vector3 dir = (endPos - startPos).normalized;
+                            Vector3 pA = Vector3.Cross(dir, Vector3.up);
+                            if (pA.sqrMagnitude < 0.001f) pA = Vector3.Cross(dir, Vector3.right);
+                            pA.Normalize();
+                            Vector3 pB = Vector3.Cross(dir, pA).normalized;
+                            for (int i = 0; i < steps; i++)
+                            {
+                                float t = (float)i / (steps - 1);
+                                Vector3 basePoint = Vector3.Lerp(startPos, endPos, t);
+                                float drift = Time.time * 0.5f;
+                                float sx = (Mathf.PerlinNoise(i * 3.1f, drift) - 0.5f) * 0.25f * t;
+                                float sy = (Mathf.PerlinNoise(drift, i * 3.1f) - 0.5f) * 0.25f * t;
+                                points[i] = basePoint + pA * sx + pB * sy;
+                            }
+                            break;
+                        }
                 }
-                if (gunLineStyle != 2)
+                if (gunLineStyle != 2 && gunLineStyle != 12)
                 {
                     GunLine.startColor = backgroundColor.GetCurrentColor();
                     GunLine.endColor = backgroundColor.GetCurrentColor(0.5f);
