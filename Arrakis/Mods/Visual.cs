@@ -32,7 +32,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR;
-using static Arrakis.Managers.InputManager;
 using static Arrakis.Menu.Main;
 using static Arrakis.Settings;
 using Hand = Arrakis.Managers.InputManager.Hand;
