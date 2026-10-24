@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
 using Arrakis.Extensions;
 using Arrakis.Managers;
 using Arrakis.Patches.Patchers;
@@ -778,6 +779,27 @@ namespace Arrakis.Mods
                 default: return;
             }
             GTPlayer.Instance.TeleportTo(targetPos, GTPlayer.Instance.transform.rotation, false, true);
+        }
+
+        private static readonly Dictionary<GorillaSurfaceOverride, float> velocityArchive = new Dictionary<GorillaSurfaceOverride, float>();
+        public static void SlipSlap()
+        {
+            foreach (var surface in GameObject.FindObjectsByType<GorillaSurfaceOverride>(FindObjectsSortMode.None))
+            {
+                float slidePercent = surface.slidePercentageOverride > 0f ? surface.slidePercentageOverride : GTPlayer.Instance.materialData[surface.overrideIndex].slidePercent;
+                if (slidePercent > 0f)
+                {
+                    velocityArchive[surface] = surface.extraVelMultiplier;
+                    surface.extraVelMultiplier += slidePercent;
+                }
+            }
+        }
+        public static void DisableSlipSlap()
+        {
+            foreach (var vel in velocityArchive)
+                vel.Key.extraVelMultiplier = vel.Value;
+
+            velocityArchive.Clear();
         }
     }
 }
