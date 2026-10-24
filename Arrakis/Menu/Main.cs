@@ -1623,7 +1623,7 @@ namespace Arrakis.Menu
                             }
                             break;
                         }
-                    case 8: // Heartbeat / ECG
+                    case 8: // Heartbeat
                         {
                             Vector3 dir = (endPos - startPos).normalized;
                             Vector3 pA = Vector3.Cross(dir, Vector3.up);
@@ -1644,7 +1644,7 @@ namespace Arrakis.Menu
                             }
                             break;
                         }
-                    case 9: // Comet (tapered width)
+                    case 9: // Comet
                         {
                             for (int i = 0; i < steps; i++)
                             {
@@ -1656,6 +1656,106 @@ namespace Arrakis.Menu
                                 new Keyframe(0f, gunLineWidth * 0.1f),
                                 new Keyframe(1f, head)
                             );
+                            break;
+                        }
+                    case 10: // DNA Double Helix
+                        {
+                            Vector3 dir = (endPos - startPos).normalized;
+                            Vector3 pA = Vector3.Cross(dir, Vector3.up);
+                            if (pA.sqrMagnitude < 0.001f) pA = Vector3.Cross(dir, Vector3.right);
+                            pA.Normalize();
+                            Vector3 pB = Vector3.Cross(dir, pA).normalized;
+                            float coils = 4f;
+                            float radius = 0.1f;
+                            for (int i = 0; i < steps; i++)
+                            {
+                                float t = (float)i / (steps - 1);
+                                float a = t * Mathf.PI * 2f * coils + Time.time * 5f;
+                                float r = radius * Mathf.Sin(t * Mathf.PI);
+                                // alternate strands each point for a woven look on a single renderer
+                                float phase = (i % 2 == 0) ? 0f : Mathf.PI;
+                                Vector3 basePoint = Vector3.Lerp(startPos, endPos, t);
+                                points[i] = basePoint + pA * (Mathf.Cos(a + phase) * r) + pB * (Mathf.Sin(a + phase) * r);
+                            }
+                            break;
+                        }
+                    case 11: // Chain
+                        {
+                            Vector3 dir = (endPos - startPos).normalized;
+                            Vector3 pA = Vector3.Cross(dir, Vector3.up);
+                            if (pA.sqrMagnitude < 0.001f) pA = Vector3.Cross(dir, Vector3.right);
+                            pA.Normalize();
+                            float amp = 0.06f;
+                            float links = 8f;
+                            for (int i = 0; i < steps; i++)
+                            {
+                                float t = (float)i / (steps - 1);
+                                Vector3 basePoint = Vector3.Lerp(startPos, endPos, t);
+                                // flip side every link so the line braids back and forth
+                                float swing = Mathf.Abs(Mathf.Sin(t * Mathf.PI * links + Time.time * 4f)) * amp;
+                                float side = Mathf.Sign(Mathf.Sin(t * Mathf.PI * links * 0.5f));
+                                points[i] = basePoint + pA * swing * side;
+                            }
+                            break;
+                        }
+                    case 12: // Fire
+                        {
+                            Vector3 dir = (endPos - startPos).normalized;
+                            Vector3 pA = Vector3.Cross(dir, Vector3.up);
+                            if (pA.sqrMagnitude < 0.001f) pA = Vector3.Cross(dir, Vector3.right);
+                            pA.Normalize();
+                            Vector3 pB = Vector3.Cross(dir, pA).normalized;
+                            float climb = Time.time * 2.5f;
+                            for (int i = 0; i < steps; i++)
+                            {
+                                float t = (float)i / (steps - 1);
+                                Vector3 basePoint = Vector3.Lerp(startPos, endPos, t);
+                                float grow = t * 0.22f; // widens toward the target like a tongue of flame
+                                float nx = (Mathf.PerlinNoise(i * 0.25f, climb) - 0.5f) * grow;
+                                float ny = (Mathf.PerlinNoise(climb, i * 0.25f) - 0.5f) * grow;
+                                points[i] = basePoint + pA * nx + pB * ny;
+                            }
+                            GunLine.startColor = Color.Lerp(new Color(1f, 0.85f, 0.1f), new Color(1f, 0.3f, 0f), Mathf.PingPong(Time.time, 1f));
+                            GunLine.endColor = new Color(0.8f, 0.05f, 0f);
+                            break;
+                        }
+                    case 13: // Ribbon
+                        {
+                            Vector3 dir = (endPos - startPos).normalized;
+                            Vector3 pA = Vector3.Cross(dir, Vector3.up);
+                            if (pA.sqrMagnitude < 0.001f) pA = Vector3.Cross(dir, Vector3.right);
+                            pA.Normalize();
+                            float amp = 0.14f;
+                            for (int i = 0; i < steps; i++)
+                            {
+                                float t = (float)i / (steps - 1);
+                                Vector3 basePoint = Vector3.Lerp(startPos, endPos, t);
+                                float twist = Mathf.Sin(t * Mathf.PI * 3f + Time.time * 3f);
+                                points[i] = basePoint + pA * twist * amp * Mathf.Sin(t * Mathf.PI);
+                            }
+                            float w = 0.01f + Mathf.Abs(Mathf.Sin(Time.time * 2f)) * 0.03f;
+                            GunLine.startWidth = w;
+                            GunLine.endWidth = w;
+                            break;
+                        }
+                    case 14: // Tron
+                        {
+                            Vector3 dir = (endPos - startPos).normalized;
+                            Vector3 pA = Vector3.Cross(dir, Vector3.up);
+                            if (pA.sqrMagnitude < 0.001f) pA = Vector3.Cross(dir, Vector3.right);
+                            pA.Normalize();
+                            float amp = 0.1f;
+                            int segs = 6;
+                            float tick = Mathf.Floor(Time.time * 4f);
+                            for (int i = 0; i < steps; i++)
+                            {
+                                float t = (float)i / (steps - 1);
+                                Vector3 basePoint = Vector3.Lerp(startPos, endPos, t);
+                                int seg = Mathf.FloorToInt(t * segs);
+                                // quantized right-angle offset that reshuffles on each tick
+                                float level = (Mathf.PerlinNoise(seg * 0.9f, tick) > 0.5f ? 1f : -1f);
+                                points[i] = basePoint + pA * level * amp;
+                            }
                             break;
                         }
                 }

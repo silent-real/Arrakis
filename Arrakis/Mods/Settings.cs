@@ -230,7 +230,7 @@ namespace Arrakis
         private static int GunLineindex = 0;
         public static void ChangeGunline(bool increment = true)
         {
-            const int value = 10;
+            const int value = 15;
             if (increment)
             {
                 GunLineindex = (GunLineindex + 1) % value;
@@ -280,6 +280,26 @@ namespace Arrakis
                 case 9:
                     gunLineStyle = 9;
                     GetIndex("Change Gun Line").overlapText = "Change Gun Line <color=grey>[<color=cyan>Comet</color>]</color>";
+                    break;
+                case 10:
+                    gunLineStyle = 10;
+                    GetIndex("Change Gun Line").overlapText = "Change Gun Line <color=grey>[<color=cyan>DNA Helix</color>]</color>";
+                    break;
+                case 11:
+                    gunLineStyle = 11;
+                    GetIndex("Change Gun Line").overlapText = "Change Gun Line <color=grey>[<color=cyan>Chain</color>]</color>";
+                    break;
+                case 12:
+                    gunLineStyle = 12;
+                    GetIndex("Change Gun Line").overlapText = "Change Gun Line <color=grey>[<color=cyan>Fire</color>]</color>";
+                    break;
+                case 13:
+                    gunLineStyle = 13;
+                    GetIndex("Change Gun Line").overlapText = "Change Gun Line <color=grey>[<color=cyan>Ribbon</color>]</color>";
+                    break;
+                case 14:
+                    gunLineStyle = 14;
+                    GetIndex("Change Gun Line").overlapText = "Change Gun Line <color=grey>[<color=cyan>Tron</color>]</color>";
                     break;
             }
         }
