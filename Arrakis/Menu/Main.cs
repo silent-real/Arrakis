@@ -2593,12 +2593,18 @@ namespace Arrakis.Menu
 
         public static void OnPlayerJoined(NetPlayer plr)
         {
-            NotificationManager.SendNotification("<color=grey>[</color><color=cyan>JOIN</color><color=grey>] </color><color=white>Name: " + plr.NickName + "</color>");
+            if (plr != NetworkSystem.Instance.LocalPlayer)
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=cyan>JOIN</color><color=grey>] </color><color=white>Name: " + plr.NickName + "</color>");
+            }
         }
 
         public static void OnPlayerLeft(NetPlayer plr)
         {
-            NotificationManager.SendNotification("<color=grey>[</color><color=cyan>LEAVE</color><color=grey>]</color> <color=white>Name: " + plr.NickName + "</color>");
+            if (plr != NetworkSystem.Instance.LocalPlayer)
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=cyan>LEAVE</color><color=grey>]</color> <color=white>Name: " + plr.NickName + "</color>");
+            }
         }
     }
 }
