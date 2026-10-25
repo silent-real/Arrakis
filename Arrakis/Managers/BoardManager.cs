@@ -45,7 +45,11 @@ namespace Arrakis.Managers
         private TextMeshPro HeadOutsideTMP;
         public TextMeshPro motdTextTMP;
 
-        private MeshRenderer boardRenders;
+        private MeshRenderer boardStumpRenders;
+        private MeshRenderer boardForestRenders;
+
+        private Material stumpOriginalMat;
+        private Material forestOriginalMat;
 
         private Material boardmat;
         private Material ogboardmat;
@@ -59,6 +63,15 @@ namespace Arrakis.Managers
             Instance = this;
             boardmat = new Material(Shader.Find("GorillaTag/UberShader"));
             boardmat.color = Settings.backgroundColor.GetCurrentColor();
+
+            boardStumpRenders = boards?.GetComponent<MeshRenderer>();
+            boardForestRenders = forestBoards?.GetComponent<MeshRenderer>();
+
+            if (boardStumpRenders != null)
+                stumpOriginalMat = boardStumpRenders.material;
+
+            if (boardForestRenders != null)
+                forestOriginalMat = boardForestRenders.material;
         }
 
         public void Start()
@@ -73,10 +86,14 @@ namespace Arrakis.Managers
             cocTextTMP = cocText?.GetComponent<TextMeshPro>();
             cocHeadingTMP = cocHeading?.GetComponent<TextMeshPro>();
 
-            boardRenders = boards?.GetComponent<MeshRenderer>();
+            boardStumpRenders = boards?.GetComponent<MeshRenderer>();
+            boardForestRenders = forestBoards?.GetComponent<MeshRenderer>();
 
-            if (boardRenders != null)
-                ogboardmat = boardRenders.material;
+            if (boardStumpRenders != null)
+                stumpOriginalMat = boardStumpRenders.material;
+
+            if (boardForestRenders != null)
+                forestOriginalMat = boardForestRenders.material;
 
             motdTextObj = GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/motdBodyText");
             motdTextTMP = motdTextObj?.GetComponent<TextMeshPro>();
@@ -117,10 +134,26 @@ namespace Arrakis.Managers
                 }
             }
 
-            if (boardmat != null)
+            if (Settings.disablecustomboards)
+            {
+                if (boardStumpRenders != null && stumpOriginalMat != null)
+                    boardStumpRenders.material = stumpOriginalMat;
+
+                if (boardForestRenders != null && forestOriginalMat != null)
+                    boardForestRenders.material = forestOriginalMat;
+            }
+            else if (boardmat != null)
+            {
                 boardmat.color = Settings.backgroundColor.GetCurrentColor();
 
-            if (monitorObj != null && boardRenders != null)
+                if (boardStumpRenders != null)
+                    boardStumpRenders.material = boardmat;
+
+                if (boardForestRenders != null)
+                    boardForestRenders.material = boardmat;
+            }
+
+            if (monitorObj != null)
             {
                 if (Settings.disablecustomboards)
                 {
@@ -128,9 +161,6 @@ namespace Arrakis.Managers
 
                     if (monitorRenderer != null && oldMonitorMat != null)
                         monitorRenderer.material = oldMonitorMat;
-
-                    if (ogboardmat != null)
-                        boardRenders.material = ogboardmat;
                 }
                 else
                 {
@@ -138,9 +168,6 @@ namespace Arrakis.Managers
 
                     if (monitorRenderer != null && boardmat != null)
                         monitorRenderer.material = boardmat;
-
-                    if (boardmat != null)
-                        boardRenders.material = boardmat;
                 }
             }
         }
@@ -180,9 +207,15 @@ namespace Arrakis.Managers
                     monitorRenderer.material = Instance.oldMonitorMat;
             }
 
-            if (Instance.boardRenders != null && Instance.ogboardmat != null)
-                Instance.boardRenders.material = Instance.ogboardmat;
+            if (Instance.boardStumpRenders != null && Instance.stumpOriginalMat != null)
+                Instance.boardStumpRenders.material = Instance.stumpOriginalMat;
+
+            if (Instance.boardForestRenders != null && Instance.forestOriginalMat != null)
+                Instance.boardForestRenders.material = Instance.forestOriginalMat;
         }
+
+        private const int stumpValue = 8;
+        private const int forestValue = 7;
 
         public static GameObject _boards;
         public static GameObject boards
@@ -194,14 +227,35 @@ namespace Arrakis.Managers
                     var stumpChildren = GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom").transform.Children().Where(x =>
                     x.name.Contains("UnityTempFile")).ToList();
 
-                    if (3 >= 0 && 3 < stumpChildren.Count)
+                    if (3 >= 0 && stumpValue < stumpChildren.Count)
                     {
-                        var stumpBoard = stumpChildren[3];
+                        var stumpBoard = stumpChildren[stumpValue];
                         if (stumpBoard != null)
                             _boards = stumpBoard;
                     }
                 }
                 return _boards;
+            }
+        }
+
+        public static GameObject _forestboards;
+        public static GameObject forestBoards
+        {
+            get
+            {
+                if (_forestboards == null)
+                {
+                    var forestChildren = GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest").transform.Children().Where(x =>
+                    x.name.Contains("UnityTempFile")).ToList();
+
+                    if (3 >= 0 && forestValue < forestChildren.Count)
+                    {
+                        var forestBoard = forestChildren[forestValue];
+                        if (forestBoard != null)
+                            _forestboards = forestBoard;
+                    }
+                }
+                return _forestboards;
             }
         }
     }
