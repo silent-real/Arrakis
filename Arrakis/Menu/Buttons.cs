@@ -185,7 +185,6 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Disable Gun Line", method =() => gunline = false, disableMethod =() => gunline = true, isTogglable = true, toolTip = "Disables the gun line.", ShowInArraylist = false, DontPanic = true },
                 new ButtonInfo { buttonText = "Change Gun Line", overlapText = "Change Gun Line <color=grey>[<color=cyan>Default</color>]</color>", enableMethod =() => ChangeGunline(), method =() => ChangeGunline(), disableMethod =() => ChangeGunline(false), isIncremental = true, isTogglable = false, toolTip = "Changes the gunline.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Swap Gun Hand", enableMethod =() => swapgunhand = true, disableMethod =() => swapgunhand = false, isTogglable = true, toolTip = "Swap what hand the gun is on.", ShowInArraylist = false, DontPanic = true },
-                new ButtonInfo { buttonText = "Gun Target ESP", enableMethod =() => gunTargetESP = true, disableMethod =() => gunTargetESP = false, isTogglable = true, toolTip = "Makes who you shoot have a esp on them.", ShowInArraylist = false, DontPanic = true },
                 new ButtonInfo { buttonText = "Gun Pointer Trail", enableMethod =() => gunPointerTrail = true, disableMethod =() => gunPointerTrail = false, isTogglable = true, toolTip = "Gives the gun pointer a trail.", ShowInArraylist = false, DontPanic = true },
             },
 
