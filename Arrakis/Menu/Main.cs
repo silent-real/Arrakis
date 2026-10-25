@@ -2576,10 +2576,10 @@ namespace Arrakis.Menu
 
         public static void OnLeftRoom()
         {
-            if (!disableroomnotifications)
-                NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> Left room {currentRoomName}");
             if (clearNotificationsOnDisconnect)
                 NotificationManager.ClearAllNotifications();
+            if (!disableroomnotifications)
+                NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> Left room {currentRoomName}");
             currentRoomName = "";
         }
 
