@@ -227,6 +227,7 @@ namespace Arrakis.Mods
         private static GameObject hitboxleft;
         private static GameObject hitboxright;
         public static float hitboxScale = 0.3f;
+        public static bool ShowHitboxes = false;
         public static void Hitboxes()
         {
             if (hitboxleft == null)
@@ -251,11 +252,15 @@ namespace Arrakis.Mods
                 hitboxright.GetComponent<Renderer>().material.shader = Shader.Find("GUI/Text Shader");
             }
 
-            hitboxleft.GetComponent<Renderer>().material.color = new Color(Settings.backgroundColor.GetCurrentColor().r,
-                Settings.backgroundColor.GetCurrentColor().g, Settings.backgroundColor.GetCurrentColor().b, 0.2f);
-
-            hitboxright.GetComponent<Renderer>().material.color = new Color(Settings.backgroundColor.GetCurrentColor().r,
-                Settings.backgroundColor.GetCurrentColor().g, Settings.backgroundColor.GetCurrentColor().b, 0.2f);
+            hitboxleft.SetActive(ShowHitboxes);
+            hitboxright.SetActive(ShowHitboxes);
+            if (ShowHitboxes)
+            {
+                Color color = Settings.backgroundColor.GetCurrentColor();
+                color.a = 0.2f;
+                hitboxleft.GetComponent<Renderer>().material.color = color;
+                hitboxright.GetComponent<Renderer>().material.color = color;
+            }
         }
 
         public static void DestroyHitboxes()

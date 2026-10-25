@@ -166,6 +166,7 @@ namespace Arrakis.Menu
 
                 new ButtonInfo { buttonText = "Change Tag Aura Range", overlapText = "Change Tag Aura Range <color=grey>[<color=cyan>Default</color>]</color>", enableMethod =() => ChangeTagAuraDistance(), method =() => ChangeTagAuraDistance(), disableMethod =() => ChangeTagAuraDistance(false), isIncremental = true,  isTogglable = false, toolTip = "Changes the tag aura range.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Instant Tag", enableMethod =() => instanttag = true, disableMethod =() => instanttag = false, toolTip = "Makes it so tag mods are instant.", ShowInArraylist = false , DontPanic = true},
+                new ButtonInfo { buttonText = "Show Hitboxes", enableMethod =() => Advantage.ShowHitboxes = true, disableMethod =() => Advantage.ShowHitboxes = false, toolTip = "Shows the hitboxes in the hitbox mod.", ShowInArraylist = false , DontPanic = true},
             },
 
             new ButtonInfo[] { // Projectile Settings
