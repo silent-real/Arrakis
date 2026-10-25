@@ -28,6 +28,7 @@ using GorillaNetworking;
 using Photon.Pun;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -212,14 +213,18 @@ namespace Arrakis.Mods
         }
         public static void BypassVCBan()
         {
-            GorillaTagger.moderationMutedTime = -1f;
-            GorillaTelemetry.PostNotificationEvent("Unmute");
-            GorillaTagger.Instance.myRecorder.TransmitEnabled = true;
-            if (KIDManager.Instance != null)
+            Prompt("This will restart your game to fully bypass it.\n Are you sure?", () =>
             {
-                GameObject.Destroy(KIDManager.Instance);
-            }
-            PromptSingle("Only people in the lobby will be able to hear you.\nrestart your game to fully bypass the ban.");
+                GorillaTagger.moderationMutedTime = -1f;
+                GorillaTelemetry.PostNotificationEvent("Unmute");
+                GorillaTagger.Instance.myRecorder.TransmitEnabled = true;
+                if (KIDManager.Instance != null)
+                {
+                    GameObject.Destroy(KIDManager.Instance);
+                }
+                Process.Start("steam://run/1533390");
+                Application.Quit();
+            });
         }
 
         public static void AntiModerator()
