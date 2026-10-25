@@ -1517,6 +1517,48 @@ namespace Arrakis.Mods
             if (ps != null && ps.isEmitting)
                 ps.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }
+
+        public static void CleanPool(VRRig rig = null)
+        {
+            if (rig == null)
+            {
+                limbChamPool.Clear();
+                tracersPool.Clear();
+                boneEspPool.Clear();
+                selfBoneEspPool.Clear();
+                boxEspPool.Clear();
+                hollowBoxPool.Clear();
+                nameTagPool.Clear();
+                IDnameTagPool.Clear();
+                PlatformnameTagPool.Clear();
+                FpsnametagPool.Clear();
+                TaggednametagPool.Clear();
+                ringPool.Clear();
+                haloPool.Clear();
+                wireframeEspPool.Clear();
+                originalRigColors.Clear();
+                breakcujmpool.Clear();
+            }
+            else
+            {
+                limbChamPool.Remove(rig);
+                tracersPool.Remove(rig);
+                boneEspPool.Remove(rig);
+                selfBoneEspPool.Remove(rig);
+                boxEspPool.Remove(rig);
+                hollowBoxPool.Remove(rig);
+                nameTagPool.Remove(rig);
+                IDnameTagPool.Remove(rig);
+                PlatformnameTagPool.Remove(rig);
+                FpsnametagPool.Remove(rig);
+                TaggednametagPool.Remove(rig);
+                ringPool.Remove(rig);
+                haloPool.Remove(rig);
+                wireframeEspPool.Remove(rig);
+                originalRigColors.Remove(rig);
+                breakcujmpool.Remove(rig);
+            }
+        }
     }
 
     public class WireframeRenderer : MonoBehaviour

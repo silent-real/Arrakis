@@ -2605,6 +2605,10 @@ namespace Arrakis.Menu
             if (plr != NetworkSystem.Instance.LocalPlayer)
             {
                 NotificationManager.SendNotification("<color=grey>[</color><color=cyan>LEAVE</color><color=grey>]</color> <color=white>Name: " + plr.NickName + "</color>");
+                if (plr.VRRig2() != null)
+                {
+                    Visual.CleanPool(plr.VRRig2());
+                }
             }
         }
     }
