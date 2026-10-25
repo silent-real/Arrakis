@@ -1003,7 +1003,7 @@ namespace Arrakis.Menu
                 }
             }.AddComponent<Text>();
             text.font = currentFont;
-            text.text = method.overlapText ?? method.buttonText;
+            text.text = KeybindManager.ApplyBindLabel(method, method.overlapText ?? method.buttonText);
             text.supportRichText = true;
             text.fontSize = 1;
             text.color = method.enabled ? textColors[1] : textColors[0];

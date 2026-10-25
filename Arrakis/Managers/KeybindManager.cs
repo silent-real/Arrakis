@@ -20,6 +20,7 @@
 
 using Arrakis.Classes;
 using Arrakis.Notifications;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -141,17 +142,50 @@ namespace Arrakis.Managers
             ReloadMenu();
         }
 
+        private static readonly Regex tagRegex = new Regex(@"(\[<color=cyan>)[^<]*(</color>\])");
+
+        public static string Label(InputType type, InputManager.Hand hand)
+        {
+            bool right = hand == InputManager.Hand.Right;
+            switch (type)
+            {
+                case InputType.Primary: return right ? "A" : "X";
+                case InputType.Secondary: return right ? "B" : "Y";
+                case InputType.Trigger: return right ? "RT" : "LT";
+                case InputType.Grip: return right ? "RG" : "LG";
+                case InputType.Joystick: return right ? "RJ" : "LJ";
+                default: return type.ToString();
+            }
+        }
+
+        public static string OverrideLabel(ButtonInfo b)
+        {
+            if (!XRSettings.isDeviceActive && b.bindKey != Key.None)
+                return b.bindKey.ToString();
+            if (b.bindType != null && b.bindHand != null)
+                return Label(b.bindType.Value, b.bindHand.Value);
+            return null;
+        }
+
+        public static string ApplyBindLabel(ButtonInfo b, string text)
+        {
+            if (b == null || !b.isKeybind || string.IsNullOrEmpty(text))
+                return text;
+            string label = OverrideLabel(b);
+            if (label == null)
+                return text;
+            return tagRegex.IsMatch(text) ? tagRegex.Replace(text, "${1}" + label + "${2}", 1) : $"{text} <color=grey>[<color=cyan>{label}</color>]</color>";
+        }
         public static string BindText(ButtonInfo b)
         {
             if (Listening == b)
                 return "...";
-            if (!XRSettings.isDeviceActive && b.bindKey != Key.None)
-                return b.bindKey.ToString();
-            if (b.bindType == null && !b.defaultBindKnown)
-                return "-";
-            InputManager.Hand hand = b.bindHand ?? b.defaultBindHand;
-            InputType type = b.bindType ?? b.defaultBindType;
-            return (hand == InputManager.Hand.Left ? "L " : "R ") + type;
+            string label = OverrideLabel(b);
+            if (label != null)
+                return label;
+            if (b.defaultBindKnown)
+                return Label(b.defaultBindType, b.defaultBindHand);
+            return "-";
         }
     }
 }
