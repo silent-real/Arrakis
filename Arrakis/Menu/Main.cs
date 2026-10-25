@@ -1497,7 +1497,7 @@ namespace Arrakis.Menu
             Vector3 direction = gunTransform.forward;
             Vector3 up = gunTransform.up;
             Vector3 right = gunTransform.right;
-            Physics.Raycast(gunTransform.position, Quaternion.Euler(0f, 45f, 0f) * gunTransform.forward, out var ray, 512f, NoInvisLayerMask());
+            Physics.Raycast(gunTransform.position, Quaternion.AngleAxis(110f, right) * direction, out var ray, 512f, NoInvisLayerMask());
             if (shouldBePC)
             {
                 Ray screenRay = TPC.ScreenPointToRay(Mouse.current.position.ReadValue());
