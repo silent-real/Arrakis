@@ -27,6 +27,7 @@
 	  <None Remove="Resources\Bundles\arrakisassets" />
 	  <None Remove="Resources\Bundles\maxwell" />
 	  <None Remove="Resources\Bundles\zeldasword" />
+	  <None Remove="Resources\Images\keybind.png" />
 	  <None Remove="Resources\Images\pride.png" />
 	  <None Remove="Resources\Images\return.png" />
 	  <None Remove="Resources\Images\search.png" />
@@ -41,6 +42,7 @@
 	  <EmbeddedResource Include="Resources\Bundles\arrakisassets" />
 	  <EmbeddedResource Include="Resources\Bundles\maxwell" />
 	  <EmbeddedResource Include="Resources\Bundles\zeldasword" />
+	  <EmbeddedResource Include="Resources\Images\keybind.png" />
 	  <EmbeddedResource Include="Resources\Images\pride.png" />
 	  <EmbeddedResource Include="Resources\Images\return.png" />
 	  <EmbeddedResource Include="Resources\Images\search.png" />

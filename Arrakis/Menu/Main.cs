@@ -979,19 +979,40 @@ namespace Arrakis.Menu
                     bind.AddComponent<ButtonCollider>().relatedText = "Keybind_" + method.buttonText;
                     bind.AddComponent<ColorChanger>().colors = listening ? buttonColors[1] : buttonColors[0];
 
-                    Text bindText = new GameObject { transform = { parent = canvasObject.transform } }.AddComponent<Text>();
-                    bindText.font = currentFont;
-                    bindText.text = KeybindManager.BindText(method);
-                    bindText.fontSize = 1;
-                    bindText.color = textColors[0];
-                    bindText.alignment = TextAnchor.MiddleCenter;
-                    bindText.fontStyle = currentStyle;
-                    bindText.resizeTextForBestFit = true;
-                    bindText.resizeTextMinSize = 0;
-                    RectTransform bindRect = bindText.GetComponent<RectTransform>();
-                    bindRect.sizeDelta = new Vector2(0.028f, 0.02f);
-                    bindRect.localPosition = new Vector3(0.064f, -0.12f, 0.111f - offset / 2.6f);
-                    bindRect.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+                    if (keybindIcon == null)
+                        keybindIcon = WhitenIcon(LoadTexture("keybind"));
+
+                    if (keybindIcon != null)
+                    {
+                        Image bindImage = new GameObject { transform = { parent = canvasObject.transform } }.AddComponent<Image>();
+                        if (keybindMat == null)
+                            keybindMat = new Material(bindImage.material);
+                        bindImage.material = keybindMat;
+                        bindImage.material.SetTexture("_MainTex", keybindIcon);
+                        bindImage.color = listening ? textColors[1] : textColors[0];
+
+                        RectTransform bindRect = bindImage.GetComponent<RectTransform>();
+                        bindRect.localPosition = Vector3.zero;
+                        bindRect.sizeDelta = new Vector2(0.03f, 0.03f);
+                        bindRect.localPosition = new Vector3(0.064f, -0.12f, 0.111f - offset / 2.6f);
+                        bindRect.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+                    }
+                    else
+                    {
+                        Text bindText = new GameObject { transform = { parent = canvasObject.transform } }.AddComponent<Text>();
+                        bindText.font = currentFont;
+                        bindText.text = KeybindManager.BindText(method);
+                        bindText.fontSize = 1;
+                        bindText.color = textColors[0];
+                        bindText.alignment = TextAnchor.MiddleCenter;
+                        bindText.fontStyle = currentStyle;
+                        bindText.resizeTextForBestFit = true;
+                        bindText.resizeTextMinSize = 0;
+                        RectTransform bindRect = bindText.GetComponent<RectTransform>();
+                        bindRect.sizeDelta = new Vector2(0.028f, 0.02f);
+                        bindRect.localPosition = new Vector3(0.064f, -0.12f, 0.111f - offset / 2.6f);
+                        bindRect.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+                    }
                 }
             }
 
@@ -2110,6 +2131,21 @@ namespace Arrakis.Menu
             Toggle(results[0].buttonText);
         }
 
+        public static Texture2D WhitenIcon(Texture2D src, float alphaBoost = 1.5f)
+        {
+            if (src == null)
+                return null;
+
+            Texture2D tex = new Texture2D(src.width, src.height, TextureFormat.RGBA32, false);
+            Color[] pixels = src.GetPixels();
+            for (int i = 0; i < pixels.Length; i++)
+                pixels[i] = new Color(1f, 1f, 1f, Mathf.Clamp01(pixels[i].a * alphaBoost));
+            tex.SetPixels(pixels);
+            tex.Apply();
+            tex.filterMode = FilterMode.Bilinear;
+            return tex;
+        }
+
         public static float lastsavesprefstime;
         public static float saveRoomDelay;
 
@@ -2365,6 +2401,9 @@ namespace Arrakis.Menu
                 rect2.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
             }
         }
+
+        public static Texture2D keybindIcon;
+        public static Material keybindMat;
 
         public static Texture2D returnIcon;
         public static Material returnMat;
