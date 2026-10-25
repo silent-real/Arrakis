@@ -18,7 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using Arrakis.Managers;
 using System;
+using UnityEngine.InputSystem;
 
 namespace Arrakis.Classes
 {
@@ -38,5 +40,13 @@ namespace Arrakis.Classes
         public bool patched = false;
         public bool isIncremental = false;
         public bool DontPanic = false;
+        public bool isKeybind = false;
+
+        public InputManager.InputType? bindType;
+        public InputManager.Hand? bindHand;
+        public Key bindKey = Key.None;
+        public InputManager.InputType defaultBindType;
+        public InputManager.Hand defaultBindHand;
+        public bool defaultBindKnown;
     }
 }

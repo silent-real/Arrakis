@@ -106,6 +106,8 @@ namespace Arrakis.Menu
             else
                 UpdateKeyboard();
 
+            KeybindManager.Update();
+
             try
             {
                 bool toOpen = (!rightHanded && ControllerInputPoller.instance.leftControllerSecondaryButton) || (rightHanded && ControllerInputPoller.instance.rightControllerSecondaryButton);
@@ -314,6 +316,7 @@ namespace Arrakis.Menu
                 // Run mods
                 foreach (ButtonInfo button in buttons.SelectMany(list => list).Where(button => button.enabled && button.method != null))
                 {
+                    CurrentButton = button;
                     try
                     {
                         button.method.Invoke();
@@ -321,6 +324,10 @@ namespace Arrakis.Menu
                     catch (Exception exc)
                     {
                         CustomConsole.Log(string.Format("{0} // Error with mod {1} at {2}: {3}", PluginInfo.Name, button.buttonText, exc.StackTrace, exc.Message), CustomConsole.LogType.Error);
+                    }
+                    finally
+                    {
+                        CurrentButton = null;
                     }
                 }
             }
@@ -951,11 +958,41 @@ namespace Arrakis.Menu
                 gameObject.GetComponent<BoxCollider>().isTrigger = true;
                 gameObject.transform.parent = menu.transform;
                 gameObject.transform.rotation = Quaternion.identity;
-                gameObject.transform.localScale = new Vector3(0.09f, 0.9f, 0.08f);
-                gameObject.transform.localPosition = new Vector3(0.56f, 0f, 0.28f - offset);
+                gameObject.transform.localScale = new Vector3(0.09f, method.isKeybind ? 0.78f : 0.9f, 0.08f);
+                gameObject.transform.localPosition = new Vector3(0.56f, method.isKeybind ? 0.06f : 0f, 0.28f - offset);
                 gameObject.AddComponent<ButtonCollider>().relatedText = method.buttonText;
                 ColorChanger colorChanger = gameObject.AddComponent<ColorChanger>();
                 colorChanger.colors = method.enabled ? buttonColors[1] : buttonColors[0];
+
+                if (method.isKeybind)
+                {
+                    bool listening = KeybindManager.Listening == method;
+                    GameObject bind = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    if (!UnityInput.Current.GetKey(keyboardButton) && !searching)
+                        bind.layer = 2;
+                    Destroy(bind.GetComponent<Rigidbody>());
+                    bind.GetComponent<BoxCollider>().isTrigger = true;
+                    bind.transform.parent = menu.transform;
+                    bind.transform.rotation = Quaternion.identity;
+                    bind.transform.localScale = new Vector3(0.09f, 0.102f, 0.08f);
+                    bind.transform.localPosition = new Vector3(0.56f, -0.399f, 0.28f - offset);
+                    bind.AddComponent<ButtonCollider>().relatedText = "Keybind_" + method.buttonText;
+                    bind.AddComponent<ColorChanger>().colors = listening ? buttonColors[1] : buttonColors[0];
+
+                    Text bindText = new GameObject { transform = { parent = canvasObject.transform } }.AddComponent<Text>();
+                    bindText.font = currentFont;
+                    bindText.text = KeybindManager.BindText(method);
+                    bindText.fontSize = 1;
+                    bindText.color = textColors[0];
+                    bindText.alignment = TextAnchor.MiddleCenter;
+                    bindText.fontStyle = currentStyle;
+                    bindText.resizeTextForBestFit = true;
+                    bindText.resizeTextMinSize = 0;
+                    RectTransform bindRect = bindText.GetComponent<RectTransform>();
+                    bindRect.sizeDelta = new Vector2(0.028f, 0.02f);
+                    bindRect.localPosition = new Vector3(0.064f, -0.12f, 0.111f - offset / 2.6f);
+                    bindRect.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+                }
             }
 
             Text text = new GameObject
@@ -977,7 +1014,7 @@ namespace Arrakis.Menu
             RectTransform component = text.GetComponent<RectTransform>();
             component.localPosition = Vector3.zero;
             component.sizeDelta = new Vector2(0.2f, 0.03f);
-            component.localPosition = new Vector3(0.064f, 0f, 0.111f - offset / 2.6f);
+            component.localPosition = new Vector3(0.064f, method.isKeybind ? 0.018f : 0f, 0.111f - offset / 2.6f);
             component.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
 
             if (lowercasetext)
@@ -1145,6 +1182,19 @@ namespace Arrakis.Menu
 
         public static void Toggle(string buttonText)
         {
+            if (buttonText.StartsWith("Keybind_"))
+            {
+                ButtonInfo bindTarget = GetIndex(buttonText.Substring("Keybind_".Length));
+                if (bindTarget != null)
+                {
+                    if (KeybindManager.Listening == bindTarget)
+                        KeybindManager.StopListening();
+                    else
+                        KeybindManager.StartListening(bindTarget);
+                }
+                return;
+            }
+
             ButtonInfo button = GetIndex(buttonText);
             if (button != null)
             {
@@ -1864,6 +1914,8 @@ namespace Arrakis.Menu
         public static SphereCollider buttonCollider;
         public static Camera TPC;
         public static Text fpsObject;
+
+        public static ButtonInfo CurrentButton;
 
         private static GameObject GunPointer;
         private static LineRenderer GunLine;

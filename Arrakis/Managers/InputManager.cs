@@ -24,12 +24,36 @@ using UnityEngine.InputSystem;
 using UnityEngine.XR;
 using Valve.VR;
 using CommonUsages = UnityEngine.XR.CommonUsages;
+using Arrakis.Classes;
+using Arrakis.Menu;
 
 namespace Arrakis.Managers
 {
     public class InputManager
     {
         public static bool GetInput(InputType type, Hand hand, bool pc = false, bool forpcgun = false)
+        {
+            ButtonInfo b = Main.CurrentButton;
+            if (b != null && b.isKeybind)
+            {
+                if (!b.defaultBindKnown)
+                {
+                    b.defaultBindType = type;
+                    b.defaultBindHand = hand;
+                    b.defaultBindKnown = true;
+                }
+                if (type == b.defaultBindType && hand == b.defaultBindHand)
+                {
+                    if (pc && b.bindKey != Key.None)
+                        return CheckPC() && Keyboard.current != null && Keyboard.current[b.bindKey].isPressed;
+                    type = b.bindType ?? type;
+                    hand = b.bindHand ?? hand;
+                }
+            }
+            return GetInputRaw(type, hand, pc, forpcgun);
+        }
+
+        private static bool GetInputRaw(InputType type, Hand hand, bool pc, bool forpcgun)
         {
             if (pc && !CheckPC())
                 return false;

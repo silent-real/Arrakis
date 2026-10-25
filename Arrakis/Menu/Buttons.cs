@@ -330,7 +330,7 @@ namespace Arrakis.Menu
             new ButtonInfo[] { // Movement
                 new ButtonInfo { buttonText = "Exit Movement", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
-                new ButtonInfo { buttonText = "Fly <color=grey>[<color=cyan>A</color>]</color>", method =() => Movement.Fly(), isTogglable = true, toolTip = "Lets you fly while holding <color=grey>[<color=cyan>A</color>]</color>." },
+                new ButtonInfo { buttonText = "Fly <color=grey>[<color=cyan>A</color>]</color>", method =() => Movement.Fly(), isTogglable = true, toolTip = "Lets you fly while holding <color=grey>[<color=cyan>A</color>]</color>.", isKeybind = true },
                 new ButtonInfo { buttonText = "Hand Fly <color=grey>[<color=cyan>A</color>]</color>", method =() => Movement.HandFly(), isTogglable = true, toolTip = "Lets you fly while holding <color=grey>[<color=cyan>A</color>]</color>." },
                 new ButtonInfo { buttonText = "Trigger Fly <color=grey>[<color=cyan>T</color>]</color>", method =() => Movement.TriggerFly(), isTogglable = true, toolTip = "Lets you fly while holding <color=grey>[<color=cyan>T</color>]</color>." },
                 new ButtonInfo { buttonText = "Noclip Fly <color=grey>[<color=cyan>A</color>]</color>", method =() => Movement.NoclipFly(), isTogglable = true, toolTip = "Lets you fly while with noclip holding <color=grey>[<color=cyan>A</color>]</color>." },
