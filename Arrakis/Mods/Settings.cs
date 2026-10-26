@@ -91,6 +91,7 @@ namespace Arrakis
         public static bool disableSearchButton = false;
         public static bool lowgravitymenu = false;
         public static bool custommenutitle = false;
+        public static bool animatedmenutitle = false;
         public static bool disablemenutitle = false;
         public static bool disablepagenumber = false;
         public static bool disablecustomboards = false;
@@ -106,6 +107,7 @@ namespace Arrakis
         public static bool smoothMenuPosition = false;
         public static bool smoothMenuRotation = false;
 
+        public static string animTitleSource = "";
 
         public static int currentPageType = 0;
         private static int pageType = 0;

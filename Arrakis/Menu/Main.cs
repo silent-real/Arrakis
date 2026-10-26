@@ -254,6 +254,16 @@ namespace Arrakis.Menu
                     break;
             }
 
+            if (animatedmenutitle && title != null)
+            {
+                string tstring = custommenutitle ? NoRichtextTags(animTitleSource) : "Arrakis";
+                if (!string.IsNullOrEmpty(tstring))
+                {
+                    int len = (int)Mathf.PingPong(Time.time / 0.15f, tstring.Length + 1);
+                    title.text = len > 0 ? tstring[..len] : "";
+                }
+            }
+
             try
             {
                 if (GunPointer != null)
@@ -626,6 +636,8 @@ namespace Arrakis.Menu
                 else
                     title.text = "";
             }
+
+            animTitleSource = title.text;
 
             if (lowercasetext)
                 title.text = title.text.ToLower();

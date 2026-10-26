@@ -102,6 +102,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Uppercase Text", enableMethod =() => uppercasetext = true, disableMethod =() => uppercasetext = false, toolTip = "Makes the menu text uppercase.", ShowInArraylist = false, DontPanic = true },
 
                 new ButtonInfo { buttonText = "Custom Menu Title", enableMethod =() => custommenutitle = true, disableMethod =() => custommenutitle = false, toolTip = "Makes the menu use a custom menu title you can edit in files.", ShowInArraylist = false, DontPanic = true },
+                new ButtonInfo { buttonText = "Animated Menu Title", enableMethod =() => animatedmenutitle = true, disableMethod =() => animatedmenutitle = false, toolTip = "Makes the menu title be animated.", ShowInArraylist = false, DontPanic = true },
                 new ButtonInfo { buttonText = "Disable Menu Title", enableMethod =() => disablemenutitle = true, disableMethod =() => disablemenutitle = false, toolTip = "Removes the menu title.", ShowInArraylist = false, DontPanic = true },
                 new ButtonInfo { buttonText = "Disable Page Number", enableMethod =() => disablepagenumber = true, disableMethod =() => disablepagenumber = false, toolTip = "Removes the page number.", ShowInArraylist = false, DontPanic = true },
                 new ButtonInfo { buttonText = "Disable Return Button", enableMethod =() => disableReturnButton = true, disableMethod =() => disableReturnButton = false, toolTip = "Disables the return button.", ShowInArraylist = false, DontPanic = true },
