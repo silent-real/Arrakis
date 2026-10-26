@@ -103,8 +103,8 @@ namespace Arrakis
         public static bool stumptext = true;
         public static bool instanttag = true;
         public static bool disablediscordrpc = true;
-        public static bool smoothMenuPosition = true;
-        public static bool smoothMenuRotation = true;
+        public static bool smoothMenuPosition = false;
+        public static bool smoothMenuRotation = false;
 
         public static KeyCode keyboardButton = KeyCode.Q;
 
