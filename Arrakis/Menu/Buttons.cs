@@ -140,7 +140,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Disable Discord RPC", enableMethod =() => disablediscordrpc = true, disableMethod =() => disablediscordrpc = false, enabled = false, toolTip = "Disables the discord rpc.", ShowInArraylist = true, DontPanic = true },
 
                 new ButtonInfo { buttonText = "Smooth Menu Position", enableMethod =() => smoothMenuPosition = true, disableMethod =() => smoothMenuPosition = false, enabled = false, toolTip = "Smooths the menu position.", ShowInArraylist = false, DontPanic = true },
-                new ButtonInfo { buttonText = "Smooth Menu Position", enableMethod =() => smoothMenuRotation = true, disableMethod =() => smoothMenuRotation = false, enabled = false, toolTip = "Smooths the menu rotation.", ShowInArraylist = false, DontPanic = true },
+                new ButtonInfo { buttonText = "Smooth Menu Rotation", enableMethod =() => smoothMenuRotation = true, disableMethod =() => smoothMenuRotation = false, enabled = false, toolTip = "Smooths the menu rotation.", ShowInArraylist = false, DontPanic = true },
 
                 new ButtonInfo { buttonText = "Log Photon Events", enableMethod =() => logphotonevents = true, disableMethod =() => logphotonevents = false, toolTip = "Logs all photon events to your console.", DontPanic = true },
 
