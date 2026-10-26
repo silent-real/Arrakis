@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<!--If i just take seralyths it will work trust me -nova-->
 		<AssemblyName>Arrakis</AssemblyName>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 
@@ -8,6 +7,7 @@
 		<GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
 
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		<LangVersion>Latest</LangVersion>
 
 		<Configurations>Debug;Release</Configurations>
 	</PropertyGroup>
@@ -48,7 +48,6 @@
 	  <EmbeddedResource Include="Resources\Images\search.png" />
 	</ItemGroup>
 
-	<!-- AssemblyPublicizer usage inspired from GorillaShirts -->
 	<ItemGroup>
 		<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3">
 		  <PrivateAssets>all</PrivateAssets>
