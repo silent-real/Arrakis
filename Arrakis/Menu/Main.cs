@@ -1115,7 +1115,7 @@ namespace Arrakis.Menu
                     menu.transform.position = smoothTargetPosition;
                 }
 
-                if (!smoothMenuRotation)
+                if (smoothMenuRotation)
                 {
                     smoothTargetRotation = smoothTargetRotation == Quaternion.identity ? menu.transform.rotation : Quaternion.Lerp(smoothTargetRotation, menu.transform.rotation, Time.deltaTime * 10f);
                     menu.transform.rotation = smoothTargetRotation;
