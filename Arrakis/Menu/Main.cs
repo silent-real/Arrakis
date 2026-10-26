@@ -201,6 +201,59 @@ namespace Arrakis.Menu
                 CustomConsole.Log(string.Format("{0} // Error initializing at {1}: {2}", PluginInfo.Name, exc.StackTrace, exc.Message), CustomConsole.LogType.Error);
             }
 
+            switch (currentPageType)
+            {
+                case 1:
+                    if (menu != null)
+                    {
+                        if (InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Right, !XRSettings.isDeviceActive) && !rightTriggerPageOnce)
+                        {
+                            Toggle("NextPage");
+                            rightTriggerPageOnce = true;
+                        }
+                        if (!InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Right, !XRSettings.isDeviceActive) && rightTriggerPageOnce)
+                        {
+                            rightTriggerPageOnce = false;
+                        }
+
+                        if (InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Left, !XRSettings.isDeviceActive) && !leftTriggerPageOnce)
+                        {
+                            Toggle("PreviousPage");
+                            leftTriggerPageOnce = true;
+                        }
+                        if (!InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Left, !XRSettings.isDeviceActive) && leftTriggerPageOnce)
+                        {
+                            leftTriggerPageOnce = false;
+                        }
+                    }
+                    break;
+                case 2:
+                    if (menu != null)
+                    {
+                        if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive) && !rightTriggerPageOnce)
+                        {
+                            Toggle("NextPage");
+                            rightTriggerPageOnce = true;
+                        }
+                        if (!InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive) && rightTriggerPageOnce)
+                        {
+                            rightTriggerPageOnce = false;
+                        }
+
+                        if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Left, !XRSettings.isDeviceActive) && !leftTriggerPageOnce)
+                        {
+                            Toggle("PreviousPage");
+                            leftTriggerPageOnce = true;
+                        }
+
+                        if (!InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Left, !XRSettings.isDeviceActive) && leftTriggerPageOnce)
+                        {
+                            leftTriggerPageOnce = false;
+                        }
+                    }
+                    break;
+            }
+
             try
             {
                 if (GunPointer != null)
@@ -663,83 +716,86 @@ namespace Arrakis.Menu
             }
 
             // Page Buttons
-            GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            if (!UnityInput.Current.GetKey(keyboardButton))
-                gameObject.layer = 2;
-            Destroy(gameObject.GetComponent<Rigidbody>());
-            gameObject.GetComponent<BoxCollider>().isTrigger = true;
-            gameObject.transform.parent = menu.transform;
-            gameObject.transform.rotation = Quaternion.identity;
-            gameObject.transform.localScale = new Vector3(0.09f, 0.2f, 0.9f);
-            gameObject.transform.localPosition = new Vector3(0.56f, 0.65f, 0);
-            gameObject.GetComponent<Renderer>().material.color = buttonColors[0].colors[0].color;
-            gameObject.AddComponent<ButtonCollider>().relatedText = "PreviousPage";
-
-            colorChanger = gameObject.AddComponent<ColorChanger>();
-            colorChanger.colors = buttonColors[0];
-
-            Text text = new GameObject
+            if (currentPageType == 0)
             {
-                transform =
+                GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                if (!UnityInput.Current.GetKey(keyboardButton))
+                    gameObject.layer = 2;
+                Destroy(gameObject.GetComponent<Rigidbody>());
+                gameObject.GetComponent<BoxCollider>().isTrigger = true;
+                gameObject.transform.parent = menu.transform;
+                gameObject.transform.rotation = Quaternion.identity;
+                gameObject.transform.localScale = new Vector3(0.09f, 0.2f, 0.9f);
+                gameObject.transform.localPosition = new Vector3(0.56f, 0.65f, 0);
+                gameObject.GetComponent<Renderer>().material.color = buttonColors[0].colors[0].color;
+                gameObject.AddComponent<ButtonCollider>().relatedText = "PreviousPage";
+
+                colorChanger = gameObject.AddComponent<ColorChanger>();
+                colorChanger.colors = buttonColors[0];
+
+                Text text = new GameObject
+                {
+                    transform =
                 {
                     parent = canvasObject.transform
                 }
-            }.AddComponent<Text>();
-            text.font = currentFont;
-            text.text = "<";
-            text.fontSize = 1;
-            text.color = textColors[0];
-            text.alignment = TextAnchor.MiddleCenter;
-            text.resizeTextForBestFit = true;
-            text.resizeTextMinSize = 0;
-            component = text.GetComponent<RectTransform>();
-            component.localPosition = Vector3.zero;
-            component.sizeDelta = new Vector2(0.2f, 0.03f);
-            component.localPosition = new Vector3(0.064f, 0.195f, 0f);
-            component.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+                }.AddComponent<Text>();
+                text.font = currentFont;
+                text.text = "<";
+                text.fontSize = 1;
+                text.color = textColors[0];
+                text.alignment = TextAnchor.MiddleCenter;
+                text.resizeTextForBestFit = true;
+                text.resizeTextMinSize = 0;
+                component = text.GetComponent<RectTransform>();
+                component.localPosition = Vector3.zero;
+                component.sizeDelta = new Vector2(0.2f, 0.03f);
+                component.localPosition = new Vector3(0.064f, 0.195f, 0f);
+                component.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
 
-            gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            if (!UnityInput.Current.GetKey(keyboardButton))
-            {
-                gameObject.layer = 2;
+                gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                if (!UnityInput.Current.GetKey(keyboardButton))
+                {
+                    gameObject.layer = 2;
+                }
+                Destroy(gameObject.GetComponent<Rigidbody>());
+                gameObject.GetComponent<BoxCollider>().isTrigger = true;
+                gameObject.transform.parent = menu.transform;
+                gameObject.transform.rotation = Quaternion.identity;
+                gameObject.transform.localScale = new Vector3(0.09f, 0.2f, 0.9f);
+                gameObject.transform.localPosition = new Vector3(0.56f, -0.65f, 0);
+                gameObject.GetComponent<Renderer>().material.color = buttonColors[0].colors[0].color;
+                gameObject.AddComponent<ButtonCollider>().relatedText = "NextPage";
+
+                colorChanger = gameObject.AddComponent<ColorChanger>();
+                colorChanger.colors = buttonColors[0];
+
+                text = new GameObject
+                {
+                    transform =
+                {
+                    parent = canvasObject.transform
+                }
+                }.AddComponent<Text>();
+                text.font = currentFont;
+                text.text = ">";
+                text.fontSize = 1;
+                text.color = textColors[0];
+                text.alignment = TextAnchor.MiddleCenter;
+                text.resizeTextForBestFit = true;
+                text.resizeTextMinSize = 0;
+                component = text.GetComponent<RectTransform>();
+                component.localPosition = Vector3.zero;
+                component.sizeDelta = new Vector2(0.2f, 0.03f);
+                component.localPosition = new Vector3(0.064f, -0.195f, 0f);
+                component.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+
+                if (lowercasetext)
+                    text.text = text.text.ToLower();
+
+                if (uppercasetext)
+                    text.text = text.text.ToUpper();
             }
-            Destroy(gameObject.GetComponent<Rigidbody>());
-            gameObject.GetComponent<BoxCollider>().isTrigger = true;
-            gameObject.transform.parent = menu.transform;
-            gameObject.transform.rotation = Quaternion.identity;
-            gameObject.transform.localScale = new Vector3(0.09f, 0.2f, 0.9f);
-            gameObject.transform.localPosition = new Vector3(0.56f, -0.65f, 0);
-            gameObject.GetComponent<Renderer>().material.color = buttonColors[0].colors[0].color;
-            gameObject.AddComponent<ButtonCollider>().relatedText = "NextPage";
-
-            colorChanger = gameObject.AddComponent<ColorChanger>();
-            colorChanger.colors = buttonColors[0];
-
-            text = new GameObject
-            {
-                transform =
-                {
-                    parent = canvasObject.transform
-                }
-            }.AddComponent<Text>();
-            text.font = currentFont;
-            text.text = ">";
-            text.fontSize = 1;
-            text.color = textColors[0];
-            text.alignment = TextAnchor.MiddleCenter;
-            text.resizeTextForBestFit = true;
-            text.resizeTextMinSize = 0;
-            component = text.GetComponent<RectTransform>();
-            component.localPosition = Vector3.zero;
-            component.sizeDelta = new Vector2(0.2f, 0.03f);
-            component.localPosition = new Vector3(0.064f, -0.195f, 0f);
-            component.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
-
-            if (lowercasetext)
-                text.text = text.text.ToLower();
-
-            if (uppercasetext)
-                text.text = text.text.ToUpper();
 
             // Button Creation
             int buttonIndexOffset = 0;
@@ -2163,6 +2219,9 @@ namespace Arrakis.Menu
                 pageNumber = 0;
             }
         }
+
+        public static bool rightTriggerPageOnce = false;
+        public static bool leftTriggerPageOnce = false;
 
         public static bool loadonce;
         public static string CurrentCategoryName

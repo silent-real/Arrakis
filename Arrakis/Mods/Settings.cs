@@ -106,6 +106,34 @@ namespace Arrakis
         public static bool smoothMenuPosition = false;
         public static bool smoothMenuRotation = false;
 
+
+        public static int currentPageType = 0;
+        private static int pageType = 0;
+
+        private static string[] PageTypes = new string[]
+        {
+            "Sides", "Triggers", "Grips"
+        };
+        public static void ChangePageType(bool increment = true)
+        {
+            if (increment)
+            {
+                pageType = (pageType + 1) % PageTypes.Length;
+            }
+            else
+            {
+                pageType = (pageType - 1 + PageTypes.Length) % PageTypes.Length;
+            }
+
+            switch (pageType)
+            {
+                case 0: currentPageType = 0; break; // Sides
+                case 1: currentPageType = 1; break; // Triggers
+                case 2: currentPageType = 2; break; // Grips
+            }
+            GetIndex("Change Page Type").overlapText = $"Change Page Type <color=grey>[<color=cyan>{PageTypes[pageType]}</color>]</color>";
+        }
+
         public static KeyCode keyboardButton = KeyCode.Q;
 
         public static Vector3 menuSize = new Vector3(0.1f, 1f, 1f); // Depth, width, height
