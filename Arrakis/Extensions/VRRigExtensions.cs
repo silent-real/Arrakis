@@ -67,13 +67,20 @@ namespace Arrakis.Extensions
             if (suspiciouslyQuest > suspiciouslySteam && suspiciouslyQuest > suspiciouslyPC) return "Standalone";
             return "Standalone";
         }
+
         public static bool IsTagged(this VRRig rig)
         {
-            if (rig == null || rig.Creator == null)
-                return false;
-            if (!(GorillaGameManager.instance is GorillaTagManager tagManager))
+            if (rig?.Creator == null)
                 return false;
             if (GameMode.IsPlaying(GameModeType.Casual) || GameMode.IsPlaying(GameModeType.SuperCasual))
+                return false;
+            if (GameMode.IsPlaying(GameModeType.Guardian))
+            {
+                if (GorillaGameManager.instance is not GorillaGuardianManager gman)
+                    return false;
+                return gman.IsPlayerGuardian(rig.Creator);
+            }
+            if (GorillaGameManager.instance is not GorillaTagManager tagManager)
                 return false;
             switch (tagManager.GameType())
             {
@@ -81,11 +88,13 @@ namespace Arrakis.Extensions
                 case GameModeType.SuperInfect:
                 case GameModeType.Ambush:
                 case GameModeType.Ghost:
-                    return tagManager.isCurrentlyTag ? tagManager.currentIt == rig.Creator : tagManager.currentInfected.Contains(rig.Creator);
+                    return tagManager.isCurrentlyTag ? tagManager.currentIt == rig.Creator :
+                        tagManager.currentInfected != null && tagManager.currentInfected.Contains(rig.Creator);
                 default:
                     return false;
             }
         }
+
         public static int GetPing(this VRRig rig)
         {
             double ping = Math.Abs((rig.velocityHistoryList[0].time - PhotonNetwork.Time) * 1000);
