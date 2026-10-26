@@ -1108,6 +1108,18 @@ namespace Arrakis.Menu
                             reference.transform.position = new Vector3(999f, -999f, -999f);
                     }
                 }
+
+                if (smoothMenuPosition)
+                {
+                    smoothTargetPosition = smoothTargetPosition == Vector3.zero ? menu.transform.position : Vector3.Lerp(smoothTargetPosition, menu.transform.position, Time.deltaTime * 10f);
+                    menu.transform.position = smoothTargetPosition;
+                }
+
+                if (!smoothMenuRotation)
+                {
+                    smoothTargetRotation = smoothTargetRotation == Quaternion.identity ? menu.transform.rotation : Quaternion.Lerp(smoothTargetRotation, menu.transform.rotation, Time.deltaTime * 10f);
+                    menu.transform.rotation = smoothTargetRotation;
+                }
             }
 
             /*if (menu != null)
@@ -2683,5 +2695,7 @@ namespace Arrakis.Menu
                 }
             }
         }
+        public static Vector3 smoothTargetPosition = Vector3.zero;
+        public static Quaternion smoothTargetRotation = Quaternion.identity;
     }
 }
