@@ -122,7 +122,7 @@ namespace Arrakis.Menu
                         if (reference == null)
                             CreateReference();
                     }
-                    else if (toOpen)
+                    else if (toOpen || keyboardOpen)
                     {
                         if (menusounds)
                             AudioManager.MenuSound("menuopen");
@@ -140,7 +140,7 @@ namespace Arrakis.Menu
                 else
                 {   if (KeyboardManager.MenuPinned)
                         KeyboardManager.PositionMenu(menu);
-                    else if (toOpen)
+                    else if (toOpen || keyboardOpen)
                         RecenterMenu(rightHanded, keyboardOpen);
                     else if (KeyboardManager.KeepMenuOpen || KeyboardManager.InputActive)
                     { }
