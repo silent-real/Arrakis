@@ -203,7 +203,7 @@ namespace Arrakis.Menu
 
             switch (currentPageType)
             {
-                case 1:
+                case 1: // Triggers
                     if (menu != null)
                     {
                         if (InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Right, !XRSettings.isDeviceActive) && !rightTriggerPageOnce)
@@ -227,7 +227,7 @@ namespace Arrakis.Menu
                         }
                     }
                     break;
-                case 2:
+                case 2: // Grip
                     if (menu != null)
                     {
                         if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive) && !rightTriggerPageOnce)
