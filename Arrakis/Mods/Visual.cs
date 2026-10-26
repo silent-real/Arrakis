@@ -468,6 +468,7 @@ namespace Arrakis.Mods
                         followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, Shader.Find("GUI/Text Shader"));
                     boxEspPool[rig] = box;
                 }
+                box.transform.localScale = new Vector3(0.5f, 0.5f, 0.1f) * rig.scaleFactor;
                 Color color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor;
                 color.a = 0.4f;
                 box.GetComponent<Renderer>().material.color = color;
@@ -527,6 +528,7 @@ namespace Arrakis.Mods
                         text.characterSize = 0.05f;
                         hollowBoxPool[rig] = box;
                     }
+                    box.transform.localScale = Vector3.one * rig.scaleFactor;
                     Color color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? Color.red : rig.playerColor;
                     color.a = 0.7f;
                     box.GetComponent<TextMesh>().color = color;
