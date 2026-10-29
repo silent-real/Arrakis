@@ -52,7 +52,6 @@ namespace Arrakis.Managers
         private Material forestOriginalMat;
 
         private Material boardmat;
-        private Material ogboardmat;
         private Material oldMonitorMat;
 
         private string ogHeadoutsideText;
