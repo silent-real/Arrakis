@@ -33,14 +33,14 @@ namespace Arrakis.Patches.Safety
         }
     }
 
-    [HarmonyPatch(typeof(GorillaComputer), "SetVoiceChatBySafety")]
+    [HarmonyPatch(typeof(GorillaComputer), nameof(GorillaComputer.SetVoiceChatBySafety))]
     public class GCSetVoiceSafetyPatch
     {
         public static bool Prefix() =>
             false;
     }
 
-    [HarmonyPatch(typeof(GorillaComputer), "KID_SetVoiceChatSettingOnStart")]
+    [HarmonyPatch(typeof(GorillaComputer), nameof(GorillaComputer.KID_SetVoiceChatSettingOnStart))]
     public class GCKIDSetVoicePatch
     {
         public static bool Prefix() =>
