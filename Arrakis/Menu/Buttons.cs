@@ -116,6 +116,7 @@ namespace Arrakis.Menu
                 new() { buttonText = "Disable Menu Sounds", method =() => menusounds = false, disableMethod =() => menusounds = true, isTogglable = true, toolTip = "Disables the menu sounds.", ShowInArraylist = false, DontPanic = true },
                 new() { buttonText = "Disable Click Sounds", method =() => disablebuttonsounds = true, disableMethod =() => disablebuttonsounds = false, isTogglable = true, toolTip = "Disables the button clicks you get when you press a button.", ShowInArraylist = false, DontPanic = true },
                 new() { buttonText = "Disable Click Vibrations", method =() => disablevibrations = true, disableMethod =() => disablevibrations = false, isTogglable = true, toolTip = "Disables the contorller vibrations you get when you press a button.", ShowInArraylist = false, DontPanic = true },
+                new() { buttonText = "Button Animation", method =() => buttonAnimation = true, disableMethod =() => buttonAnimation = false, isTogglable = true, toolTip = "Makes the menu buttons have animation.", ShowInArraylist = false, DontPanic = true },
 
                 new() { buttonText = "Notifications", enableMethod =() => disableNotifications = false, disableMethod =() => disableNotifications = true, enabled = !disableNotifications, toolTip = "Toggles the notifications.", ShowInArraylist = false, DontPanic = true },
                 new() { buttonText = "Change Notification Delay", overlapText = "Change Notification Delay <color=grey>[<color=cyan>Default</color>]</color>", enableMethod =() => ChangeNotificationDelay(), method =() => ChangeNotificationDelay(), disableMethod =() => ChangeNotificationDelay(false), isIncremental = true, isTogglable = false, toolTip = "Changes the notification delay.", ShowInArraylist = false },
@@ -706,7 +707,7 @@ namespace Arrakis.Menu
             new ButtonInfo[] { }, // Temporary
 
             new ButtonInfo[] { // Internal
-                new() { buttonText = "GlobalReturn", method = GlobalReturn, isTogglable = false, toolTip = "Returns you to the previous category." },
+                new() { buttonText = "GlobalReturn", method =() => { GlobalReturn(); }, isTogglable = false, toolTip = "Returns you to the previous category." },
                 new() { buttonText = "AcceptPrompt", method =() => { NotificationManager.ClearAllNotifications(); CurrentPrompt.accept?.Invoke(); StopCurrentPrompt(); }, isTogglable = false },
                 new() { buttonText = "DeclinePrompt", method =() => { NotificationManager.ClearAllNotifications(); CurrentPrompt.decline?.Invoke(); StopCurrentPrompt(); }, isTogglable = false },
                 new() { buttonText = "Search", method = Search, toolTip = "Allows you to search for mods.", isTogglable = false },

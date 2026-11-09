@@ -741,6 +741,12 @@ namespace Arrakis.Menu
                 gameObject.transform.localPosition = new Vector3(0.56f, 0.65f, 0);
                 gameObject.GetComponent<Renderer>().material.color = buttonColors[0].colors[0].color;
                 gameObject.AddComponent<ButtonCollider>().relatedText = "PreviousPage";
+                buttonObjects["PreviousPage"] = gameObject;
+
+                if (buttonAnimation && pendingAnimateButton == "PreviousPage")
+                {
+                    CRunner.instance.StartCoroutine(AnimateButton(gameObject, "PreviousPage"));
+                }
 
                 colorChanger = gameObject.AddComponent<ColorChanger>();
                 colorChanger.colors = buttonColors[0];
@@ -778,6 +784,12 @@ namespace Arrakis.Menu
                 gameObject.transform.localPosition = new Vector3(0.56f, -0.65f, 0);
                 gameObject.GetComponent<Renderer>().material.color = buttonColors[0].colors[0].color;
                 gameObject.AddComponent<ButtonCollider>().relatedText = "NextPage";
+                buttonObjects["NextPage"] = gameObject;
+
+                if (buttonAnimation && pendingAnimateButton == "NextPage")
+                {
+                    CRunner.instance.StartCoroutine(AnimateButton(gameObject, "NextPage"));
+                }
 
                 colorChanger = gameObject.AddComponent<ColorChanger>();
                 colorChanger.colors = buttonColors[0];
@@ -895,6 +907,7 @@ namespace Arrakis.Menu
                     decrementCollider.relatedText = "Decrement_" + method.buttonText;
                     decrementCollider.incremental = true;
                     decrementCollider.positive = false;
+                    buttonObjects["Decrement_" + method.buttonText] = decrement;
 
                     ColorChanger decrementColor = decrement.AddComponent<ColorChanger>();
                     decrementColor.colors = buttonColors[0];
@@ -910,9 +923,18 @@ namespace Arrakis.Menu
                     incrementCollider.relatedText = "Increment_" + method.buttonText;
                     incrementCollider.incremental = true;
                     incrementCollider.positive = true;
+                    buttonObjects["Increment_" + method.buttonText] = increment;
 
                     ColorChanger incrementColor = increment.AddComponent<ColorChanger>();
                     incrementColor.colors = buttonColors[0];
+
+                    if (buttonAnimation)
+                    {
+                        if (pendingAnimateButton == "Decrement_" + method.buttonText)
+                            CRunner.instance.StartCoroutine(AnimateButton(decrement, "Decrement_" + method.buttonText));
+                        else if (pendingAnimateButton == "Increment_" + method.buttonText)
+                            CRunner.instance.StartCoroutine(AnimateButton(increment, "Increment_" + method.buttonText));
+                    }
 
                     Text valueText = new GameObject
                     {
@@ -1010,8 +1032,14 @@ namespace Arrakis.Menu
                 gameObject.transform.localScale = new Vector3(0.09f, method.isKeybind ? 0.78f : 0.9f, 0.08f);
                 gameObject.transform.localPosition = new Vector3(0.56f, method.isKeybind ? 0.06f : 0f, 0.28f - offset);
                 gameObject.AddComponent<ButtonCollider>().relatedText = method.buttonText;
+                buttonObjects[method.buttonText] = gameObject;
                 ColorChanger colorChanger = gameObject.AddComponent<ColorChanger>();
                 colorChanger.colors = method.enabled ? buttonColors[1] : buttonColors[0];
+
+                if (buttonAnimation && pendingAnimateButton == method.buttonText)
+                {
+                    CRunner.instance.StartCoroutine(AnimateButton(gameObject, method.buttonText));
+                }
 
                 if (method.isKeybind)
                 {
@@ -1395,6 +1423,11 @@ namespace Arrakis.Menu
                         CustomConsole.Log(buttonText + " does not exist", CustomConsole.LogType.Warning);
                 }
             }
+            if (buttonAnimation && GetIndex(buttonText)?.label != true)
+            {
+                pendingAnimateButton = buttonText;
+                pendingAnimateStart = Time.time;
+            }
             ReloadMenu();
         }
 
@@ -1436,6 +1469,11 @@ namespace Arrakis.Menu
                     }
                     catch { }
                 }
+            }
+            if (buttonAnimation)
+            {
+                pendingAnimateButton = buttonText;
+                pendingAnimateStart = Time.time;
             }
             ReloadMenu();
         }
@@ -2008,6 +2046,8 @@ namespace Arrakis.Menu
 
         public static void Search()
         {
+            if (buttonAnimation) { pendingAnimateButton = "Search"; pendingAnimateStart = Time.time; }
+
             if (XRSettings.isDeviceActive)
             {
                 KeyboardManager.Search();
@@ -2319,6 +2359,46 @@ namespace Arrakis.Menu
         public static bool OneIn(int odds) =>
             random.Next(odds) == 0;
 
+        public static readonly Dictionary<string, GameObject> buttonObjects = new();
+        public static string pendingAnimateButton;
+        public static float pendingAnimateStart;
+        private static IEnumerator AnimateButton(GameObject btn, string key)
+        {
+            if (pendingAnimateButton == key)
+                pendingAnimateButton = null;
+            if (btn == null) yield break;
+            Vector3 originalScale = btn.transform.localScale;
+            Vector3 originalPos = btn.transform.localPosition;
+            float pressTime = 0.06f;
+            float releaseTime = 0.12f;
+            float t = 0f;
+            while (t < pressTime)
+            {
+                if (btn == null) yield break;
+                float k = t / pressTime;
+                btn.transform.localScale = Vector3.Lerp(originalScale, originalScale * 0.85f, k);
+                btn.transform.localPosition = Vector3.Lerp(originalPos, originalPos + new Vector3(0.015f, 0f, 0f), k);
+                t += Time.deltaTime;
+                yield return null;
+            }
+            t = 0f;
+            while (t < releaseTime)
+            {
+                if (btn == null) yield break;
+                float k = t / releaseTime;
+                float s = Mathf.Sin(k * Mathf.PI) * 0.08f + k;
+                btn.transform.localScale = Vector3.Lerp(originalScale * 0.85f, originalScale, s);
+                btn.transform.localPosition = Vector3.Lerp(originalPos + new Vector3(0.015f, 0f, 0f), originalPos, k);
+                t += Time.deltaTime;
+                yield return null;
+            }
+            if (btn != null)
+            {
+                btn.transform.localScale = originalScale;
+                btn.transform.localPosition = originalPos;
+            }
+        }
+
         public static string GetCurrentMapName()
         {
             var mapChecks = new (GameObject obj, string name, string path)[]
@@ -2517,6 +2597,9 @@ namespace Arrakis.Menu
             buttonObject.transform.localScale = new Vector3(0.09f, 0.102f, 0.08f);
             buttonObject.transform.localPosition = new Vector3(0.56f, -0.450f, -0.58f);
             buttonObject.AddComponent<ButtonCollider>().relatedText = "Search";
+            buttonObjects["Search"] = buttonObject;
+            if (buttonAnimation && pendingAnimateButton == "Search")
+                CRunner.instance.StartCoroutine(AnimateButton(buttonObject, "Search"));
             ColorChanger colorChanger = buttonObject.AddComponent<ColorChanger>();
             colorChanger.colors = buttonColors[searching ? 1 : 0];
             Image searchImage = new GameObject

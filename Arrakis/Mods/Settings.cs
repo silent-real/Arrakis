@@ -149,6 +149,8 @@ namespace Arrakis
         public static bool disableAntiReportVisualizer;
         public static bool disableNetworkedMenu;
 
+        public static bool buttonAnimation = false;
+
         public static void JoinDiscord()
         {
             Prompt("Join Arrakis Discord", () =>
