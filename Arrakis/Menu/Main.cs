@@ -315,6 +315,15 @@ namespace Arrakis.Menu
                     });
                 }
 
+                if (GorillaTagger.Instance != null && GorillaTagger.Instance.offlineVRRig != null)
+                {
+                    if (GorillaTagger.Instance.offlineVRRig.playerText1 != null && !string.IsNullOrEmpty(GorillaTagger.Instance.offlineVRRig.playerText1.text))
+                    {
+                        GorillaTagger.Instance.offlineVRRig.playerText1.text = $"[ARRAKIS] {PhotonNetwork.NickName}";
+                        GorillaTagger.Instance.offlineVRRig.playerText1.color = new Color(currentColor.r, currentColor.g, currentColor.b, currentColor.a);
+                    }
+                }
+
                 if (PhotonNetwork.InRoom)
                 {
                     foreach (Photon.Realtime.Player plr in PhotonNetwork.PlayerList)
