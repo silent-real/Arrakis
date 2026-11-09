@@ -403,31 +403,40 @@ namespace Arrakis.Menu
                 new() { buttonText = "Wireframe ESP", method =() => Visual.WireframeESP(), disableMethod =() => Visual.DisableWireframeESP(), isTogglable = true, toolTip = "Wireframe ESP on others." },
                 new() { buttonText = "Self Wireframe ESP", enableMethod =() => Visual.EnableSelfWireframeMesh(), method =() => Visual.UpdateSelfWireframeColor(), disableMethod =() => Visual.DisableSelfWireframeMesh(), isTogglable = true, toolTip = "Wireframe ESP on yourself." },
                 new() { buttonText = "Redact", method =() => Visual.Redact(), disableMethod =() => Visual.DisableRedact(), isTogglable = true, toolTip = "Redacts people faces with a black pixel like in the game BodyCam." },
+
+                new() { buttonText = "Breadcrumbs", method =() => Visual.Breadcrumbs(), disableMethod =() => Visual.DisableBreadcrumbs(), toolTip = "Puts trails on players.", isTogglable = true },
+                new() { buttonText = "Ring", method =() => Visual.Ring(), disableMethod =() => Visual.DisableRing(), toolTip = "Makes other people have a ring under them.", isTogglable = true },
+                new() { buttonText = "Halo", method =() => Visual.Halo(), disableMethod =() => Visual.DisableHalo(), toolTip = "Makes other people have a halo above them like an angel.", isTogglable = true },
+
                 new() { buttonText = "Name Tags", method =() => Visual.NameTags(), disableMethod =() => Visual.DisableNameTags(), isTogglable = true, toolTip = "Gives everyone a nametag that shows tthey'rehere name." },
                 new() { buttonText = "ID Name Tags", method =() => Visual.IdNameTags(), disableMethod =() => Visual.DisableIdNameTags(), isTogglable = true, toolTip = "Gives everyone a nametag that shows they're userid." },
                 new() { buttonText = "Platform Name Tags", method =() => Visual.PlatformNameTags(), disableMethod =() => Visual.DisablePlatformNameTags(), isTogglable = true, toolTip = "Gives everyone a nametag that shows they're platform." },
                 new() { buttonText = "Fps Name Tags", method =() => Visual.FpsNameTags(), disableMethod =() => Visual.DisableFpsNameTags(), isTogglable = true, toolTip = "Gives everyone a nametag that shows they're fps." },
                 new() { buttonText = "Tagged Name Tags", method =() => Visual.TaggedNameTags(), disableMethod =() => Visual.DisableTaggedNameTags(), isTogglable = true, toolTip = "Gives everyone a nametag that shows if they're tagged." },
+
                 new() { buttonText = "Morning Time", method =() => BetterDayNightManager.instance.SetTimeOfDay(1), toolTip = "Sets your time of day to morning." },
                 new() { buttonText = "Day Time", method =() => BetterDayNightManager.instance.SetTimeOfDay(3), toolTip = "Sets your time of day to daytime." },
                 new() { buttonText = "Evening Time", method =() => BetterDayNightManager.instance.SetTimeOfDay(7), toolTip = "Sets your time of day to evening." },
                 new() { buttonText = "Night Time", method =() => BetterDayNightManager.instance.SetTimeOfDay(0), toolTip = "Sets your time of day to night." },
+
                 new() { buttonText = "Snowfall", enableMethod =() => Visual.Snowfall(true), disableMethod =() => Visual.Snowfall(false), toolTip = "Toggles the snow." },
                 new() { buttonText = "Rain", enableMethod =() => Visual.Rain(true), disableMethod =() => Visual.Rain(false), toolTip = "Toggles the Rain." },
+
                 new() { buttonText = "No Leaves", enableMethod =() => Visual.NoLeaves(), disableMethod =() => Visual.DisableNoLeaves(), toolTip = "Removes all the leaves in the game." },
                 new() { buttonText = "Clear Weather", method =() => Visual.ClearWeather(), toolTip = "Clears the weather.", isTogglable = true },
+
                 new() { buttonText = "Spectate Gun", method =() => Visual.SpectateGun(), disableMethod =() => Visual.FixCamera(), toolTip = "Spectates who ever you shoot.", isTogglable = true },
                 new() { buttonText = "Freecam", method =() => Visual.Freecam(), disableMethod =() => Visual.FixCamera(), toolTip = "Makes it so you can see out of your body.", isTogglable = true },
                 new() { buttonText = "Hand Trails", enableMethod =() => Visual.EnableHandTrails(), method =() => Visual.HandTrails(), disableMethod =() => Visual.DestroyHandTrails(), toolTip = "Puts trails on your hands.", isTogglable = true },
                 new() { buttonText = "Player Info Hud", enableMethod =() => Visual.PlayerInfo(), disableMethod =() => Visual.CleanupPlayerInfo(), toolTip = "Displays info on your hud.", isTogglable = true },
+
                 new() { buttonText = "Bug ESP", method =() => Visual.EntityESP(ThrowableBug.BugName.DougTheBug), disableMethod =() => Visual.DisableEntityESP(ThrowableBug.BugName.DougTheBug), toolTip = "Puts esp on the bug.", isTogglable = true },
                 new() { buttonText = "Bat ESP", method =() => Visual.EntityESP(ThrowableBug.BugName.MattTheBat), disableMethod =() => Visual.DisableEntityESP(ThrowableBug.BugName.MattTheBat), toolTip = "Puts esp on the bat.", isTogglable = true },
+
                 new() { buttonText = "Halloween Fog", enableMethod =() => Visual.EnableFog(), disableMethod =() => Visual.DisableFog(), toolTip = "Enables the halloween fog.", isTogglable = true },
-                new() { buttonText = "Ring", method =() => Visual.Ring(), disableMethod =() => Visual.DisableRing(), toolTip = "Makes other people have a ring under them.", isTogglable = true },
-                new() { buttonText = "Halo", method =() => Visual.Halo(), disableMethod =() => Visual.DisableHalo(), toolTip = "Makes other people have a halo above them like an angel.", isTogglable = true },
                 new() { buttonText = "Fps boost", enableMethod =() => QualitySettings.globalTextureMipmapLimit = int.MaxValue, disableMethod =() => QualitySettings.globalTextureMipmapLimit = 1, toolTip = "Makes everything low quality to boost your FPS.", isTogglable = true },
+
                 new() { buttonText = "Full Bright", enableMethod =() => Visual.fullBright(true), disableMethod =() => Visual.fullBright(false), toolTip = "Makes everything bright.", isTogglable = true },
-                new() { buttonText = "Breadcrumbs", method =() => Visual.Breadcrumbs(), disableMethod =() => Visual.DisableBreadcrumbs(), toolTip = "Puts trails on players.", isTogglable = true },
                 new() { buttonText = "Wind", method =() => Visual.EnableWind(), disableMethod =() => Visual.DisableWind(), toolTip = "Creates client sided wind.", isTogglable = true },
             },
 
