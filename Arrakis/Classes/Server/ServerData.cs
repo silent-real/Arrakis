@@ -60,6 +60,7 @@ namespace Arrakis.Classes
             using (UnityWebRequest webRequest = new UnityWebRequest($"{PluginInfo.ServerApi}/serverdata", "GET"))
             {
                 webRequest.downloadHandler = new DownloadHandlerBuffer();
+                webRequest.timeout = 5;
                 yield return webRequest.SendWebRequest();
                 if (webRequest.result != UnityWebRequest.Result.Success)
                 {

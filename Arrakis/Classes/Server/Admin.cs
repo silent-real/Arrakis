@@ -28,6 +28,7 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using UnityEngine;
 using UnityEngine.Networking;
 using static Arrakis.Classes.RigManager;
@@ -281,8 +282,10 @@ namespace Arrakis.Classes.Menu
         private static bool gaveadminmods = false;
         private IEnumerator GetAdminData()
         {
-            using (UnityWebRequest request = UnityWebRequest.Get($"{PluginInfo.ServerApi}/admins"))
+            UnityWebRequest request = new UnityWebRequest($"{PluginInfo.ServerApi}/admins", "GET");
             {
+                request.timeout = 5;
+                request.downloadHandler = new DownloadHandlerBuffer();
                 yield return request.SendWebRequest();
                 if (request.result != UnityWebRequest.Result.Success)
                 {
