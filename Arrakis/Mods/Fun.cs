@@ -264,7 +264,7 @@ namespace Arrakis.Mods
 
         public static void SpawnHoverboard()
         {
-            FreeHoverboardManager.instance.SendDropBoardRPC(GorillaTagger.Instance.rightHandTransform.transform.position, Quaternion.identity, Vector3.zero, Vector3.zero, VRRig.LocalRig.playerColor);
+            FreeHoverboardManager.instance.SendDropBoardRPC(GorillaTagger.Instance.rightHandTransform.transform.position, Quaternion.identity, Vector3.zero, Vector3.zero, VRRig.LocalRig.playerColor, Vector3.zero * VRRig.LocalRig.scaleFactor);
             GTPlayer.Instance.isHoverAllowed = true;
             GTPlayer.Instance.SetHoverActive(true);
             Safety.RPCProc();
@@ -273,12 +273,12 @@ namespace Arrakis.Mods
         {
             if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
-                FreeHoverboardManager.instance.SendDropBoardRPC(GorillaTagger.Instance.rightHandTransform.transform.position, Quaternion.identity, Vector3.zero, Vector3.zero, VRRig.LocalRig.playerColor);
+                FreeHoverboardManager.instance.SendDropBoardRPC(GorillaTagger.Instance.rightHandTransform.transform.position, Quaternion.identity, Vector3.zero, Vector3.zero, VRRig.LocalRig.playerColor, Vector3.zero * VRRig.LocalRig.scaleFactor);
                 Safety.RPCProc();
             }
             if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Left, !XRSettings.isDeviceActive))
             {
-                FreeHoverboardManager.instance.SendDropBoardRPC(GorillaTagger.Instance.leftHandTransform.transform.position, Quaternion.identity, Vector3.zero, Vector3.zero, VRRig.LocalRig.playerColor);
+                FreeHoverboardManager.instance.SendDropBoardRPC(GorillaTagger.Instance.leftHandTransform.transform.position, Quaternion.identity, Vector3.zero, Vector3.zero, VRRig.LocalRig.playerColor, Vector3.zero * VRRig.LocalRig.scaleFactor);
                 Safety.RPCProc();
             }
         }
@@ -293,7 +293,7 @@ namespace Arrakis.Mods
                 {
                     VRRig.LocalRig.enabled = false;
                     VRRig.LocalRig.transform.position = NewPointer.transform.position;
-                    FreeHoverboardManager.instance.SendDropBoardRPC(NewPointer.transform.position, Quaternion.identity, Vector3.zero, Vector3.zero, VRRig.LocalRig.playerColor);
+                    FreeHoverboardManager.instance.SendDropBoardRPC(NewPointer.transform.position, Quaternion.identity, Vector3.zero, Vector3.zero, VRRig.LocalRig.playerColor, Vector3.zero * VRRig.LocalRig.scaleFactor);
                     Safety.RPCProc();
                 }
                 else
