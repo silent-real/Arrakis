@@ -350,8 +350,8 @@ namespace Arrakis.Mods
         {
             if (PhotonNetwork.InRoom && Time.time > LagDelay)
             {
-                LagDelay = Time.time + 1.64f;
-                for (int i = 0; i < 730; i++)
+                LagDelay = Time.time + 1.70f;
+                for (int i = 0; i < 650; i++)
                 {
                     object[] data = new object[] { float.NaN };
                     object[] evData = new object[] { float.NaN, float.NaN, data };
@@ -374,8 +374,8 @@ namespace Arrakis.Mods
             }
             if (PhotonNetwork.InRoom && Time.time > LagMasterDelay)
             {
-                LagDelay = Time.time + 1.64f;
-                for (int i = 0; i < 730; i++)
+                LagDelay = Time.time + 1.70f;
+                for (int i = 0; i < 650; i++)
                 {
                     object[] data = new object[] { float.NaN };
                     object[] evData = new object[] { float.NaN, float.NaN, data };
@@ -399,8 +399,8 @@ namespace Arrakis.Mods
                 {
                     if (Time.time > LagGunDelay)
                     {
-                        LagGunDelay = Time.time + 1.64f;
-                        for (int i = 0; i < 730; i++)
+                        LagGunDelay = Time.time + 1.70f;
+                        for (int i = 0; i < 650; i++)
                         {
                             object[] data = new object[] { float.NaN };
                             object[] evData = new object[] { float.NaN, float.NaN, data };
