@@ -508,7 +508,8 @@ namespace Arrakis.Menu
             }
             catch { }
 
-            ServerPos = ServerPos == Vector3.zero ? ServerSyncPos : Vector3.Lerp(ServerPos, VRRig.LocalRig.SanitizeVector3(ServerSyncPos), VRRig.LocalRig.lerpValueBody * 0.66f);
+            ServerPos = ServerPos == Vector3.zero ? ServerSyncPos :
+                Vector3.Lerp(ServerPos, VRRig.LocalRig.SanitizeVector3(ServerSyncPos), VRRig.LocalRig.lerpValueBody * 0.66f);
 
             ServerLeftHandPos = ServerLeftHandPos == Vector3.zero ? ServerSyncLeftHandPos :
                 Vector3.Lerp(ServerLeftHandPos, VRRig.LocalRig.SanitizeVector3(ServerSyncLeftHandPos), VRRig.LocalRig.lerpValueBody);
