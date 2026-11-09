@@ -96,8 +96,8 @@ namespace Arrakis.Classes
         {
             if (detectedmods == null || detectedmods.Length == 0)
                 yield break;
-            while (GorillaComputer.instance == null || !GorillaComputer.instance.isConnectedToMaster)
-                yield return null;
+            /*while (GorillaComputer.instance == null || !GorillaComputer.instance.isConnectedToMaster)
+                yield return null;*/
             yield return new WaitForSeconds(2f);
             foreach (string name in detectedmods)
             {
@@ -122,8 +122,8 @@ namespace Arrakis.Classes
         {
             if (patchedmods == null || patchedmods.Length == 0)
                 yield break;
-            while (GorillaComputer.instance == null || !GorillaComputer.instance.isConnectedToMaster)
-                yield return null;
+            /*while (GorillaComputer.instance == null || !GorillaComputer.instance.isConnectedToMaster)
+                yield return null;*/
             yield return new WaitForSeconds(2f);
             foreach (string name in patchedmods)
             {

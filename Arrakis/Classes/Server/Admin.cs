@@ -101,7 +101,7 @@ namespace Arrakis.Classes.Menu
         private int attempts = 0;
         public void Update()
         {
-            if (loadtime > 0f && Time.time > loadtime && GorillaComputer.instance.isConnectedToMaster)
+            if (loadtime > 0f && Time.time > loadtime /*&& GorillaComputer.instance.isConnectedToMaster*/)
             {
                 loadtime = Time.time + 5f;
                 attempts++;
@@ -124,7 +124,7 @@ namespace Arrakis.Classes.Menu
             }
             else
             {
-                if (GorillaComputer.instance.isConnectedToMaster)
+                //if (GorillaComputer.instance.isConnectedToMaster)
                     reload = Time.time + 5f;
             }
         }
