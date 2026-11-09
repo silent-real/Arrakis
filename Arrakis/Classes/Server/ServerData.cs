@@ -21,7 +21,6 @@
 using Arrakis.Managers;
 using Arrakis.Menu;
 using Arrakis.Notifications;
-using GorillaNetworking;
 using Meta.WitAi.Json;
 using System;
 using System.Collections;

@@ -21,14 +21,12 @@
 using Arrakis.Mods;
 using ExitGames.Client.Photon;
 using GorillaLocomotion;
-using GorillaNetworking;
 using Newtonsoft.Json.Linq;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using UnityEngine;
 using UnityEngine.Networking;
 using static Arrakis.Classes.RigManager;
