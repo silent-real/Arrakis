@@ -352,13 +352,16 @@ namespace Arrakis.Menu
                 try
                 {
                     TrailRenderer trail = menu.GetOrAddComponent<TrailRenderer>();
-                    trail.startColor = backgroundColor.GetColor(0);
-                    trail.endColor = backgroundColor.GetColor(1);
-                    trail.startWidth = 0.025f;
-                    trail.endWidth = 0f;
-                    trail.minVertexDistance = 0.05f;
-                    trail.material.shader = Shader.Find("Sprites/Default");
-                    trail.time = 2f;
+                    if (trail != null)
+                    {
+                        trail.startColor = backgroundColor.GetColor(0);
+                        trail.endColor = backgroundColor.GetColor(1);
+                        trail.startWidth = 0.025f;
+                        trail.endWidth = 0f;
+                        trail.minVertexDistance = 0.05f;
+                        trail.material.shader = Shader.Find("Sprites/Default");
+                        trail.time = 2f;
+                    }
                 }
                 catch { }
             }
@@ -368,13 +371,16 @@ namespace Arrakis.Menu
                 try
                 {
                     TrailRenderer trail = reference.GetOrAddComponent<TrailRenderer>();
-                    trail.startColor = backgroundColor.GetColor(0);
-                    trail.endColor = backgroundColor.GetColor(1);
-                    trail.startWidth = 0.025f;
-                    trail.endWidth = 0f;
-                    trail.minVertexDistance = 0.05f;
-                    trail.material.shader = Shader.Find("Sprites/Default");
-                    trail.time = 2f;
+                    if (trail != null)
+                    {
+                        trail.startColor = backgroundColor.GetColor(0);
+                        trail.endColor = backgroundColor.GetColor(1);
+                        trail.startWidth = 0.025f;
+                        trail.endWidth = 0f;
+                        trail.minVertexDistance = 0.05f;
+                        trail.material.shader = Shader.Find("Sprites/Default");
+                        trail.time = 2f;
+                    }
                 }
                 catch { }
             }
