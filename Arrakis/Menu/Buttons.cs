@@ -675,10 +675,6 @@ namespace Arrakis.Menu
                 new() { buttonText = "Portal Gun", method =() => PortalManager.SpawnPortal(), isTogglable = true, toolTip = "Portal ghun." },
             },
 
-            new ButtonInfo[] { // Beta
-                new() { buttonText = "Exit Beta", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
-            },
-
             new ButtonInfo[] { // Soundboard
                 new() { buttonText = "Exit Soundboard", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
             },
@@ -745,7 +741,6 @@ namespace Arrakis.Menu
             "Custom Maps",
             "Master",
             "Experimental",
-            "Beta",
             "Soundboard",
             "Admin",
             "Players",
