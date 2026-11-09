@@ -1540,6 +1540,7 @@ namespace Arrakis.Mods
                 wireframeEspPool.Clear();
                 originalRigColors.Clear();
                 breakcujmpool.Clear();
+                redactPool.Clear();
             }
             else
             {
@@ -1559,8 +1560,99 @@ namespace Arrakis.Mods
                 wireframeEspPool.Remove(rig);
                 originalRigColors.Remove(rig);
                 breakcujmpool.Remove(rig);
+                redactPool.Remove(rig);
             }
         }
+
+        public static void DisableRedact()
+        {
+            foreach (var pair in redactPool)
+                if (pair.Value.root != null) GameObject.Destroy(pair.Value.root);
+            redactPool.Clear();
+        }
+
+        public static void Redact()
+        {
+            List<VRRig> stale = null;
+            foreach (var pair in redactPool)
+            {
+                if (pair.Key == null || !VRRigCache.ActiveRigs.Contains(pair.Key))
+                {
+                    stale ??= new List<VRRig>();
+                    stale.Add(pair.Key);
+                    if (pair.Value.root != null) GameObject.Destroy(pair.Value.root);
+                }
+            }
+            if (stale != null)
+                foreach (var r in stale) redactPool.Remove(r);
+            float cellW = PlateW / GridX;
+            float cellH = PlateH / GridY;
+            foreach (VRRig rig in VRRigCache.ActiveRigs)
+            {
+                if (rig == null || rig == VRRig.LocalRig) continue;
+                if (!redactPool.TryGetValue(rig, out Mosaic m))
+                {
+                    m = BuildMosaic();
+                    redactPool[rig] = m;
+                }
+                Transform head = rig.headMesh.transform;
+                Quaternion rot = head.rotation * Quaternion.Euler(-20f, 0f, 0f);
+                Vector3 center = head.position + head.forward * 0.16f + head.up * 0.09f;
+                Vector3 right = rot * Vector3.right;
+                Vector3 up = rot * Vector3.up;
+                int i = 0;
+                for (int x = 0; x < GridX; x++)
+                {
+                    for (int y = 0; y < GridY; y++)
+                    {
+                        float ox = (x - (GridX - 1) / 2f) * cellW;
+                        float oy = (y - (GridY - 1) / 2f) * cellH;
+                        Transform c = m.cells[i++];
+                        c.position = center + right * ox + up * oy;
+                        c.rotation = rot;
+                    }
+                }
+            }
+        }
+
+        private const int GridX = 10;
+        private const int GridY = 8;
+        private const float PlateW = 0.34f;
+        private const float PlateH = 0.27f;
+        private const float Gap = 0.98f;
+
+        public static Dictionary<VRRig, Mosaic> redactPool = new Dictionary<VRRig, Mosaic>();
+        private static Mosaic BuildMosaic()
+        {
+            GameObject root = new GameObject("RedactMosaic");
+            root.hideFlags = HideFlags.HideAndDontSave;
+            Transform[] cells = new Transform[GridX * GridY];
+            float cellW = PlateW / GridX;
+            float cellH = PlateH / GridY;
+            int i = 0;
+            for (int x = 0; x < GridX; x++)
+            {
+                for (int y = 0; y < GridY; y++)
+                {
+                    GameObject px = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    GameObject.Destroy(px.GetComponent<BoxCollider>());
+                    px.transform.SetParent(root.transform);
+                    px.transform.localScale = new Vector3(cellW * Gap, cellH * Gap, 0.03f);
+                    MeshRenderer mr = px.GetComponent<MeshRenderer>();
+                    mr.material.shader = Shader.Find("GorillaTag/UberShader");
+                    float shade = Random.Range(0f, 0.14f);
+                    mr.material.color = new Color(shade, shade, shade);
+                    cells[i++] = px.transform;
+                }
+            }
+            return new Mosaic { root = root, cells = cells };
+        }
+    }
+
+    public class Mosaic
+    {
+        public GameObject root;
+        public Transform[] cells;
     }
 
     public class WireframeRenderer : MonoBehaviour
