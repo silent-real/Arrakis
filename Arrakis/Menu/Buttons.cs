@@ -179,8 +179,8 @@ namespace Arrakis.Menu
             new ButtonInfo[] { // Projectile Settings
                 new() { buttonText = "Exit Projectile Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Returns to the main settings page for the menu." },
 
-                new() { buttonText = "Change Projectile Color", overlapText = "Change Projectile Color <color=grey>[<color=cyan>White</color>]</color>", enableMethod =() => ChangeProjectilesColor(), method =() => ChangeProjectilesColor(), disableMethod =() => ChangeProjectilesColor(false), isIncremental = true, isTogglable = false, toolTip = "Changes the color of the projectiles." },
                 new() { buttonText = "Allow Colored Big Snowballs", enableMethod =() => allowbigsnowballcolor = true, disableMethod =() => allowbigsnowballcolor = false, isTogglable = true, toolTip = "Allows the growing snowballs to have a color.", DontPanic = true },
+                new() { buttonText = "Change Projectile Color", overlapText = "Change Projectile Color <color=grey>[<color=cyan>White</color>]</color>", enableMethod =() => ChangeProjectilesColor(), method =() => ChangeProjectilesColor(), disableMethod =() => ChangeProjectilesColor(false), isIncremental = true, isTogglable = false, toolTip = "Changes the color of the projectiles." },
                 new() { buttonText = "Change Projectile", overlapText = "Change Projectile <color=grey>[<color=cyan>Snowball</color>]</color>", isIncremental = true, enableMethod =() => Projectiles.ChangeProjectile(), method =() => Projectiles.ChangeProjectile(), disableMethod =() => Projectiles.ChangeProjectile(false), isTogglable = false, toolTip = "Changes the current projectile you use." },
                 new() { buttonText = "Change Blind Color", overlapText = "Change Blind Color <color=grey>[<color=cyan>Black</color>]</color>", isIncremental = true, enableMethod =() => Projectiles.ChangeBlindColor(), method =() => Projectiles.ChangeBlindColor(), disableMethod =() => Projectiles.ChangeBlindColor(false), isTogglable = false, toolTip = "Changes the current color you use to blind people." },
             },
@@ -199,8 +199,8 @@ namespace Arrakis.Menu
             new ButtonInfo[] { // Safety Settings
                 new() { buttonText = "Exit Safety Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Returns you back to the settings menu." },
 
-                new() { buttonText = "Change Anti Report Range", overlapText = "Change Anti Report Range <color=grey>[<color=cyan>Massive</color>]</color>", enableMethod =() => ChangeAntiReportRange(), method =() => ChangeAntiReportRange(), disableMethod =() => ChangeAntiReportRange(false), isIncremental = true, isTogglable = false, toolTip = "Changes the range of the anti reports.", ShowInArraylist = false },
                 new() { buttonText = "Disable Anti Report Visualizer", enableMethod =() => disableAntiReportVisualizer = true, disableMethod =() => disableAntiReportVisualizer = false, isTogglable = true, toolTip = "Changes the range of the anti reports.", ShowInArraylist = false, DontPanic = true },
+                new() { buttonText = "Change Anti Report Range", overlapText = "Change Anti Report Range <color=grey>[<color=cyan>Massive</color>]</color>", enableMethod =() => ChangeAntiReportRange(), method =() => ChangeAntiReportRange(), disableMethod =() => ChangeAntiReportRange(false), isIncremental = true, isTogglable = false, toolTip = "Changes the range of the anti reports.", ShowInArraylist = false },
                 new() { buttonText = "Change Spoofed Fps", overlapText = "Change Spoofed Fps <color=grey>[<color=cyan>1</color>]</color>", enableMethod =() => ChangeFPS(), method =() => ChangeFPS(), disableMethod =() => ChangeFPS(false), isIncremental = true, isTogglable = false, toolTip = "Changes the spoofed fps.", ShowInArraylist = false },
                 new() { buttonText = "Change Spoofed Ping", overlapText = "Change Spoofed Ping <color=grey>[<color=cyan>1</color>]</color>", enableMethod =() => ChangePing(), method =() => ChangePing(), disableMethod =() => ChangePing(false), isIncremental = true, isTogglable = false, toolTip = "Changes the spoofed ping.", ShowInArraylist = false },
 
@@ -271,9 +271,12 @@ namespace Arrakis.Menu
                 new() { buttonText = "First Person", method =() => Important.FirstPerson(), disableMethod =() => Important.DisableFirstPerson(), isTogglable = true, toolTip = "Makes your pc view see what your vr sees." },
                 new() { buttonText = "Unlock Comp", method =() => Important.UnlockComp(), isTogglable = false, toolTip = "Unlocks the comp queue." },
                 new() { buttonText = "Clear Notifications", method =() => Important.CLearNotis(), isTogglable = false, toolTip = "Clears your notifications." },
+
                 new() { buttonText = "Accept TOS", method =() => TOSPatches.enabled = true, disableMethod =() => TOSPatches.enabled = false, isTogglable = true, toolTip = "Acccepts the tos." },
+
                 new() { buttonText = "Disable AFK Kick", method =() => Important.DisableAFKKick(), disableMethod =() => Important.EnsableAFKKick(), isTogglable = true, toolTip = "Disables the afk kick." },
                 new() { buttonText = "Disable Quit Box", method =() => AntiQuitBox.disable = true, disableMethod =() => AntiQuitBox.disable = false, isTogglable = true, toolTip = "Disables the quit box." },
+
                 new() { buttonText = "PC Button Click", method =() => Important.ButtonClick(), isTogglable = true, toolTip = "Lets you click buttons with your mouse." },
                 new() { buttonText = "Reauth", method =() => Important.Reauth(), isTogglable = false, toolTip = "Reauths you to gtag." },
                 new() { buttonText = "Disable Wind Barriers", enableMethod =() => WindPatch.enabled = true, method =() => Important.DisableWindBarriers(), disableMethod =() => { WindPatch.enabled = false; Important.EnableWindBarriers(); }, isTogglable = true, toolTip = "Disables the wind barriers." },
@@ -286,6 +289,7 @@ namespace Arrakis.Menu
                 new() { buttonText = "Disconnect", method =() => Important.Disconnect(), isTogglable = false, toolTip = "Disconnects you from the current lobby." },
                 new() { buttonText = "Join Random", method =() => Important.JoinRandomRoom(), isTogglable = false, toolTip = "Attempts to join a random room." },
                 new() { buttonText = "Reconnect", method =() => Important.Reconnect(), isTogglable = false, toolTip = "Reconnects you to the room you were in." },
+
                 new() { buttonText = "Join 'ARRAKIS'", method =() => Important.JoinRoom("ARRAKIS"), isTogglable = false, toolTip = "Attempts to make you join a certain room." },
                 new() { buttonText = "Join '1'", method =() => Important.JoinRoom("1"), isTogglable = false, toolTip = "Attempts to make you join a certain room." },
                 new() { buttonText = "Join 'MODS'", method =() => Important.JoinRoom("MODS"), isTogglable = false, toolTip = "Attempts to make you join a certain room." },
@@ -298,6 +302,7 @@ namespace Arrakis.Menu
                 new() { buttonText = "Join 'SOLAR'", method =() => Important.JoinRoom("SOLAR"), isTogglable = false, toolTip = "Attempts to make you join a certain room." },
                 new() { buttonText = "Join Custom Room", method =() => Important.JoinCustomRoom(), isTogglable = false, toolTip = "Attempts to make you join a certain room." },
                 new() { buttonText = "Join Random Private Room", method =() => Important.JoinRoom(Main.GenerateRandomString(UnityEngine.Random.Range(1, 12))), isTogglable = false, toolTip = "Attempts to make you join a certain room." },
+
                 new() { buttonText = "Create '<color=red>ARRAKIS</color>'", method =() => Important.CreatePublicLobby("<color=red>ARRAKIS</color>"), isTogglable = false, toolTip = "Attempts to make a public room." },
                 new() { buttonText = "Create '❤️❤️❤️'", method =() => Important.CreatePublicLobby("<size=90><color=red>❤️❤️❤️</color></size>"), isTogglable = false, toolTip = "Attempts to make a public room." },
                 new() { buttonText = $"Create '{PluginInfo.DiscordLink}'", method =() => Important.CreatePublicLobby($"<color=red>{PluginInfo.DiscordLink}</color>"), isTogglable = false, toolTip = "Attempts to make a public room." },
@@ -310,28 +315,33 @@ namespace Arrakis.Menu
                 new() { buttonText = "Anti Report <color=grey>[<color=cyan>Disconnect</color>]</color>", method =() => Safety.AntiReportDisconnect(), disableMethod =() => Safety.DestroyARSphere(), isTogglable = true, toolTip = "Disconnects you from the lobby when someone tries to report you." },
                 new() { buttonText = "Anti Report <color=grey>[<color=cyan>Reconnect</color>]</color>", method =() => Safety.AntiReportReconnect(), disableMethod =() => Safety.DestroyARSphere(), isTogglable = true, toolTip = "Reconnects you to the current lobby when someone tries to report you." },
                 new() { buttonText = "Anti Report <color=grey>[<color=cyan>Join Random</color>]</color>", method =() => Safety.AntiReportJoinRandom(), disableMethod =() => Safety.DestroyARSphere(), isTogglable = true, toolTip = "Attempts to make you join a random room when someone tries to report you." },
+
                 new() { buttonText = "Flush RPC's", method =() => Safety.RPCProc(), isTogglable = false, toolTip = "Flushes all your rpc calls." },
                 new() { buttonText = "No Finger Movement", method =() => Safety.NoFingerMovement(), isTogglable = true, toolTip = "Disables your finger movement." },
                 new() { buttonText = "Panic", method =() => Safety.Panic(), isTogglable = false, toolTip = "Disables every mod on the menu." },
+
                 new() { buttonText = "Bypass VC Ban", method =() => Safety.BypassVCBan(), isTogglable = false, toolTip = "Attemts to bypass the voice bans." },
+
                 new() { buttonText = "Anti Staff", method =() => Safety.AntiModerator(), isTogglable = true, toolTip = "Disconnects you when someone with staff items joins." },
                 new() { buttonText = "Anti Content Creator", method =() => Safety.AntiContentCreator(), isTogglable = true, toolTip = "Disconnects you when someone with a content creator badge joins." },
                 new() { buttonText = "Anti Crash", method =() => Safety.AntiCrash(), isTogglable = true, toolTip = "Attemts to bypass laggers/crashers by clearing the rpc queue." },
                 new() { buttonText = "Anti Guardian Grab", enableMethod =() => GardGrabPatch.enabled = true, disableMethod =() => GardGrabPatch.enabled = false, isTogglable = true, toolTip = "Dosnt let players pick you up in guardian." },
                 new() { buttonText = "Anti Knockback", enableMethod =() => KnockbackPatch.enabled = true, disableMethod =() => KnockbackPatch.enabled = false, isTogglable = true, toolTip = "Dosnt let anything knock you back." },
-                new() { buttonText = "Anti Name Warn/Ban", enableMethod =() => NameBanPatch.enabled = true, disableMethod =() => NameBanPatch.enabled = false, isTogglable = true, toolTip = "lets you set your name to anything   ." },
+                new() { buttonText = "Anti Name Warn/Ban", enableMethod =() => NameBanPatch.enabled = true, disableMethod =() => NameBanPatch.enabled = false, isTogglable = true, toolTip = "lets you set your name to anything." },
+                new() { buttonText = "Anti Stump Kick", enableMethod =() => GroupPatch.enabled = true, disableMethod =() => GroupPatch.enabled = false, toolTip = "Dosnt let you get kicked from group kick." },
+                new() { buttonText = "Anti Memory Leak", method =() => Safety.AntiMemoryLeak(), isTogglable = true, toolTip = "Makes it so you cant have memory leaks." },
+                new() { buttonText = "Anti Overlay", method =() => Safety.AntiOverlay(), toolTip = "Makes it so you dont go invis when you open your steam dashboard." },
+
                 new() { buttonText = "Spoof Platform", enableMethod =() => Safety.SpoofPlatform(true), disableMethod =() => Safety.SpoofPlatform(false), isTogglable = true, toolTip = "Spoofs your platform to mod checkers." },
                 new() { buttonText = "Spoof Support Page", method =() => Safety.SpoofSupportPage(), isTogglable = true, toolTip = "Spoofs the support page on the computer." },
-                new() { buttonText = "Anti Memory Leak", method =() => Safety.AntiMemoryLeak(), isTogglable = true, toolTip = "Makes it so you cant have memory leaks." },
-                new() { buttonText = "Show AntiCheat Reports <color=grey>[<color=cyan>OTHERS</color>]</color>", enableMethod =() => showanticheatreports = true, disableMethod =() => showanticheatreports = false, toolTip = "Logs everyone elses anti cheat reports in your console." },
-                new() { buttonText = "Show AntiCheat Reports <color=grey>[<color=cyan>SELF</color>]</color>", enableMethod =() => showanticheatreportself = true, disableMethod =() => showanticheatreportself = false, toolTip = "Logs your own anti cheat reports in your console." },
-                new() { buttonText = "Anti Stump Kick", enableMethod =() => GroupPatch.enabled = true, disableMethod =() => GroupPatch.enabled = false, toolTip = "Dosnt let you get kicked from group kick." },
                 new() { buttonText = "Board Spoof", method =() => Safety.BoardSpoof(), toolTip = "Spoofs your name and color every 30 secounds." },
-                new() { buttonText = "Nuke Mod Checkers", enableMethod =() => Safety.NukeModCheckers(), toolTip = "Tells mod checkers that you have alot of mods." },
-                new() { buttonText = "Anti Overlay", method =() => Safety.AntiOverlay(), toolTip = "Makes it so you dont go invis when you open your steam dashboard." },
                 new() { buttonText = "Spoof Fps", enableMethod =() => Arrakis.Patches.Patchers.GTPlayerStatsP.SpoofFPS = true, disableMethod =() => Arrakis.Patches.Patchers.GTPlayerStatsP.SpoofFPS = false, isTogglable = true, toolTip = "Spoofs your fps to mod checkers."},
                 new() { buttonText = "Spoof Ping", enableMethod =() => Arrakis.Patches.Patchers.GTPlayerStatsP.SpoofPing = true, disableMethod =() => Arrakis.Patches.Patchers.GTPlayerStatsP.SpoofPing = false, isTogglable = true, toolTip = "Spoofs your ping to mod checkers."},
 
+                new() { buttonText = "Show AntiCheat Reports <color=grey>[<color=cyan>OTHERS</color>]</color>", enableMethod =() => showanticheatreports = true, disableMethod =() => showanticheatreports = false, toolTip = "Logs everyone elses anti cheat reports in your console." },
+                new() { buttonText = "Show AntiCheat Reports <color=grey>[<color=cyan>SELF</color>]</color>", enableMethod =() => showanticheatreportself = true, disableMethod =() => showanticheatreportself = false, toolTip = "Logs your own anti cheat reports in your console." },
+
+                new() { buttonText = "Nuke Mod Checkers", enableMethod =() => Safety.NukeModCheckers(), toolTip = "Tells mod checkers that you have alot of mods." },
             },
 
             new ButtonInfo[] { // Movement
@@ -342,32 +352,43 @@ namespace Arrakis.Menu
                 new() { buttonText = "Trigger Fly <color=grey>[<color=cyan>T</color>]</color>", method =() => Movement.TriggerFly(), isTogglable = true, toolTip = "Lets you fly while holding <color=grey>[<color=cyan>T</color>]</color>.", isKeybind = true },
                 new() { buttonText = "Noclip Fly <color=grey>[<color=cyan>A</color>]</color>", method =() => Movement.NoclipFly(), isTogglable = true, toolTip = "Lets you fly while with noclip holding <color=grey>[<color=cyan>A</color>]</color>.", isKeybind = true },
                 new() { buttonText = "Iron Monkey", method =() => Movement.ExcelFly(), isTogglable = true, toolTip = "Lets you fly like iron man." },
+
                 new() { buttonText = "Platforms", method =() => Movement.Platforms(), isTogglable = true, toolTip = "Lets you walk on air with platforms." },
                 new() { buttonText = "Trigger Platforms", method =() => Movement.Platforms(true), isTogglable = true, toolTip = "Lets you walk on air with platforms." },
                 new() { buttonText = "Invis Platforms", method =() => Movement.Platforms(false, true), isTogglable = true, toolTip = "Lets you walk on air with platforms." },
                 new() { buttonText = "Platform Spam <color=grey>[<color=cyan>G</color>]</color>", method =() => Movement.PlatformSpam(), isTogglable = true, toolTip = "Lets you spam platforms." },
                 new() { buttonText = "Frozone <color=grey>[<color=cyan>G</color>]</color>", method =() => Movement.Frozone(), isTogglable = true, toolTip = "Lets you become frozone." },
+
                 new() { buttonText = "WASD Fly", method =() => Movement.WasdFly(), isTogglable = true, toolTip = "Lets you move around with wasd." },
+
                 new() { buttonText = "No Clip <color=grey>[<color=cyan>T</color>]</color>", method =() => Movement.NoClip(), isTogglable = true, toolTip = "Lets you go through objects.", isKeybind = true },
                 new() { buttonText = "No Tag Freeze", method =() => Movement.NoTagFreeze(true), isTogglable = true, toolTip = "Disables the tag freeze you get when you get tagged." },
                 new() { buttonText = "Force Tag Freeze", method =() => Movement.NoTagFreeze(false), disableMethod =() => Movement.NoTagFreeze(true), isTogglable = true, toolTip = "Enables the tag freeze you get when you get tagged." },
+
                 new() { buttonText = "Steam Long Arms", method =() => Movement.SteamLongArms(), disableMethod =() => Movement.DisableLongArms(), isTogglable = true, toolTip = "Makes your arms longer." },
                 new() { buttonText = "Long Arms", method =() => Movement.LongArms(), disableMethod =() => Movement.DisableLongArms(), isTogglable = true, toolTip = "Makes your arms longer." },
+
                 new() { buttonText = "TP Gun", method =() => Movement.TPGun(), isTogglable = true, toolTip = "Lets you teleport with a gun." },
+
                 new() { buttonText = "PSA <color=grey>[<color=cyan>A</color>]</color>", method =() => Movement.PSA(), isTogglable = true, toolTip = "Lets you psa.", isKeybind = true },
                 new() { buttonText = "Mosa Boost", method =() => Movement.MosaBoost(), isTogglable = true, toolTip = "Gives you a slight speed boost." },
                 new() { buttonText = "Speed Boost", method =() => Movement.SpeedBoost(), isTogglable = true, toolTip = "Gives you a speed boost." },
                 new() { buttonText = "Extreme Speed Boost", method =() => Movement.ExtremeSpeedBoost(), isTogglable = true, toolTip = "Gives you a extreme speed boost." },
+
                 new() { buttonText = "Slide Control", method =() => Movement.SlideControl(), disableMethod =() => Movement.FixSlideControl(), isTogglable = true, toolTip = "Gives you more control on ice." },
+
                 new() { buttonText = "Wall Walk <color=grey>[<color=cyan>G</color>]</color>", method =() => Movement.WallWalk(), isTogglable = true, toolTip = "Lets you walk on the walls easier." },
                 new() { buttonText = "Kayflock <color=grey>[<color=cyan>T</color>]</color>", method =() => Movement.AutoKayflock(), isTogglable = true, toolTip = "Lets you automaticly kayflock." },
+
                 new() { buttonText = "Checkpoint", method =() => Movement.CheckPoint(), disableMethod =() => Movement.DisableCheckPoint(), isTogglable = true, toolTip = "Lets you spawn a check point and teleport back to it at anytime." },
                 new() { buttonText = "Piggyback Gun", method =() => Movement.PiggybackGun(), isTogglable = true, toolTip = "Lets you piggyback the person who you shoot." },
                 new() { buttonText = "Follow Player Gun", method =() => Movement.FollowPlayerGun(), isTogglable = true, toolTip = "Lets you follow the person who you shoot." },
                 new() { buttonText = "Rig Follow Player Gun", method =() => Movement.RigFollowPlayerGun(), disableMethod =() => Movement.FixRig(), isTogglable = true, toolTip = "Lets your vrrig follow the person who you shoot." },
+
                 new() { buttonText = "Pull Mod <color=grey>[<color=cyan>RJ</color>]</color>", method =() => Movement.PullMod(), isTogglable = true, toolTip = "Give you fake pull, bearly pass checks.", isKeybind = true },
                 new() { buttonText = "Pull Boost <color=grey>[<color=cyan>RJ</color>]</color>", method =() => Movement.PullBoost(), isTogglable = true, toolTip = "Give you fake pull, might pass checks.", isKeybind = true },
                 new() { buttonText = "Predictions", enableMethod =() => Movement.CreatePredThingy(), method =() => Movement.Preds(), disableMethod =() => Movement.RemovePredThingy(), isTogglable = true, toolTip = "Give you predictions, fails checks." },
+
                 new() { buttonText = "Slip Slap", enableMethod =() => Movement.SlipSlap(), disableMethod =() => Movement.DisableSlipSlap(), isTogglable = true, toolTip = "Brings back the old glitch that let syou slip slap." },
             },
 
@@ -378,14 +399,18 @@ namespace Arrakis.Menu
                 new() { buttonText = "Toggle Ghost Monkey <color=grey>[<color=cyan>B</color>]</color>", method =() => Movement.ToggleGhostMonkey(), disableMethod =() => Movement.FixRig(), isTogglable = true, toolTip = "Makes you become a ghost when you press <color=grey>[<color=cyan>B</color>]</color>.", isKeybind = true },
                 new() { buttonText = "Invis Monkey <color=grey>[<color=cyan>A</color>]</color>", method =() => Movement.InvisMonke(), disableMethod =() => Movement.FixRig(), isTogglable = true, toolTip = "Makes you become invis when holding <color=grey>[<color=cyan>B</color>]</color>.", isKeybind = true },
                 new() { buttonText = "Toggle Invis Monkey <color=grey>[<color=cyan>A</color>]</color>", method =() => Movement.ToggleInvisMonkey(), disableMethod =() => Movement.FixRig(), isTogglable = true, toolTip = "Makes you become invis when you press <color=grey>[<color=cyan>B</color>]</color>.", isKeybind = true },
+
                 new() { buttonText = "Spaz Rig", method =() => Movement.SpazRig(), isTogglable = true, toolTip = "Makes your rig spaz out." },
                 new() { buttonText = "Spaz Hands", method =() => Movement.SpazHands(), isTogglable = true, toolTip = "Makes your hands spaz out." },
                 new() { buttonText = "Spaz Head", method =() => Movement.SpazHead(), isTogglable = true, toolTip = "Makes your head spaz out." },
+
                 new() { buttonText = "Rig Gun", method =() => Movement.RigGun(), disableMethod =() => Movement.FixRig(), isTogglable = true, toolTip = "Moves your rig to where you shoot." },
                 new() { buttonText = "Grab Rig <color=grey>[<color=cyan>G</color>]</color>", method =() => Movement.GrabRig(), disableMethod =() => Movement.FixRig(), isTogglable = true, toolTip = "Lets you grab your rig when holding <color=grey>[<color=cyan>G</color>]</color>." },
                 new() { buttonText = "Smooth Rig", enableMethod =() => PhotonNetwork.SerializationRate = 35, disableMethod =() => PhotonNetwork.SerializationRate = 10, isTogglable = true, toolTip = "Makes your rig smooth to other players." },
+
                 new() { buttonText = "Fake Full Body Tracking", enableMethod =() => TorsoPatch.VRRigLateUpdate += Movement.FakeFBT, disableMethod =() => TorsoPatch.VRRigLateUpdate -= Movement.FakeFBT, isTogglable = true, toolTip = "Makes it look like you have full body tracking." },
                 new() { buttonText = "Spaz Full Body Tracking", enableMethod =() => TorsoPatch.VRRigLateUpdate += Movement.SpazBody, disableMethod =() => TorsoPatch.VRRigLateUpdate -= Movement.SpazBody, isTogglable = true, toolTip = "Spazzes the full body tracking." },
+
                 new() { buttonText = "Flip", enableMethod =() => TorsoPatch.VRRigLateUpdate += Movement.Flip, disableMethod =() => { TorsoPatch.VRRigLateUpdate -= Movement.Flip; Movement.StopFlip(); }, isTogglable = true, toolTip = "Lets you flip when pressing your trigger." },
                 new() { buttonText = "Smooth Body", method =() => Movement.SmoothBody(), disableMethod =() => Movement.ToggleTorsoPatch(false), isTogglable = true, toolTip = "Smooths your vrrigs body." },
             },
@@ -449,10 +474,12 @@ namespace Arrakis.Menu
                 new() { buttonText = "Tag Self", method =() => Advantage.TagSelf(), disableMethod =() => Movement.FixRig(), isTogglable = true, toolTip = "Tags your self if your not tagged." },
                 new() { buttonText = "Tag Gun", method =() => Advantage.TagGun(), disableMethod =() => Movement.FixRig(), isTogglable = true, toolTip = "Tags the person you shoot." },
                 new() { buttonText = "Flick Tag Gun", method =() => Advantage.FlickTagGun(), isTogglable = true, toolTip = "Lets you flick tag with a gun." },
+
                 new() { buttonText = "Hitboxes", enableMethod =() => HitBoxesPatch.enabled = true, method =() => Advantage.Hitboxes(), disableMethod =() => { Advantage.DestroyHitboxes(); HitBoxesPatch.enabled = false; }, isTogglable = true, toolTip = "Gives you hitboxes that show where your hands are." },
                 new() { buttonText = "No Tag On Join", method =() => Advantage.NoTagOnJoin(), disableMethod =() => Advantage.TagOnJoin(), isTogglable = true, toolTip = "Dosnt tag you when you join a room." },
                 new() { buttonText = "Fake Lag", enableMethod =() => PhotonNetwork.SerializationRate = 1, disableMethod =() => PhotonNetwork.SerializationRate = 10, isTogglable = true, toolTip = "Makes your rig really laggy to other players." },
                 new() { buttonText = "No Tag Limit", enableMethod =() => GorillaTagger.Instance.maxTagDistance = float.MaxValue, disableMethod =() => GorillaTagger.Instance.maxTagDistance = 2.2f, isTogglable = true, toolTip = "Makes it so flick tagging is back." },
+
                 new() { buttonText = "Anti Tag", method =() => Advantage.AntiTag(), isTogglable = true, toolTip = "Makes it so you cant be tagged." },
                 new() { buttonText = "Blink <color=grey>[<color=cyan>T</color>]</color>", method =() => Advantage.Blink(), disableMethod =() => Advantage.StopBlinking(), isTogglable = true, toolTip = "Lets you freeze other players when holding <color=grey>[<color=cyan>T</color>]</color>.", isKeybind = true },
                 new() { buttonText = "Lag Range", method =() => Advantage.LagRange(), disableMethod =() => PhotonNetwork.SerializationRate = 10, isTogglable = true, toolTip = "Changes how much your rig updates when you are near other players." },
@@ -502,6 +529,7 @@ namespace Arrakis.Menu
 
                 new() { buttonText = "Give All Resources [SI]", method =() => Fun.GiveAllResources(), isTogglable = true, toolTip = "Gives alot of every resource." },
                 new() { buttonText = "Unlock All [SI]", method =() => Fun.SIUnlockAll(), isTogglable = true, toolTip = "Unlocks every super item." },
+
                 new() { buttonText = "Flash VIM Name Tag", method =() => Fun.FlashVIMNameTag(), isTogglable = true, toolTip = "Flashes the golden nametag." },
                 new() { buttonText = "Unlock VIM Subscription", enableMethod =() => Fun.UnlockSubscription(true), disableMethod =() => Fun.UnlockSubscription(false), isTogglable = true, toolTip = "Unlocks VIM." },
                 new() { buttonText = "VIM Dig Gun", method =() => Fun.VIMDimGun(), isTogglable = true, toolTip = "Digs in the VIM dig map." },
@@ -526,14 +554,18 @@ namespace Arrakis.Menu
                 new() { buttonText = "Orbit Camera", method =() => Fun.OrbitCamera(), isTogglable = true, toolTip = "Orbits the camera around you." },
                 new() { buttonText = "Destroy Camera", method =() => Fun.DestroyCamera(), isTogglable = false, toolTip = "Removes any spawned cameras." },
                 new() { buttonText = "Flash Camera Recording", method =() => Fun.FlashCameraRecording(), isTogglable = true, toolTip = "Makes the camera flash recording." },
+
                 new() { buttonText = "Grab Tablet", method =() => Fun.GrabTablet(), isTogglable = true, toolTip = "Lets you grab a tablet." },
                 new() { buttonText = "Orbit Tablet", method =() => Fun.OrbitTablet(), isTogglable = true, toolTip = "Orbits the tablet around you." },
                 new() { buttonText = "Destroy Tablet", method =() => Fun.DestroyTablet(), isTogglable = false, toolTip = "Removes any spawned tablets." },
+
                 new() { buttonText = "Make Forest Gound Snow", enableMethod =() => Fun.ForestSnowGround(false), disableMethod  =() => Fun.DisableForestSnowGround(), isTogglable = true, toolTip = "Allows you to pick up snowballs from the forest ground." },
                 new() { buttonText = "Make Forest Gound Big Snow", enableMethod =() => Fun.ForestSnowGround(true), disableMethod  =() => Fun.DisableForestSnowGround(), isTogglable = true, toolTip = "Allows you to pick up big snowballs from the forest ground." },
                 new() { buttonText = "Random Color Snowballs", method =() => Fun.RandomColorSnowballs(), disableMethod  =() => Fun.ResetSnowball(), isTogglable = true, toolTip = "Makes snowballs gay." },
+
                 new() { buttonText = "Get Right Bracelet", enableMethod =() => Fun.BraceletToggle(true, false),disableMethod  =() =>  Fun.BraceletToggle(false, false), isTogglable = true, toolTip = "Gives you a bracelet." },
                 new() { buttonText = "Get Left Bracelet", enableMethod =() => Fun.BraceletToggle(true, true),disableMethod  =() =>  Fun.BraceletToggle(false, true), isTogglable = true, toolTip = "Gives you a bracelet." },
+
                 new() { buttonText = "Strobe Monkey <color=grey>[<color=cyan>Wardrobes</color>]</color>", method =() => Fun.StrobeMonkey(), isTogglable = true, toolTip = "Makes you server sided strobinig at any of the wardrobes." },
                 new() { buttonText = "Rainbow Monkey <color=grey>[<color=cyan>Wardrobes</color>]</color>", method =() => Fun.RainbowMonkey(), isTogglable = true, toolTip = "Makes you server sided rainbow at any of the wardrobes." },
                 new() { buttonText = "Menu Theme Monkey <color=grey>[<color=cyan>Wardrobes</color>]</color>", method =() => Fun.MenuThemeMonkey(), isTogglable = true, toolTip = "Makes you server sided the menu color at any of the wardrobes." },
@@ -547,6 +579,7 @@ namespace Arrakis.Menu
                 new() { buttonText = "Buy All Free Cosmetics", method =() => Fun.BuyAllFree(), isTogglable = false, toolTip = "Trys to buy every cosmetic if its free." },
 
                 new() { buttonText = "Animated Name", method =() => Fun.AnimatedName(), disableMethod =() => Fun.name = null, isTogglable = true, toolTip = "Makes your name animated." },
+
                 new() { buttonText = "Break Audio Gun", method =() => Fun.BreakAudioGun(), isTogglable = true, toolTip = "Attempts to break the persons audio who you shoot." },
                 new() { buttonText = "Break Audio All", method =() => Fun.BreakAudioAll(), isTogglable = true, toolTip = "Attempts to break everyones audio." },
 
@@ -560,7 +593,9 @@ namespace Arrakis.Menu
 
                 new() { buttonText = "Projectile Spammer <color=grey>[<color=cyan>G</color>]</color>", method =() => Projectiles.ProjectileSpammer(), isTogglable = true, toolTip = "Spams a projectile whne holding <color=grey>[<color=cyan>G</color>]</color>." },
                 new() { buttonText = "Projectile Launcher <color=grey>[<color=cyan>G</color>]</color>", method =() => Projectiles.ProjectileLauncher(), isTogglable = true, toolTip = "Lets you launch a projectile when holding <color=grey>[<color=cyan>G</color>]</color>." },
+
                 new() { buttonText = "Projectile Gun", method =() => Projectiles.ProjectileGun(), isTogglable = true, toolTip = "Lets you shoot a projectile where the gun is." },
+
                 new() { buttonText = "Projectile Blind Gun", method =() => Projectiles.ProjectileBlindGun(), isTogglable = true, toolTip = "Lets you blind a player with the egg projectile." },
                 new() { buttonText = "Projectile Blind All", method =() => Projectiles.ProjectileBlindAll(), isTogglable = true, toolTip = "Lets you blind everyone with the egg projectile." },
             },
@@ -580,6 +615,7 @@ namespace Arrakis.Menu
                 new() { buttonText = "Guardian Break Movement All", method =() => Overpowered.GuardianBreakMovementAll(), isTogglable = true, toolTip = "Breaks the movement of everyone if you are guardian." },
                 new() { buttonText = "Guardian Freeze Gun", method =() => Overpowered.GuardianFreezeGun(), isTogglable = true, toolTip = "Sets the person you shoot velocity to 0." },
                 new() { buttonText = "Guardian Freeze All", method =() => Overpowered.GuardianFreezeAll(), isTogglable = true, toolTip = "Sets everybodys velocity to 0." },
+
                 new() { buttonText = "Rope Fling Gun", method =() => Overpowered.RopeFlingGun(), isTogglable = true, toolTip = "Flings the rope you shoot." },
                 new() { buttonText = "Freeze Rope Gun", method =() => Overpowered.FreezeRopeGun(), isTogglable = true, toolTip = "Freezes the rope you shoot." },
                 new() { buttonText = "Rope Up Gun", method =() => Overpowered.RopeUpGun(), isTogglable = true, toolTip = "Flings the rope you shoot." },
@@ -587,12 +623,15 @@ namespace Arrakis.Menu
                 new() { buttonText = "Rope Left Gun", method =() => Overpowered.RopeLeftGun(), isTogglable = true, toolTip = "Flings the rope you shoot." },
                 new() { buttonText = "Rope Right Gun", method =() => Overpowered.RopeRightGun(), isTogglable = true, toolTip = "Flings the rope you shoot." },
                 new() { buttonText = "Rope Down Gun", method =() => Overpowered.RopeDownGun(), isTogglable = true, toolTip = "Flings the rope you shoot." },
+
                 new() { buttonText = "Stump Kick All <color=grey>[<color=cyan>Private</color>]</color>", method =() => Overpowered.StumpKickAll(), isTogglable = false, toolTip = "Kicks everyone in stump to a public lobby." },
                 new() { buttonText = "Elevator Kick All", method =() => Overpowered.ElevatorKickAll(), isTogglable = false, toolTip = "Kicks everyone in elevator to a map." },
+
                 new() { buttonText = "Destroy Cache All", method =() => Overpowered.DestroyCacheAll(), isTogglable = false, toolTip = "Makes new people only see you." },
                 new() { buttonText = "Lag All", method =() => Overpowered.LagAll(), isTogglable = true, toolTip = "Lags everyone." },
                 new() { buttonText = "Lag Gun", method =() => Overpowered.LagGun(), isTogglable = true, toolTip = "Lags who you shoot." },
                 new() { buttonText = "Lag Master", method =() => Overpowered.LagMaster(), isTogglable = true, toolTip = "Lags the master client." },
+
                 new() { buttonText = "Schizophrenic Gun", method =() => Overpowered.SchizophrenicGun(), isTogglable = true, toolTip = "Makes who ever you shoot only see you." },
                 new() { buttonText = "Schizophrenic Master", method =() => Overpowered.SchizophrenicMaster(), isTogglable = true, toolTip = "Makes the master client only see you." },
             },
@@ -617,7 +656,9 @@ namespace Arrakis.Menu
                 new() { buttonText = "Block Crash All", method =() => Master.BlockCrashAll(), isTogglable = true, toolTip = "Crashes everyone with blocks." },
                 new() { buttonText = "Block Sphere", method =() => Master.BlockSphere(), isTogglable = false, toolTip = "Makes a sphere with blocks." },
                 new() { buttonText = "Block Freeze Gun", method =() => Master.BlockFreezeGun(), isTogglable = true, toolTip = "Freezes who ever you shoot with blocks." },
+
                 new() { buttonText = "VIM Kick All", method =() => Master.VIMKickAll(), isTogglable = false, toolTip = "Kicks everybody if you are master client, the room is private and you own vim." },
+
                 new() { buttonText = "Rise Lava", method =() => Master.ChangeLavaState(InfectionLavaController.RisingLavaState.Rising), isTogglable = false, toolTip = "Rises the lava." },
                 new() { buttonText = "Fill Lava", method =() => Master.ChangeLavaState(InfectionLavaController.RisingLavaState.Full), isTogglable = false, toolTip = "Fills the lava." },
                 new() { buttonText = "Drain Lava", method =() => Master.ChangeLavaState(InfectionLavaController.RisingLavaState.Draining), isTogglable = false, toolTip = "Drain the lava." },
@@ -660,12 +701,15 @@ namespace Arrakis.Menu
 
                 new() { buttonText = "Get All Tryon Cosmetics", method =() => Experimental.GetTryonCosmetics(), isTogglable = false, toolTip = "Gets all the try on cosmetics and logs in the console." },
                 new() { buttonText = "Get RPC Data", method =() => Experimental.GetRPCData(), isTogglable = false, toolTip = "Gets the rpc data and logs to a file." },
+
                 new() { buttonText = "Leave Party", method =() => FriendshipGroupDetection.Instance.LeaveParty(), isTogglable = false, toolTip = "Leaves the party you are in." },
                 new() { buttonText = "Party Lag Gun", method =() => Experimental.PartyLagGun(), disableMethod =() => EventPatches.Override = null, isTogglable = true, toolTip = "Lets you lag who ever you shoot if they are in your party." },
                 new() { buttonText = "Party Lag All", method =() => Experimental.PartyLagAll(), isTogglable = true, toolTip = "Lags everyone if they are in your party." },
+
                 new() { buttonText = "Maxwell", enableMethod =() => AssetBundleLoader.LoadBundle("maxwell", VRRig.LocalRig.rightHandTransform.position, VRRig.LocalRig.rightHandTransform.rotation, "maxwell"), method =() => AssetBundleLoader.MoveObject("maxwell", VRRig.LocalRig.rightHandTransform.position, VRRig.LocalRig.rightHandTransform.rotation), disableMethod =() => AssetBundleLoader.DeleteBundle("maxwell"), isTogglable = true, toolTip = "Spawns a client sided maxwell." },
                 new() { buttonText = "Zelda Sword", enableMethod =() => AssetBundleLoader.LoadBundle("zeldasword", VRRig.LocalRig.rightHandTransform.position, VRRig.LocalRig.rightHandTransform.rotation, "zeldasword"), method =() => AssetBundleLoader.MoveObject("zeldasword", VRRig.LocalRig.rightHandTransform.position, VRRig.LocalRig.rightHandTransform.rotation), disableMethod =() => AssetBundleLoader.DeleteBundle("zeldasword"), isTogglable = true, toolTip = "Spawns a client sided zeldas word." },
                 new() { buttonText = "Spam Pride Cube", method =() => Experimental.SpamPrideCube(), isTogglable = true, toolTip = "Spams client sided cubes." },
+
                 new() { buttonText = "Switch To Tcp", enableMethod =() => Experimental.SwitchToTcp(), disableMethod =() => Experimental.SwitchToUdp(), isTogglable = true, toolTip = "Swaps the networking to tcp, this is mainly used for debugging game glitches/expoits." },
 
                 new() { buttonText = "Portal Gun", method =() => PortalManager.SpawnPortal(), isTogglable = true, toolTip = "Portal ghun." },
