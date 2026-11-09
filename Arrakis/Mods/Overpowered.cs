@@ -692,7 +692,7 @@ namespace Arrakis.Mods
                 Toggle("Schizophrenic Master");
             }
         }
-        public static void LogSpamAll()
+        /*public static void LogSpamAll()
         {
 			if (PhotonNetwork.InRoom)
 			{
@@ -724,8 +724,8 @@ namespace Arrakis.Mods
                 NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not in a room this mod wont work.");
                 Toggle("Log Spam All");
             }
-        }
-        public static void Deafen(ReceiverGroup whothefuck)
+        }*/
+        /*public static void Deafen(ReceiverGroup whothefuck)
         {
             if (PhotonNetwork.IsMasterClient && whothefuck == ReceiverGroup.MasterClient)
             {
@@ -746,6 +746,6 @@ namespace Arrakis.Mods
                 },
                 new RaiseEventOptions { Receivers = whothefuck }, SendOptions.SendUnreliable);
 			}
-        }
+        }*/
     }
 }

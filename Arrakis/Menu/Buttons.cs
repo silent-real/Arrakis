@@ -595,10 +595,6 @@ namespace Arrakis.Menu
                 new() { buttonText = "Lag Master", method =() => Overpowered.LagMaster(), isTogglable = true, toolTip = "Lags the master client." },
                 new() { buttonText = "Schizophrenic Gun", method =() => Overpowered.SchizophrenicGun(), isTogglable = true, toolTip = "Makes who ever you shoot only see you." },
                 new() { buttonText = "Schizophrenic Master", method =() => Overpowered.SchizophrenicMaster(), isTogglable = true, toolTip = "Makes the master client only see you." },
-                new() { buttonText = "Log Spam All", method =() => Overpowered.LogSpamAll(), isTogglable = true, toolTip = $"Spams everyones debug logs with \"ARRAKIS ON TOP + {PluginInfo.DiscordLink}\"." },
-                new() { buttonText = "Deafen All", method =() => Overpowered.Deafen(Photon.Realtime.ReceiverGroup.All), isTogglable = true, toolTip = "Deafens everybody." },
-                new() { buttonText = "Deafen Others", method =() => Overpowered.Deafen(Photon.Realtime.ReceiverGroup.Others), isTogglable = true, toolTip = "Deafens everybody but you." },
-                new() { buttonText = "Deafen Master", method =() => Overpowered.Deafen(Photon.Realtime.ReceiverGroup.MasterClient), isTogglable = true, toolTip = "Deafens the master client." },
             },
             new ButtonInfo[] { // Custom Maps
                 new() { buttonText = "Exit Custom Maps", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
@@ -749,3 +745,13 @@ namespace Arrakis.Menu
         };
     }
 }
+
+// Patched mods - every mod here is removed cause one reason or another
+/*
+
+new() { buttonText = "Log Spam All", method =() => Overpowered.LogSpamAll(), isTogglable = true, toolTip = $"Spams everyones debug logs with \"ARRAKIS ON TOP + {PluginInfo.DiscordLink}\"." },
+new() { buttonText = "Deafen All", method =() => Overpowered.Deafen(Photon.Realtime.ReceiverGroup.All), isTogglable = true, toolTip = "Deafens everybody." },
+new() { buttonText = "Deafen Others", method =() => Overpowered.Deafen(Photon.Realtime.ReceiverGroup.Others), isTogglable = true, toolTip = "Deafens everybody but you." },
+new() { buttonText = "Deafen Master", method =() => Overpowered.Deafen(Photon.Realtime.ReceiverGroup.MasterClient), isTogglable = true, toolTip = "Deafens the master client." },
+
+ */
