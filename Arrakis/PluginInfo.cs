@@ -28,6 +28,6 @@ namespace Arrakis
         public const string Version = "2.7.2"; // use /arraiis version cmd when updating -nova | my fault i forgot -sleepy (dont remove pls)
         public const string BaseDirectory = "Arrakis";
         public const string ServerApi = "https://novax.lol/arrakis/api";
-        public const string DiscordLink = "https://discord.gg/dtQdz59FJG";
+        public const string DiscordLink = "https://discord.gg/dtQdz59FJG"; // https://novax.lol/d bleh -nova
     }
 }
