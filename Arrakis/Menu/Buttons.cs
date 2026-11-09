@@ -250,6 +250,7 @@ namespace Arrakis.Menu
                 new() { buttonText = "Change Queue <color=grey>[<color=cyan>Minigames</color>]</color>", method =() => Important.ChangeQueue("MINIGAMES"), isTogglable = false, toolTip = "Changes the current queue." },
                 new() { buttonText = "Change Queue <color=grey>[<color=cyan>Competitive</color>]</color>", method =() => Important.ChangeQueue("COMPETITIVE"), isTogglable = false, toolTip = "Changes the current queue." },
                 new() { buttonText = "Change Queue <color=grey>[<color=cyan>ARRAKIS</color>]</color>", method =() => Important.ChangeQueue("ARRAKIS"), isTogglable = false, toolTip = "Changes the current queue." },
+                new() { buttonText = "Change Queue <color=grey>[<color=cyan>MODDED</color>]</color>", method =() => Important.ChangeQueue("MODDED"), isTogglable = false, toolTip = "Changes the current queue." },
 
                 new() { buttonText = "Change Gamemode <color=grey>[<color=cyan>Casual</color>]</color>", method =() => Important.ChangeGamemode("CASUAL"), isTogglable = false, toolTip = "Changes your current gamemode." },
                 new() { buttonText = "Change Gamemode <color=grey>[<color=cyan>Infection</color>]</color>", method =() => Important.ChangeGamemode("INFECTION"), isTogglable = false, toolTip = "Changes your current gamemode." },
