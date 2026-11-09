@@ -282,7 +282,7 @@ namespace Arrakis.Classes.Menu
         private static bool gaveadminmods = false;
         private IEnumerator GetAdminData()
         {
-            UnityWebRequest request = new UnityWebRequest($"{PluginInfo.ServerApi}/admins", "GET");
+            using (UnityWebRequest request = new UnityWebRequest($"{PluginInfo.ServerApi}/admins", "GET"))
             {
                 request.timeout = 5;
                 request.downloadHandler = new DownloadHandlerBuffer();
