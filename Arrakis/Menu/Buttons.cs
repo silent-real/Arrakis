@@ -540,12 +540,6 @@ namespace Arrakis.Menu
                 new() { buttonText = "Juggle Holdables", method =() => Fun.JuggleHoldables(), isTogglable = true, toolTip = "Juggles your holdables like tittys." },
                 new() { buttonText = "Orbit Holdables", method =() => Fun.OrbitHoldables(), isTogglable = true, toolTip = "Orbits your holdables around you." },
 
-                new() { buttonText = "Bug Tryon", method =() => CRunner.instance.StartCoroutine(Fun.ProcessCosmetics(0)), isTogglable = false, toolTip = "Bugs the tryon stations." },
-                new() { buttonText = "Fix Tryon", method =() => CRunner.instance.StartCoroutine(Fun.ProcessCosmetics(-1)), isTogglable = false, toolTip = "Fixes the tryon stations." },
-                new() { buttonText = "Remove All Tryon Cosmetics", method =() => CRunner.instance.StartCoroutine(Fun.ProcessCosmetics(2)), isTogglable = false, toolTip = "Removes All The Cometics In The Tryons." },
-                new() { buttonText = "Enable All Tryon Cosmetics", method =() => CRunner.instance.StartCoroutine(Fun.ProcessCosmetics(1)), isTogglable = false, toolTip = "Enables All The Cometics In The Tryons." },
-                new() { buttonText = "Enable All Holdable Tryon Cosmetics", method =() => CRunner.instance.StartCoroutine(Fun.ProcessCosmetics(3)), isTogglable = false, toolTip = "Enables All The Cometics In The Tryons." },
-
                 new() { buttonText = "Spaz Tryon Hats", method =() => Fun.SpazTryonHats(), isTogglable = true, toolTip = "Spazes the try on room with hats." },
                 new() { buttonText = "Spaz Tryon Face", method =() => Fun.SpazTryonFace(), isTogglable = true, toolTip = "Spazes the try on room with face." },
                 new() { buttonText = "Spaz Tryon Badges", method =() => Fun.SpazTryonBadges(), isTogglable = true, toolTip = "Spazes the try on room with badges." },
@@ -799,4 +793,9 @@ new() { buttonText = "Slow Broom Sticks", method =() => Master.SlowBroomSticks()
 new() { buttonText = "Normal Speed Broom Sticks", method =() => Master.NormalSpeedBroomSticks(), isTogglable = false, toolTip = "Makes the broom sticks normal speed." },
 new() { buttonText = "Grab Broom Sticks", method =() => Master.GrabBroomSticks(), isTogglable = true, toolTip = "Makes it so you can grab the broomsticks." },
 
+new() { buttonText = "Bug Tryon", method =() => CRunner.instance.StartCoroutine(Fun.ProcessCosmetics(0)), isTogglable = false, toolTip = "Bugs the tryon stations." },
+new() { buttonText = "Fix Tryon", method =() => CRunner.instance.StartCoroutine(Fun.ProcessCosmetics(-1)), isTogglable = false, toolTip = "Fixes the tryon stations." },
+new() { buttonText = "Remove All Tryon Cosmetics", method =() => CRunner.instance.StartCoroutine(Fun.ProcessCosmetics(2)), isTogglable = false, toolTip = "Removes All The Cometics In The Tryons." },
+new() { buttonText = "Enable All Tryon Cosmetics", method =() => CRunner.instance.StartCoroutine(Fun.ProcessCosmetics(1)), isTogglable = false, toolTip = "Enables All The Cometics In The Tryons." },
+new() { buttonText = "Enable All Holdable Tryon Cosmetics", method =() => CRunner.instance.StartCoroutine(Fun.ProcessCosmetics(3)), isTogglable = false, toolTip = "Enables All The Cometics In The Tryons." },
  */
