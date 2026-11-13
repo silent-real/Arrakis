@@ -25,6 +25,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Arrakis.Classes;
+using Arrakis.Menu;
 using Photon.Voice.Unity;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -300,6 +301,17 @@ namespace Arrakis.Mods
                 },
                 new ButtonInfo
                 {
+                    buttonText = "Change Volume",
+                    method = () => ChangeVolume(),
+                    enableMethod =() => ChangeVolume(),
+                    disableMethod =() => ChangeVolume(false),
+                    isIncremental = true,
+                    overlapText = $"Change Volume <color=grey>[<color=cyan>{LocalVolume:0.0}f</color><color=grey>]</color>",
+                    isTogglable = false,
+                    toolTip = "Changes the soundboard volume locally."
+                },
+                new ButtonInfo
+                {
                     buttonText = "Stop All Sounds",
                     method = Stop,
                     isTogglable = false,
@@ -332,6 +344,23 @@ namespace Arrakis.Mods
             }
             Menu.Buttons.buttons[categoryIndex] = buttons.ToArray();
             Menu.Main.CurrentCategoryName = "Soundboard";
+        }
+
+
+        private static void ChangeVolume(bool increment = true)
+        {
+            LocalVolume = (float)Math.Round(LocalVolume + (increment ? 0.1f : -0.1f), 1);
+            if (LocalVolume > 1f)
+                LocalVolume = 0f;
+            else if (LocalVolume < 0f)
+                LocalVolume = 1f;
+
+            if (audioSource != null)
+                audioSource.volume = Mathf.Clamp01(LocalVolume);
+
+            ButtonInfo button = Main.GetIndex("Change Volume");
+            if (button != null)
+                button.overlapText = $"Change Volume <color=grey>[<color=cyan>{LocalVolume:0.0}f</color><color=grey>]</color>";
         }
 
         private static AudioType GetAudioType(string path)
