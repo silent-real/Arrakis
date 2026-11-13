@@ -189,8 +189,11 @@ namespace Arrakis.Mods
                 DisableLimbChams();
                 return;
             }
+
             bool hasEye = TryGetEye(out Vector3 eye);
             float now = Time.time;
+            Camera cam = Camera.main;
+
             if (type == 2)
             {
                 limbChamStale.Clear();
@@ -210,7 +213,7 @@ namespace Arrakis.Mods
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
                 if (rig == null || rig.IsLocal() || rig.mainSkin == null) continue;
-                if ((rig.transform.position - Camera.main.transform.position).sqrMagnitude > 625f) continue;
+                if ((rig.transform.position - cam.transform.position).sqrMagnitude > 225f) continue;
                 Material body = rig.mainSkin.material;
                 Color chamColor = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f, 0.6f) : new Color(0.46f, 0.6f, 0.6f, 0.6f);
                 switch (type)
@@ -482,7 +485,7 @@ namespace Arrakis.Mods
             var col = obj.GetComponent<Collider>();
             if (col != null) Object.Destroy(col);
             var rend = obj.GetComponent<Renderer>();
-            rend.sharedMaterial = new Material(shader) { color = color };
+            rend.material = new Material(shader) { color = color };
             return obj;
         }
 
@@ -607,10 +610,9 @@ namespace Arrakis.Mods
                 }
                 if (tag.text != nick) tag.text = nick;
                 Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
-                SetTag(rig, TagKind.Name, tag, parent,
-                    followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor);
-                tag.transform.LookAt(Camera.main.transform);
-                tag.transform.Rotate(0f, 180f, 0f);
+                SetTag(rig, TagKind.Name, tag, parent, followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor);
+                Vector3 dir = tag.transform.position - cam.transform.position;
+                tag.transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
             }
         }
         public static void DisableNameTags()
@@ -630,6 +632,8 @@ namespace Arrakis.Mods
                 RemoveTag(rig, TagKind.Id);
                 IDnameTagPool.Remove(rig);
             }
+            Camera cam = Camera.main;
+            if (cam == null) return;
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
                 if (rig == null || rig.IsLocal()) continue;
@@ -641,10 +645,9 @@ namespace Arrakis.Mods
                     IDnameTagPool[rig] = tag;
                 }
                 Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
-                SetTag(rig, TagKind.Id, tag, parent,
-                    followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor);
-                tag.transform.LookAt(Camera.main.transform);
-                tag.transform.Rotate(0f, 180f, 0f);
+                SetTag(rig, TagKind.Id, tag, parent, followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor);
+                Vector3 dir = tag.transform.position - cam.transform.position;
+                tag.transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
             }
         }
         public static void DisableIdNameTags()
@@ -663,6 +666,8 @@ namespace Arrakis.Mods
                 RemoveTag(rig, TagKind.Platform);
                 PlatformnameTagPool.Remove(rig);
             }
+            Camera cam = Camera.main;
+            if (cam == null) return;
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
                 if (rig == null || rig.IsLocal()) continue;
@@ -680,10 +685,9 @@ namespace Arrakis.Mods
                     PlatformnameTagPool[rig] = tag;
                 }
                 Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
-                SetTag(rig, TagKind.Platform, tag, parent,
-                    followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor);
-                tag.transform.LookAt(Camera.main.transform);
-                tag.transform.Rotate(0f, 180f, 0f);
+                SetTag(rig, TagKind.Platform, tag, parent, followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor);
+                Vector3 dir = tag.transform.position - cam.transform.position;
+                tag.transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
             }
         }
         public static void DisablePlatformNameTags()
@@ -702,6 +706,8 @@ namespace Arrakis.Mods
                 RemoveTag(rig, TagKind.Fps);
                 FpsnametagPool.Remove(rig);
             }
+            Camera cam = Camera.main;
+            if (cam == null) return;
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
                 if (rig == null || rig.IsLocal()) continue;
@@ -717,10 +723,9 @@ namespace Arrakis.Mods
                 else if (fps > 30) tag.text = $"<color=yellow>{fps}</color>";
                 else tag.text = $"<color=red>{fps}</color>";
                 Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
-                SetTag(rig, TagKind.Fps, tag, parent,
-                    followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor);
-                tag.transform.LookAt(Camera.main.transform);
-                tag.transform.Rotate(0f, 180f, 0f);
+                SetTag(rig, TagKind.Fps, tag, parent, followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor);
+                Vector3 dir = tag.transform.position - cam.transform.position;
+                tag.transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
             }
         }
 
@@ -742,6 +747,8 @@ namespace Arrakis.Mods
             }
             var gm = GorillaGameManager.instance;
             bool casual = gm == null || gm.GameModeName() == "CASUAL";
+            Camera cam = Camera.main;
+            if (cam == null) return;
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
                 if (rig == null || rig.IsLocal()) continue;
@@ -755,10 +762,9 @@ namespace Arrakis.Mods
                 string wanted = casual ? "Not Tagged" : (rig.IsTagged() ? "Tagged" : "Not Tagged");
                 if (tag.text != wanted) tag.text = wanted;
                 Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
-                SetTag(rig, TagKind.Tagged, tag, parent,
-                    followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor);
-                tag.transform.LookAt(Camera.main.transform);
-                tag.transform.Rotate(0f, 180f, 0f);
+                SetTag(rig, TagKind.Tagged, tag, parent, followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor);
+                Vector3 dir = tag.transform.position - cam.transform.position;
+                tag.transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
             }
         }
         public static void DisableTaggedNameTags()
@@ -767,6 +773,7 @@ namespace Arrakis.Mods
                 RemoveTag(pair.Key, TagKind.Tagged);
             TaggednametagPool.Clear();
         }
+
         private static TextMeshPro CreateText(Transform parent, TextAlignmentOptions alignment, string text, Color color, float scale)
         {
             GameObject textHolder = new GameObject("nametag_arrakis");
@@ -1335,7 +1342,7 @@ namespace Arrakis.Mods
         public static void EnableSelfWireframeMesh()
         {
             VRRig rig = GorillaTagger.Instance.offlineVRRig;
-            if (rig == null) return;
+            if (rig == null || rig.mainSkin == null) return;
             if (selfWireframeCam == null)
             {
                 selfWireframeCam = new GameObject("Arrakis_WireframeCam");
@@ -1344,11 +1351,11 @@ namespace Arrakis.Mods
                 selfWireframeRenderer.targetRig = rig;
                 selfWireframeRenderer.wireColor = backgroundColor.GetCurrentColor();
                 originalSkinColor = rig.mainSkin.material.color;
-                rig.mainSkin.material.shader = EspText;
-                rig.mainSkin.material.color = new Color(0f, 0f, 0f, 0f);
+                rig.mainSkin.enabled = false;
                 skinHidden = true;
             }
         }
+
         public static void DisableSelfWireframeMesh()
         {
             if (selfWireframeCam != null)
@@ -1356,6 +1363,7 @@ namespace Arrakis.Mods
                 VRRig rig = GorillaTagger.Instance.offlineVRRig;
                 if (rig != null && skinHidden)
                 {
+                    rig.mainSkin.enabled = true;
                     rig.mainSkin.material.shader = UberShader;
                     rig.mainSkin.material.color = originalSkinColor;
                     skinHidden = false;
@@ -1365,6 +1373,7 @@ namespace Arrakis.Mods
                 selfWireframeRenderer = null;
             }
         }
+
         private static Color _lastSelfWireColor;
 
         public static void UpdateSelfWireframeColor()
@@ -1623,7 +1632,8 @@ namespace Arrakis.Mods
             get
             {
                 if (_mosaicMat != null) return _mosaicMat;
-                _mosaicMat = new Material(Shader.Find("GUI/Text Shader") ?? Shader.Find("Unlit/Color"));
+                _mosaicMat = new Material(EspText);
+                _mosaicMat.SetInt("_ZTest", 4);
                 return _mosaicMat;
             }
         }
@@ -1635,6 +1645,7 @@ namespace Arrakis.Mods
             Transform[] cells = new Transform[GridX * GridY];
             float cellW = PlateW / GridX;
             float cellH = PlateH / GridY;
+            var mpb = new MaterialPropertyBlock();
             int i = 0;
             for (int x = 0; x < GridX; x++)
             {
@@ -1647,7 +1658,6 @@ namespace Arrakis.Mods
                     px.transform.localScale = new Vector3(cellW * Gap, cellH * Gap, 0.015f);
                     var mr = px.GetComponent<MeshRenderer>();
                     mr.sharedMaterial = MosaicMat;
-                    var mpb = new MaterialPropertyBlock();
                     float shade = 0.03f + Random.Range(0f, 0.15f);
                     mpb.SetColor("_Color", new Color(shade, shade, shade, 1f));
                     mr.SetPropertyBlock(mpb);
@@ -1701,18 +1711,18 @@ namespace Arrakis.Mods
                 skin = current;
                 edgesDirty = true;
             }
-            if ((frameCounter++ & 1) != 0) return;
-            Camera cam = Camera.main;
-            if (cam == null) return;
-            Vector3 rigPos = skin.transform.position;
-            if ((rigPos - cam.transform.position).sqrMagnitude > MaxDrawDistance * MaxDrawDistance) return;
+            int throttle = targetRig == VRRig.LocalRig ? 3 : 1;
+            if ((frameCounter++ % (throttle + 1)) != 0) return;
+            Vector3 headPos = targetRig.headMesh.transform.position;
             if (targetRig != VRRig.LocalRig)
             {
-                Vector3 vp = cam.WorldToViewportPoint(rigPos);
+                Camera cam = Camera.main;
+                if (cam == null) return;
+                if ((headPos - cam.transform.position).sqrMagnitude > MaxDrawDistance * MaxDrawDistance) return;
+                Vector3 vp = cam.WorldToViewportPoint(headPos);
                 if (vp.z < 0f || vp.x < -0.15f || vp.x > 1.15f || vp.y < -0.15f || vp.y > 1.15f)
                     return;
             }
-
             skin.BakeMesh(baked);
             if (edgesDirty)
             {
