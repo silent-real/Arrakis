@@ -40,6 +40,52 @@ namespace Arrakis.Mods
 {
     public class Visual
     {
+        private enum TagKind { Name = 0, Id = 1, Platform = 2, Fps = 3, Tagged = 4 }
+        private const float TagBaseHeight = 1f;
+        private const float TagStep = 0.1f;
+
+        private static readonly Dictionary<VRRig, SortedDictionary<TagKind, TextMeshPro>> tagStack = new Dictionary<VRRig, SortedDictionary<TagKind, TextMeshPro>>();
+        private static void SetTag(VRRig rig, TagKind kind, TextMeshPro tag, Transform parent, Color color)
+        {
+            if (rig == null || tag == null) return;
+            if (!tagStack.TryGetValue(rig, out var map))
+            {
+                map = new SortedDictionary<TagKind, TextMeshPro>();
+                tagStack[rig] = map;
+            }
+            List<TagKind> dead = null;
+            foreach (var kv in map)
+                if (kv.Value == null) (dead ??= new List<TagKind>()).Add(kv.Key);
+            if (dead != null)
+                foreach (var k in dead) map.Remove(k);
+            map[kind] = tag;
+            tag.transform.SetParent(parent, false);
+            tag.color = color;
+            int i = 0;
+            foreach (var kv in map)
+            {
+                var t = kv.Value;
+                if (t == null) continue;
+                t.transform.localPosition = new Vector3(0f, TagBaseHeight - TagStep * i++, 0f);
+            }
+        }
+        private static void RemoveTag(VRRig rig, TagKind kind)
+        {
+            if (rig == null) return;
+            if (!tagStack.TryGetValue(rig, out var map)) return;
+            if (map.TryGetValue(kind, out var t) && t != null)
+                Object.Destroy(t.gameObject);
+            map.Remove(kind);
+            if (map.Count == 0) { tagStack.Remove(rig); return; }
+            int i = 0;
+            foreach (var kv in map)
+            {
+                var rt = kv.Value;
+                if (rt == null) continue;
+                rt.transform.localPosition = new Vector3(0f, TagBaseHeight - TagStep * i++, 0f);
+            }
+        }
+
         private static int _occlusionMask;
         private static int OcclusionMask =>
             _occlusionMask != 0 ? _occlusionMask : (_occlusionMask = LayerMask.GetMask("Gorilla Object"));
@@ -497,47 +543,40 @@ namespace Arrakis.Mods
                 DisableHollowBoxESP();
                 return;
             }
+            List<VRRig> remove = null;
+            foreach (var pair in hollowBoxPool)
+            {
+                if (pair.Key == null || !VRRigCache.ActiveRigs.Contains(pair.Key))
+                {
+                    remove ??= new List<VRRig>();
+                    remove.Add(pair.Key);
+                    if (pair.Value != null)
+                        Object.Destroy(pair.Value);
+                }
+            }
+            if (remove != null)
+                foreach (var r in remove) hollowBoxPool.Remove(r);
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
-                List<VRRig> remove = null;
-                foreach (var pair in hollowBoxPool)
+                if (rig == null || rig.IsLocal()) continue;
+                if (!hollowBoxPool.TryGetValue(rig, out GameObject box) || box == null)
                 {
-                    if (pair.Key == null || !VRRigCache.ActiveRigs.Contains(pair.Key))
-                    {
-                        remove ??= new List<VRRig>();
-                        remove.Add(pair.Key);
-                        if (pair.Value != null)
-                            Object.Destroy(pair.Value);
-                    }
+                    box = new GameObject("HollowBoxESP");
+                    TextMesh text = box.AddComponent<TextMesh>();
+                    text.alignment = TextAlignment.Center;
+                    text.anchor = TextAnchor.MiddleCenter;
+                    text.text = "□";
+                    text.fontSize = 300;
+                    text.characterSize = 0.05f;
+                    hollowBoxPool[rig] = box;
                 }
-                if (remove != null)
-                {
-                    foreach (var vrrig in remove)
-                        hollowBoxPool.Remove(vrrig);
-                }
-                if (!rig.IsLocal())
-                {
-                    if (!hollowBoxPool.TryGetValue(rig, out GameObject box))
-                    {
-                        box = new GameObject("HollowBoxESP");
-                        TextMesh text = box.AddComponent<TextMesh>();
-                        text.alignment = TextAlignment.Center;
-                        text.anchor = TextAnchor.MiddleCenter;
-                        text.text = "□";
-                        text.fontSize = 300;
-                        text.characterSize = 0.05f;
-                        hollowBoxPool[rig] = box;
-                    }
-                    box.transform.localScale = Vector3.one * rig.scaleFactor;
-                    Color color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? Color.red : rig.playerColor;
-                    color.a = 0.7f;
-                    box.GetComponent<TextMesh>().color = color;
-                    box.transform.position = rig.transform.position;
-                    if (Camera.main != null)
-                    {
-                        box.transform.LookAt(box.transform.position + Camera.main.transform.rotation * Vector3.forward, Camera.main.transform.rotation * Vector3.up);
-                    }
-                }
+                box.transform.localScale = Vector3.one * rig.scaleFactor;
+                Color color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? Color.red : rig.playerColor;
+                color.a = 0.7f;
+                box.GetComponent<TextMesh>().color = color;
+                box.transform.position = rig.transform.position;
+                if (Camera.main != null)
+                    box.transform.LookAt(box.transform.position + Camera.main.transform.rotation * Vector3.forward, Camera.main.transform.rotation * Vector3.up);
             }
         }
         public static void DisableHollowBoxESP()
@@ -553,39 +592,34 @@ namespace Arrakis.Mods
         private static Dictionary<VRRig, TextMeshPro> nameTagPool = new Dictionary<VRRig, TextMeshPro>();
         public static void NameTags()
         {
-            if (NetworkSystem.Instance.InRoom)
+            if (!NetworkSystem.Instance.InRoom) return;
+            foreach (var rig in nameTagPool.Keys.Where(r => r == null || !VRRigCache.ActiveRigs.Contains(r)).ToList())
             {
-                foreach (var rig in nameTagPool.Keys.Where(r => r == null || !VRRigCache.ActiveRigs.Contains(r)).ToList())
+                RemoveTag(rig, TagKind.Name);
+                nameTagPool.Remove(rig);
+            }
+            foreach (VRRig rig in VRRigCache.ActiveRigs)
+            {
+                if (rig == null || rig.IsLocal()) continue;
+                if (!nameTagPool.TryGetValue(rig, out var tag) || tag == null)
                 {
-                    if (nameTagPool[rig] != null)
-                        GameObject.Destroy(nameTagPool[rig].gameObject);
-                    nameTagPool.Remove(rig);
+                    tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform,
+                        TextAlignmentOptions.Center, rig.Creator.NickName.CleanString(),
+                        followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f);
+                    nameTagPool[rig] = tag;
                 }
-                foreach (VRRig rig in VRRigCache.ActiveRigs)
-                {
-                    if (!rig.IsLocal())
-                    {
-                        if (!nameTagPool.TryGetValue(rig, out var tag))
-                        {
-                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, rig.Creator.NickName.CleanString(),
-                                followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 0);
-                            nameTagPool.Add(rig, tag);
-                        }
-                        tag.text = rig.Creator.NickName.CleanString();
-                        Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
-                        if (tag.transform.parent != parent)
-                            tag.transform.SetParent(parent, false);
-                        tag.color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor;
-                        tag.transform.LookAt(Camera.main.transform);
-                        tag.transform.Rotate(0f, 180f, 0f);
-                    }
-                }
+                tag.text = rig.Creator.NickName.CleanString();
+                Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
+                SetTag(rig, TagKind.Name, tag, parent,
+                    followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor);
+                tag.transform.LookAt(Camera.main.transform);
+                tag.transform.Rotate(0f, 180f, 0f);
             }
         }
         public static void DisableNameTags()
         {
-            foreach (var tag in nameTagPool.Values)
-                GameObject.Destroy(tag.gameObject);
+            foreach (var pair in nameTagPool)
+                RemoveTag(pair.Key, TagKind.Name);
             nameTagPool.Clear();
         }
 
@@ -593,174 +627,147 @@ namespace Arrakis.Mods
         private static Dictionary<VRRig, TextMeshPro> IDnameTagPool = new Dictionary<VRRig, TextMeshPro>();
         public static void IdNameTags()
         {
-            if (NetworkSystem.Instance.InRoom)
+            if (!NetworkSystem.Instance.InRoom) return;
+            foreach (var rig in IDnameTagPool.Keys.Where(r => r == null || !VRRigCache.ActiveRigs.Contains(r)).ToList())
             {
-                foreach (var rig in IDnameTagPool.Keys.Where(r => r == null || !VRRigCache.ActiveRigs.Contains(r)).ToList())
+                RemoveTag(rig, TagKind.Id);
+                IDnameTagPool.Remove(rig);
+            }
+            foreach (VRRig rig in VRRigCache.ActiveRigs)
+            {
+                if (rig == null || rig.IsLocal()) continue;
+                if (!IDnameTagPool.TryGetValue(rig, out var tag) || tag == null)
                 {
-                    if (IDnameTagPool[rig] != null)
-                        GameObject.Destroy(IDnameTagPool[rig].gameObject);
-                    IDnameTagPool.Remove(rig);
+                    tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform,
+                        TextAlignmentOptions.Center, rig.Creator.UserId,
+                        followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f);
+                    IDnameTagPool[rig] = tag;
                 }
-                foreach (VRRig rig in VRRigCache.ActiveRigs)
-                {
-                    if (!rig.IsLocal())
-                    {
-                        if (!IDnameTagPool.TryGetValue(rig, out var tag))
-                        {
-                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, rig.Creator.UserId,
-                                followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 1);
-                            IDnameTagPool.Add(rig, tag);
-                        }
-                        Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
-                        if (tag.transform.parent != parent)
-                            tag.transform.SetParent(parent, false);
-                        tag.color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor;
-                        tag.transform.LookAt(Camera.main.transform);
-                        tag.transform.Rotate(0f, 180f, 0f);
-                    }
-                }
+                Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
+                SetTag(rig, TagKind.Id, tag, parent,
+                    followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor);
+                tag.transform.LookAt(Camera.main.transform);
+                tag.transform.Rotate(0f, 180f, 0f);
             }
         }
         public static void DisableIdNameTags()
         {
-            foreach (var tag in IDnameTagPool.Values)
-                GameObject.Destroy(tag.gameObject);
+            foreach (var pair in IDnameTagPool)
+                RemoveTag(pair.Key, TagKind.Id);
             IDnameTagPool.Clear();
         }
 
         private static Dictionary<VRRig, TextMeshPro> PlatformnameTagPool = new Dictionary<VRRig, TextMeshPro>();
         public static void PlatformNameTags()
         {
-            if (NetworkSystem.Instance.InRoom)
+            if (!NetworkSystem.Instance.InRoom) return;
+            foreach (var rig in PlatformnameTagPool.Keys.Where(r => r == null || !VRRigCache.ActiveRigs.Contains(r)).ToList())
             {
-                foreach (var rig in PlatformnameTagPool.Keys.Where(r => r == null || !VRRigCache.ActiveRigs.Contains(r)).ToList())
+                RemoveTag(rig, TagKind.Platform);
+                PlatformnameTagPool.Remove(rig);
+            }
+            foreach (VRRig rig in VRRigCache.ActiveRigs)
+            {
+                if (rig == null || rig.IsLocal()) continue;
+                string platform = rig.GetPhotonPlayer().CustomProperties["platform"].ToString().Contains("Steam")
+                    ? (rig.Cosmetics().Contains("LMAKT.") ? "Quest" : "Steam") : "Quest";
+                if (!PlatformnameTagPool.TryGetValue(rig, out var tag) || tag == null)
                 {
-                    if (PlatformnameTagPool[rig] != null)
-                        GameObject.Destroy(PlatformnameTagPool[rig].gameObject);
-                    PlatformnameTagPool.Remove(rig);
+                    tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform,
+                        TextAlignmentOptions.Center, platform,
+                        followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f);
+                    PlatformnameTagPool[rig] = tag;
                 }
-                foreach (VRRig rig in VRRigCache.ActiveRigs)
-                {
-                    if (!rig.IsLocal())
-                    {
-                        string platform = rig.GetPhotonPlayer().CustomProperties["platform"].ToString().Contains("Steam")
-                            ? (rig.Cosmetics().Contains("LMAKT.") ? "Quest" : "Steam") : "Quest";
-                        if (!PlatformnameTagPool.TryGetValue(rig, out var tag))
-                        {
-                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, platform,
-                                followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 2);
-                            PlatformnameTagPool.Add(rig, tag);
-                        }
-                        Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
-                        if (tag.transform.parent != parent)
-                            tag.transform.SetParent(parent, false);
-                        tag.color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor;
-                        tag.transform.LookAt(Camera.main.transform);
-                        tag.transform.Rotate(0f, 180f, 0f);
-                    }
-                }
+                if (tag.text != platform) tag.text = platform;
+                Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
+                SetTag(rig, TagKind.Platform, tag, parent,
+                    followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor);
+                tag.transform.LookAt(Camera.main.transform);
+                tag.transform.Rotate(0f, 180f, 0f);
             }
         }
         public static void DisablePlatformNameTags()
         {
-            foreach (var tag in PlatformnameTagPool.Values)
-                GameObject.Destroy(tag.gameObject);
+            foreach (var pair in PlatformnameTagPool)
+                RemoveTag(pair.Key, TagKind.Platform);
             PlatformnameTagPool.Clear();
         }
+
         private static Dictionary<VRRig, TextMeshPro> FpsnametagPool = new Dictionary<VRRig, TextMeshPro>();
         public static void FpsNameTags()
         {
-            if (NetworkSystem.Instance.InRoom)
+            if (!NetworkSystem.Instance.InRoom) return;
+            foreach (var rig in FpsnametagPool.Keys.Where(r => r == null || !VRRigCache.ActiveRigs.Contains(r)).ToList())
             {
-                foreach (var rig in FpsnametagPool.Keys.Where(r => r == null || !VRRigCache.ActiveRigs.Contains(r)).ToList())
+                RemoveTag(rig, TagKind.Fps);
+                FpsnametagPool.Remove(rig);
+            }
+            foreach (VRRig rig in VRRigCache.ActiveRigs)
+            {
+                if (rig == null || rig.IsLocal()) continue;
+                if (!FpsnametagPool.TryGetValue(rig, out var tag) || tag == null)
                 {
-                    if (FpsnametagPool[rig] != null)
-                        GameObject.Destroy(FpsnametagPool[rig].gameObject);
-                    FpsnametagPool.Remove(rig);
+                    tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform,
+                        TextAlignmentOptions.Center, "",
+                        followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f);
+                    FpsnametagPool[rig] = tag;
                 }
-                foreach (VRRig rig in VRRigCache.ActiveRigs)
-                {
-                    if (!rig.IsLocal())
-                    {
-                        if (!FpsnametagPool.TryGetValue(rig, out var tag))
-                        {
-                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, "72",
-                                followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 4);
-                            FpsnametagPool.Add(rig, tag);
-                        }
-                        if (rig.fps < 30)
-                        {
-                            tag.text = $"<color=red>{rig.fps}</color>";
-                        }
-                        if (rig.fps > 30 && rig.fps < 60)
-                        {
-                            tag.text = $"<color=yellow>{rig.fps}</color>";
-                        }
-                        if (rig.fps > 60)
-                        {
-                            tag.text = $"<color=green>{rig.fps}</color>";
-                        }
-                        if (rig.fps > 100)
-                        {
-                            tag.text = $"<color=#00ffff>{rig.fps}</color>";
-                        }
-                        Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
-                        if (tag.transform.parent != parent)
-                            tag.transform.SetParent(parent, false);
-                        tag.color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor;
-                        tag.transform.LookAt(Camera.main.transform);
-                        tag.transform.Rotate(0f, 180f, 0f);
-                    }
-                }
+                int fps = rig.fps;
+                if (fps > 100) tag.text = $"<color=#00ffff>{fps}</color>";
+                else if (fps > 60) tag.text = $"<color=green>{fps}</color>";
+                else if (fps > 30) tag.text = $"<color=yellow>{fps}</color>";
+                else tag.text = $"<color=red>{fps}</color>";
+
+                Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
+                SetTag(rig, TagKind.Fps, tag, parent,
+                    followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor);
+                tag.transform.LookAt(Camera.main.transform);
+                tag.transform.Rotate(0f, 180f, 0f);
             }
         }
         public static void DisableFpsNameTags()
         {
-            foreach (var tag in FpsnametagPool.Values)
-                GameObject.Destroy(tag.gameObject);
+            foreach (var pair in FpsnametagPool)
+                RemoveTag(pair.Key, TagKind.Fps);
             FpsnametagPool.Clear();
         }
 
         private static Dictionary<VRRig, TextMeshPro> TaggednametagPool = new Dictionary<VRRig, TextMeshPro>();
         public static void TaggedNameTags()
         {
-            if (NetworkSystem.Instance.InRoom)
+            if (!NetworkSystem.Instance.InRoom) return;
+            foreach (var rig in TaggednametagPool.Keys.Where(r => r == null || !VRRigCache.ActiveRigs.Contains(r)).ToList())
             {
-                foreach (var rig in TaggednametagPool.Keys.Where(r => r == null || !VRRigCache.ActiveRigs.Contains(r)).ToList())
+                RemoveTag(rig, TagKind.Tagged);
+                TaggednametagPool.Remove(rig);
+            }
+            foreach (VRRig rig in VRRigCache.ActiveRigs)
+            {
+                if (rig == null || rig.IsLocal()) continue;
+                if (!TaggednametagPool.TryGetValue(rig, out var tag) || tag == null)
                 {
-                    if (TaggednametagPool[rig] != null)
-                        GameObject.Destroy(TaggednametagPool[rig].gameObject);
-                    TaggednametagPool.Remove(rig);
+                    tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform,
+                        TextAlignmentOptions.Center, "Not Tagged",
+                        followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f);
+                    TaggednametagPool[rig] = tag;
                 }
-                foreach (VRRig rig in VRRigCache.ActiveRigs)
-                {
-                    if (!rig.IsLocal())
-                    {
-                        if (!TaggednametagPool.TryGetValue(rig, out var tag))
-                        {
-                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, "Not Tagged",
-                                followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 5);
-                            TaggednametagPool.Add(rig, tag);
-                        }
-                        Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
-                        if (tag.transform.parent != parent)
-                            tag.transform.SetParent(parent, false);
-                        if (GorillaGameManager.instance.GameModeName() != "CASUAL")
-                            tag.text = rig.IsTagged() ? "Tagged" : "Not Tagged";
-                        tag.color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor;
-                        tag.transform.LookAt(Camera.main.transform);
-                        tag.transform.Rotate(0f, 180f, 0f);
-                    }
-                }
+                if (GorillaGameManager.instance.GameModeName() != "CASUAL")
+                    tag.text = rig.IsTagged() ? "Tagged" : "Not Tagged";
+                Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
+                SetTag(rig, TagKind.Tagged, tag, parent,
+                    followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor);
+                tag.transform.LookAt(Camera.main.transform);
+                tag.transform.Rotate(0f, 180f, 0f);
             }
         }
         public static void DisableTaggedNameTags()
         {
-            foreach (var tag in TaggednametagPool.Values)
-                GameObject.Destroy(tag.gameObject);
+            foreach (var pair in TaggednametagPool)
+                RemoveTag(pair.Key, TagKind.Tagged);
             TaggednametagPool.Clear();
         }
-        private static TextMeshPro CreateText(Transform parent, TextAlignmentOptions alignment, string text, Color color, float scale, int index = 0)
+
+        private static TextMeshPro CreateText(Transform parent, TextAlignmentOptions alignment, string text, Color color, float scale)
         {
             GameObject textHolder = new GameObject("nametag_arrakis");
             TextMeshPro textmesh = textHolder.GetOrAddComponent<TextMeshPro>();
@@ -769,7 +776,6 @@ namespace Arrakis.Mods
             textmesh.alignment = alignment;
             textmesh.fontSize = scale;
             textmesh.transform.SetParent(parent, false);
-            textmesh.transform.localPosition = new Vector3(0f, 1f - (0.1f * index), 0f);
             return textmesh;
         }
 
@@ -1524,42 +1530,64 @@ namespace Arrakis.Mods
         {
             if (rig == null)
             {
-                limbChamPool.Clear();
-                tracersPool.Clear();
-                boneEspPool.Clear();
-                selfBoneEspPool.Clear();
-                boxEspPool.Clear();
-                hollowBoxPool.Clear();
-                nameTagPool.Clear();
-                IDnameTagPool.Clear();
-                PlatformnameTagPool.Clear();
-                FpsnametagPool.Clear();
-                TaggednametagPool.Clear();
-                ringPool.Clear();
-                haloPool.Clear();
-                wireframeEspPool.Clear();
-                originalRigColors.Clear();
-                breakcujmpool.Clear();
-                redactPool.Clear();
+                DisableLimbChams();
+                DisableTracers();
+                DisableBoneESP();
+                DisableSelfBoneESP();
+                DisableBoxESP();
+                DisableHollowBoxESP();
+                DisableNameTags();
+                DisableIdNameTags();
+                DisablePlatformNameTags();
+                DisableFpsNameTags();
+                DisableTaggedNameTags();
+                DisableRing();
+                DisableHalo();
+                DisableWireframeESP();
+                DisableBreadcrumbs();
+                DisableRedact();
+                tagStack.Clear();
             }
             else
             {
+                if (limbChamPool.TryGetValue(rig, out var lc) && lc.holder != null) Object.Destroy(lc.holder);
                 limbChamPool.Remove(rig);
+                if (tracersPool.TryGetValue(rig, out var tr) && tr != null) Object.Destroy(tr);
                 tracersPool.Remove(rig);
+                if (boneEspPool.TryGetValue(rig, out var bl))
+                    foreach (var l in bl) if (l != null) Object.Destroy(l);
                 boneEspPool.Remove(rig);
+                if (selfBoneEspPool.TryGetValue(rig, out var sbl))
+                    foreach (var l in sbl) if (l != null) Object.Destroy(l);
                 selfBoneEspPool.Remove(rig);
+                if (boxEspPool.TryGetValue(rig, out var b) && b != null) Object.Destroy(b);
                 boxEspPool.Remove(rig);
+                if (hollowBoxPool.TryGetValue(rig, out var hb) && hb != null) Object.Destroy(hb);
                 hollowBoxPool.Remove(rig);
-                nameTagPool.Remove(rig);
-                IDnameTagPool.Remove(rig);
-                PlatformnameTagPool.Remove(rig);
-                FpsnametagPool.Remove(rig);
-                TaggednametagPool.Remove(rig);
+                RemoveTag(rig, TagKind.Name); nameTagPool.Remove(rig);
+                RemoveTag(rig, TagKind.Id); IDnameTagPool.Remove(rig);
+                RemoveTag(rig, TagKind.Platform); PlatformnameTagPool.Remove(rig);
+                RemoveTag(rig, TagKind.Fps); FpsnametagPool.Remove(rig);
+                RemoveTag(rig, TagKind.Tagged); TaggednametagPool.Remove(rig);
+                tagStack.Remove(rig);
+                if (ringPool.TryGetValue(rig, out var r) && r != null) Object.Destroy(r);
                 ringPool.Remove(rig);
+                if (haloPool.TryGetValue(rig, out var h) && h != null) Object.Destroy(h);
                 haloPool.Remove(rig);
+                if (wireframeEspPool.TryGetValue(rig, out var w))
+                {
+                    if (originalRigColors.TryGetValue(rig, out Color c) && rig != null && rig.mainSkin != null)
+                    {
+                        rig.mainSkin.material.shader = Shader.Find("GorillaTag/UberShader");
+                        rig.mainSkin.material.color = c;
+                    }
+                    if (w != null) Object.Destroy(w);
+                }
                 wireframeEspPool.Remove(rig);
                 originalRigColors.Remove(rig);
+                if (breakcujmpool.TryGetValue(rig, out var bc) && bc != null) Object.Destroy(bc);
                 breakcujmpool.Remove(rig);
+                if (redactPool.TryGetValue(rig, out var m) && m.root != null) Object.Destroy(m.root);
                 redactPool.Remove(rig);
             }
         }
