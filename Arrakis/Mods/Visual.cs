@@ -40,16 +40,8 @@ namespace Arrakis.Mods
 {
     public class Visual
     {
-        private static Shader _espText;
-        public static Shader EspText
-        {
-            get
-            {
-                if (_espText != null) return _espText;
-                _espText = Shader.Find("GUI/Text Shader") ?? Shader.Find("Sprites/Default") ?? Shader.Find("Unlit/Color");
-                return _espText;
-            }
-        }
+        public static Shader EspText =>
+            EspShader;
 
         private enum TagKind { Name = 0, Id = 1, Platform = 2, Fps = 3, Tagged = 4 }
         private const float TagBaseHeight = 1f;
@@ -100,10 +92,8 @@ namespace Arrakis.Mods
         private static int _occlusionMask;
         private static int OcclusionMask =>
             _occlusionMask != 0 ? _occlusionMask : (_occlusionMask = LayerMask.GetMask("Gorilla Object"));
-        private static Shader _textShader,
-            _uberShader;
-        private static Shader TextShader =>
-            _textShader != null ? _textShader : (_textShader = Shader.Find("GUI/Text Shader"));
+        private static Shader _uberShader;
+        private static Shader TextShader => EspText;
         private static Shader UberShader =>
             _uberShader != null ? _uberShader : (_uberShader = Shader.Find("GorillaTag/UberShader"));
         private static readonly Vector3[] occlusionProbes = new Vector3[5];
@@ -121,7 +111,7 @@ namespace Arrakis.Mods
         private static Material LimbChamMat =>
             _limbChamMat != null ? _limbChamMat : (_limbChamMat = new Material(TextShader));
         private const int LimbSegments = 20;
-        private const float LimbCheckInterval = 0.05f;
+        private const float LimbCheckInterval = 0.15f;
         private const float LimbWidth = 0.02f;
         private static bool TryGetEye(out Vector3 eye)
         {
@@ -219,8 +209,8 @@ namespace Arrakis.Mods
 
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
-                if (rig == null || rig.IsLocal())
-                    continue;
+                if (rig == null || rig.IsLocal() || rig.mainSkin == null) continue;
+                if ((rig.transform.position - Camera.main.transform.position).sqrMagnitude > 625f) continue;
                 Material body = rig.mainSkin.material;
                 Color chamColor = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f, 0.6f) : new Color(0.46f, 0.6f, 0.6f, 0.6f);
                 switch (type)
@@ -302,7 +292,7 @@ namespace Arrakis.Mods
             if (!NetworkSystem.Instance.InRoom) return;
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
-                if (rig == null || rig.IsLocal()) continue;
+                if (rig == null || rig.IsLocal() || rig.mainSkin == null) continue;
                 Material m = rig.mainSkin.sharedMaterial;
                 if (m != null && m.shader != UberShader) rig.mainSkin.material.shader = UberShader;
                 if (m != null && m.color != rig.playerColor) rig.mainSkin.material.color = rig.playerColor;
@@ -383,11 +373,12 @@ namespace Arrakis.Mods
             foreach (var rig in remove) boneEspPool.Remove(rig);
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
-                if (rig == null || rig.IsLocal()) continue;
+                if (rig == null || rig.IsLocal() || rig.mainSkin == null) continue;
                 if (!boneEspPool.TryGetValue(rig, out List<LineRenderer> lines) || lines == null || lines.Count == 0 || lines[0] == null)
                 {
                     lines = new List<LineRenderer>();
-                    var head = rig.head.rigTarget.AddComponent<LineRenderer>();
+                    var headGO = rig.head.rigTarget.gameObject;
+                    var head = headGO.GetComponent<LineRenderer>() ?? headGO.AddComponent<LineRenderer>();
                     head.sharedMaterial = LimbChamMat;
                     head.positionCount = 2;
                     head.startWidth = 0.02f;
@@ -395,7 +386,8 @@ namespace Arrakis.Mods
                     lines.Add(head);
                     for (int i = 0; i < 19; i++)
                     {
-                        var line = rig.mainSkin.bones[bones[i * 2]].gameObject.AddComponent<LineRenderer>();
+                        var boneGO = rig.mainSkin.bones[bones[i * 2]].gameObject;
+                        var line = boneGO.GetComponent<LineRenderer>() ?? boneGO.AddComponent<LineRenderer>();
                         line.sharedMaterial = LimbChamMat;
                         line.positionCount = 2;
                         line.startWidth = 0.02f;
@@ -432,11 +424,12 @@ namespace Arrakis.Mods
         public static void SelfBoneESP()
         {
             var local = GorillaTagger.Instance.offlineVRRig;
-            if (local == null) return;
+            if (local == null || local.mainSkin == null) return;
             if (!selfBoneEspPool.TryGetValue(local, out List<LineRenderer> lines) || lines == null || lines.Count == 0 || lines[0] == null)
             {
                 lines = new List<LineRenderer>();
-                var head = local.head.rigTarget.AddComponent<LineRenderer>();
+                var headGO = local.head.rigTarget.gameObject;
+                var head = headGO.GetComponent<LineRenderer>() ?? headGO.AddComponent<LineRenderer>();
                 head.sharedMaterial = LimbChamMat;
                 head.positionCount = 2;
                 head.startWidth = 0.02f;
@@ -444,7 +437,8 @@ namespace Arrakis.Mods
                 lines.Add(head);
                 for (int i = 0; i < 19; i++)
                 {
-                    var line = local.mainSkin.bones[bones[i * 2]].gameObject.AddComponent<LineRenderer>();
+                    var boneGO = local.mainSkin.bones[bones[i * 2]].gameObject;
+                    var line = boneGO.GetComponent<LineRenderer>() ?? boneGO.AddComponent<LineRenderer>();
                     line.sharedMaterial = LimbChamMat;
                     line.positionCount = 2;
                     line.startWidth = 0.02f;
@@ -500,7 +494,6 @@ namespace Arrakis.Mods
             if (!NetworkSystem.Instance.InRoom) return;
             Camera cam = Camera.main;
             if (cam == null) return;
-
             List<VRRig> remove = null;
             foreach (var pair in boxEspPool)
             {
@@ -512,9 +505,8 @@ namespace Arrakis.Mods
                 }
             }
             if (remove != null) foreach (var r in remove) boxEspPool.Remove(r);
-
             Vector3 camPos = cam.transform.position;
-
+            Quaternion camRot = cam.transform.rotation;
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
                 if (rig == null || rig.IsLocal()) continue;
@@ -527,10 +519,10 @@ namespace Arrakis.Mods
                 Color color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor;
                 color.a = 0.4f;
                 st.renderer.material.color = color;
-                float distance = Vector3.Distance(camPos, rig.transform.position);
-                float scale = Mathf.Clamp(distance * 0.05f, 0.25f, 3f);
+                float sqrDist = (camPos - rig.transform.position).sqrMagnitude;
+                float scale = Mathf.Clamp(Mathf.Sqrt(sqrDist) * 0.05f, 0.25f, 3f);
                 st.obj.transform.localScale = new Vector3(scale, scale, 0.02f);
-                st.obj.transform.LookAt(cam.transform);
+                st.obj.transform.rotation = camRot;
             }
         }
 
@@ -617,8 +609,8 @@ namespace Arrakis.Mods
                 Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
                 SetTag(rig, TagKind.Name, tag, parent,
                     followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor);
-                Vector3 tagToCam = cam.transform.position - tag.transform.position;
-                tag.transform.rotation = Quaternion.LookRotation(-tagToCam, cam.transform.up) * Quaternion.Euler(0f, 180f, 0f);
+                tag.transform.LookAt(Camera.main.transform);
+                tag.transform.Rotate(0f, 180f, 0f);
             }
         }
         public static void DisableNameTags()
@@ -674,16 +666,19 @@ namespace Arrakis.Mods
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
                 if (rig == null || rig.IsLocal()) continue;
-                string platform = rig.GetPhotonPlayer().CustomProperties["platform"].ToString().Contains("Steam")
-                    ? (rig.Cosmetics().Contains("LMAKT.") ? "Quest" : "Steam") : "Quest";
                 if (!PlatformnameTagPool.TryGetValue(rig, out var tag) || tag == null)
                 {
+                    string platform = "Quest";
+                    var pp = rig.GetPhotonPlayer();
+                    if (pp != null && pp.CustomProperties.TryGetValue("platform", out var platObj) && platObj != null && platObj.ToString().Contains("Steam"))
+                    {
+                        platform = rig.Cosmetics().Contains("LMAKT.") ? "Quest" : "Steam";
+                    }
                     tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform,
                         TextAlignmentOptions.Center, platform,
                         followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f);
                     PlatformnameTagPool[rig] = tag;
                 }
-                if (tag.text != platform) tag.text = platform;
                 Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
                 SetTag(rig, TagKind.Platform, tag, parent,
                     followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor);
@@ -713,8 +708,7 @@ namespace Arrakis.Mods
                 if (!FpsnametagPool.TryGetValue(rig, out var tag) || tag == null)
                 {
                     tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform,
-                        TextAlignmentOptions.Center, "",
-                        followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f);
+                        TextAlignmentOptions.Center, "", followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f);
                     FpsnametagPool[rig] = tag;
                 }
                 int fps = rig.fps;
@@ -722,7 +716,6 @@ namespace Arrakis.Mods
                 else if (fps > 60) tag.text = $"<color=green>{fps}</color>";
                 else if (fps > 30) tag.text = $"<color=yellow>{fps}</color>";
                 else tag.text = $"<color=red>{fps}</color>";
-
                 Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
                 SetTag(rig, TagKind.Fps, tag, parent,
                     followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor);
@@ -730,6 +723,7 @@ namespace Arrakis.Mods
                 tag.transform.Rotate(0f, 180f, 0f);
             }
         }
+
         public static void DisableFpsNameTags()
         {
             foreach (var pair in FpsnametagPool)
@@ -746,6 +740,8 @@ namespace Arrakis.Mods
                 RemoveTag(rig, TagKind.Tagged);
                 TaggednametagPool.Remove(rig);
             }
+            var gm = GorillaGameManager.instance;
+            bool casual = gm == null || gm.GameModeName() == "CASUAL";
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
                 if (rig == null || rig.IsLocal()) continue;
@@ -756,8 +752,8 @@ namespace Arrakis.Mods
                         followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f);
                     TaggednametagPool[rig] = tag;
                 }
-                if (GorillaGameManager.instance.GameModeName() != "CASUAL")
-                    tag.text = rig.IsTagged() ? "Tagged" : "Not Tagged";
+                string wanted = casual ? "Not Tagged" : (rig.IsTagged() ? "Tagged" : "Not Tagged");
+                if (tag.text != wanted) tag.text = wanted;
                 Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
                 SetTag(rig, TagKind.Tagged, tag, parent,
                     followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor);
@@ -771,7 +767,6 @@ namespace Arrakis.Mods
                 RemoveTag(pair.Key, TagKind.Tagged);
             TaggednametagPool.Clear();
         }
-
         private static TextMeshPro CreateText(Transform parent, TextAlignmentOptions alignment, string text, Color color, float scale)
         {
             GameObject textHolder = new GameObject("nametag_arrakis");
@@ -839,7 +834,7 @@ namespace Arrakis.Mods
 
         private static GameObject arraylistHub; // Did you know that ccmv2 was actually the best cheat menu -nova
         private static Text arraylistText; // Did you know that ccmv2 was actually the best cheat menu -nova
-        private static Material mat = new Material(Shader.Find("GUI/Text Shader"));
+        private static Material mat = new Material(EspShader);
         public static (GameObject, Text) CreateTextGUI(string text, string name, TextAnchor alignment, Vector3 loctrans) // Credits colossus
         {
             GameObject HUDObj = new GameObject(name);
@@ -991,27 +986,18 @@ namespace Arrakis.Mods
             lastLeftPosition = leftHand != null ? leftHand.position : Vector3.zero;
             lastRightPosition = rightHand != null ? rightHand.position : Vector3.zero;
         }
+
         private static Shader _espShader;
         public static Shader EspShader
         {
             get
             {
-                if (_espShader == null)
-                {
-                    _espShader = Shader.Find("GUI/Text Shader");
-                    if (_espShader == null)
-                    {
-                        _espShader = Shader.Find("Sprites/Default");
-                    }
-                    if (_espShader == null)
-                    {
-                        _espShader = Cached;
-                    }
-                }
+                if (_espShader != null) return _espShader;
+                _espShader = Shader.Find("GUI/Text Shader") ?? Shader.Find("Sprites/Default") ?? Shader.Find("Unlit/Color");
                 return _espShader;
             }
         }
-        public static Shader Cached { get; private set; }
+
         public static Material CreateTransparentMaterial(Color color)
         {
             Material material = new Material(EspShader)
@@ -1118,7 +1104,7 @@ namespace Arrakis.Mods
                 SkinnedMeshRenderer rend = entity.GetComponentInChildren<SkinnedMeshRenderer>();
                 if (rend == null)
                     continue;
-                rend.material.shader = Shader.Find("GUI/Text Shader");
+                rend.material.shader = EspText;
                 rend.material.color = new Color(0.6f, 0.6f, 0f, 0.6f);
             }
         }
@@ -1135,7 +1121,7 @@ namespace Arrakis.Mods
                 SkinnedMeshRenderer rend = entity.GetComponentInChildren<SkinnedMeshRenderer>();
                 if (rend == null)
                     continue;
-                rend.material.shader = Shader.Find("GorillaTag/UberShader");
+                rend.material.shader = UberShader;
             }
         }
 
@@ -1156,12 +1142,11 @@ namespace Arrakis.Mods
 
         public static void ChamRig(VRRig rig, bool enable, Color color)
         {
-            if (rig != null)
-            {
-                rig.mainSkin.material.shader = enable ? Shader.Find("GUI/Text Shader") : Shader.Find("GorillaTag/UberShader");
-                rig.mainSkin.material.color = enable ? color : rig.playerColor;
-            }
+            if (rig == null || rig.mainSkin == null) return;
+            rig.mainSkin.material.shader = enable ? EspText : UberShader;
+            rig.mainSkin.material.color = enable ? color : rig.playerColor;
         }
+
         public static void EnableFog() =>
             GorillaTag.Rendering.ZoneShaderSettings.activeInstance.SetGroundFogValue(new Color(0.9569f, 0.6941f, 0.502f, 0.1216f), 40f, 10f, 40f); // pulled from halloween upd lel
 
@@ -1279,7 +1264,8 @@ namespace Arrakis.Mods
         }
 
 
-        private static readonly Dictionary<VRRig, GameObject> wireframeEspPool = new Dictionary<VRRig, GameObject>();
+        private sealed class WireframeState { public GameObject obj; public WireframeRenderer renderer; }
+        private static readonly Dictionary<VRRig, WireframeState> wireframeEspPool = new Dictionary<VRRig, WireframeState>();
         private static readonly Dictionary<VRRig, Color> originalRigColors = new Dictionary<VRRig, Color>();
         public static void WireframeESP()
         {
@@ -1291,16 +1277,16 @@ namespace Arrakis.Mods
                 {
                     remove ??= new List<VRRig>();
                     remove.Add(pair.Key);
-                    if (pair.Value != null) Object.Destroy(pair.Value);
+                    if (pair.Value != null && pair.Value.obj != null) Object.Destroy(pair.Value.obj);
                 }
             }
             if (remove != null)
             {
                 foreach (var rig in remove)
                 {
-                    if (originalRigColors.TryGetValue(rig, out Color c) && rig != null)
+                    if (originalRigColors.TryGetValue(rig, out Color c) && rig != null && rig.mainSkin != null)
                     {
-                        rig.mainSkin.material.shader = Shader.Find("GorillaTag/UberShader");
+                        rig.mainSkin.material.shader = UberShader;
                         rig.mainSkin.material.color = c;
                     }
                     wireframeEspPool.Remove(rig);
@@ -1310,37 +1296,33 @@ namespace Arrakis.Mods
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
                 if (rig == null || rig.IsLocal()) continue;
-                if (!wireframeEspPool.TryGetValue(rig, out GameObject obj))
+                if (!wireframeEspPool.TryGetValue(rig, out var st) || st.obj == null)
                 {
-                    obj = new GameObject("Arrakis_WireframeESP");
+                    var obj = new GameObject("Arrakis_WireframeESP");
                     Object.DontDestroyOnLoad(obj);
-                    WireframeRenderer wr = obj.AddComponent<WireframeRenderer>();
+                    var wr = obj.AddComponent<WireframeRenderer>();
                     wr.targetRig = rig;
                     wr.wireColor = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f, 0.85f) : rig.playerColor;
                     originalRigColors[rig] = rig.mainSkin.material.color;
-                    rig.mainSkin.material.shader = Shader.Find("GUI/Text Shader");
+                    rig.mainSkin.material.shader = EspText;
                     rig.mainSkin.material.color = new Color(0f, 0f, 0f, 0f);
-
-                    wireframeEspPool[rig] = obj;
+                    st = new WireframeState { obj = obj, renderer = wr };
+                    wireframeEspPool[rig] = st;
                 }
-                WireframeRenderer renderer = obj.GetComponent<WireframeRenderer>();
-                if (renderer != null)
-                {
-                    Color c = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f, 0.85f) : rig.playerColor;
-                    renderer.wireColor = c;
-                }
+                Color c = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f, 0.85f) : rig.playerColor;
+                st.renderer.wireColor = c;
             }
         }
         public static void DisableWireframeESP()
         {
             foreach (var pair in wireframeEspPool)
             {
-                if (pair.Key != null && originalRigColors.TryGetValue(pair.Key, out Color c))
+                if (pair.Key != null && pair.Key.mainSkin != null && originalRigColors.TryGetValue(pair.Key, out Color c))
                 {
-                    pair.Key.mainSkin.material.shader = Shader.Find("GorillaTag/UberShader");
+                    pair.Key.mainSkin.material.shader = UberShader;
                     pair.Key.mainSkin.material.color = c;
                 }
-                if (pair.Value != null) Object.Destroy(pair.Value);
+                if (pair.Value != null && pair.Value.obj != null) Object.Destroy(pair.Value.obj);
             }
             wireframeEspPool.Clear();
             originalRigColors.Clear();
@@ -1362,7 +1344,7 @@ namespace Arrakis.Mods
                 selfWireframeRenderer.targetRig = rig;
                 selfWireframeRenderer.wireColor = backgroundColor.GetCurrentColor();
                 originalSkinColor = rig.mainSkin.material.color;
-                rig.mainSkin.material.shader = Shader.Find("GUI/Text Shader");
+                rig.mainSkin.material.shader = EspText;
                 rig.mainSkin.material.color = new Color(0f, 0f, 0f, 0f);
                 skinHidden = true;
             }
@@ -1374,7 +1356,7 @@ namespace Arrakis.Mods
                 VRRig rig = GorillaTagger.Instance.offlineVRRig;
                 if (rig != null && skinHidden)
                 {
-                    rig.mainSkin.material.shader = Shader.Find("GorillaTag/UberShader");
+                    rig.mainSkin.material.shader = UberShader;
                     rig.mainSkin.material.color = originalSkinColor;
                     skinHidden = false;
                 }
@@ -1426,7 +1408,7 @@ namespace Arrakis.Mods
                     trail.name = "Arrakis_Breadcrumb";
                     var c = trail.GetComponent<Collider>();
                     if (c != null) Object.Destroy(c);
-                    trail.material = new Material(EspText);
+                    trail.sharedMaterial = LimbChamMat;
                     st = new BreadcrumbState { trail = trail, renderer = trail };
                     breakcujmpool[rig] = st;
                 }
@@ -1563,10 +1545,10 @@ namespace Arrakis.Mods
                 {
                     if (originalRigColors.TryGetValue(rig, out Color c) && rig != null && rig.mainSkin != null)
                     {
-                        rig.mainSkin.material.shader = Shader.Find("GorillaTag/UberShader");
+                        rig.mainSkin.material.shader = UberShader;
                         rig.mainSkin.material.color = c;
                     }
-                    if (w != null) Object.Destroy(w);
+                    if (w.obj != null) Object.Destroy(w.obj);
                 }
                 wireframeEspPool.Remove(rig);
                 originalRigColors.Remove(rig);
@@ -1628,13 +1610,24 @@ namespace Arrakis.Mods
             }
         }
 
-        private const int GridX = 10;
+        private const int GridX = 8;
         private const int GridY = 8;
-        private const float PlateW = 0.34f;
-        private const float PlateH = 0.27f;
-        private const float Gap = 0.98f;
+        private const float PlateW = 0.22f;
+        private const float PlateH = 0.22f;
+        private const float Gap = 1.02f;
 
         public static Dictionary<VRRig, Mosaic> redactPool = new Dictionary<VRRig, Mosaic>();
+        private static Material _mosaicMat;
+        private static Material MosaicMat
+        {
+            get
+            {
+                if (_mosaicMat != null) return _mosaicMat;
+                _mosaicMat = new Material(Shader.Find("GUI/Text Shader") ?? Shader.Find("Unlit/Color"));
+                return _mosaicMat;
+            }
+        }
+
         private static Mosaic BuildMosaic()
         {
             GameObject root = new GameObject("RedactMosaic");
@@ -1648,13 +1641,16 @@ namespace Arrakis.Mods
                 for (int y = 0; y < GridY; y++)
                 {
                     GameObject px = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    GameObject.Destroy(px.GetComponent<BoxCollider>());
+                    var col = px.GetComponent<BoxCollider>();
+                    if (col != null) Object.Destroy(col);
                     px.transform.SetParent(root.transform);
-                    px.transform.localScale = new Vector3(cellW * Gap, cellH * Gap, 0.03f);
-                    MeshRenderer mr = px.GetComponent<MeshRenderer>();
-                    mr.material.shader = Shader.Find("GorillaTag/UberShader");
-                    float shade = Random.Range(0f, 0.14f);
-                    mr.material.color = new Color(shade, shade, shade);
+                    px.transform.localScale = new Vector3(cellW * Gap, cellH * Gap, 0.015f);
+                    var mr = px.GetComponent<MeshRenderer>();
+                    mr.sharedMaterial = MosaicMat;
+                    var mpb = new MaterialPropertyBlock();
+                    float shade = 0.03f + Random.Range(0f, 0.15f);
+                    mpb.SetColor("_Color", new Color(shade, shade, shade, 1f));
+                    mr.SetPropertyBlock(mpb);
                     cells[i++] = px.transform;
                 }
             }
@@ -1677,37 +1673,15 @@ namespace Arrakis.Mods
         private Mesh baked;
         private (int, int)[] edgeCache;
         private bool edgesDirty = true;
+        private int frameCounter;
+        private const float MaxDrawDistance = 30f;
+
         private void OnDestroy()
         {
             if (baked != null) Destroy(baked);
             if (wireMat != null) Destroy(wireMat);
         }
-        private int frameCounter;
 
-        private void LateUpdate()
-        {
-            if (targetRig == null) return;
-            if (skin == null)
-            {
-                skin = targetRig.mainSkin;
-                edgesDirty = true;
-            }
-            if (skin == null) return;
-            if ((frameCounter++ & 1) != 0) return;
-            Camera cam = Camera.main;
-            if (cam != null)
-            {
-                Vector3 vp = cam.WorldToViewportPoint(skin.transform.position);
-                if (vp.z < 0f || vp.x < -0.15f || vp.x > 1.15f || vp.y < -0.15f || vp.y > 1.15f)
-                    return;
-            }
-            skin.BakeMesh(baked);
-            if (edgesDirty)
-            {
-                edgeCache = BuildEdges(baked);
-                edgesDirty = false;
-            }
-        }
         private void Awake()
         {
             wireMat = new Material(Visual.EspText);
@@ -1716,10 +1690,42 @@ namespace Arrakis.Mods
             baked = new Mesh();
             baked.MarkDynamic();
         }
+
+        private void LateUpdate()
+        {
+            if (targetRig == null) return;
+            var current = targetRig.mainSkin;
+            if (current == null) return;
+            if (skin != current)
+            {
+                skin = current;
+                edgesDirty = true;
+            }
+            if ((frameCounter++ & 1) != 0) return;
+            Camera cam = Camera.main;
+            if (cam == null) return;
+            Vector3 rigPos = skin.transform.position;
+            if ((rigPos - cam.transform.position).sqrMagnitude > MaxDrawDistance * MaxDrawDistance) return;
+            if (targetRig != VRRig.LocalRig)
+            {
+                Vector3 vp = cam.WorldToViewportPoint(rigPos);
+                if (vp.z < 0f || vp.x < -0.15f || vp.x > 1.15f || vp.y < -0.15f || vp.y > 1.15f)
+                    return;
+            }
+
+            skin.BakeMesh(baked);
+            if (edgesDirty)
+            {
+                edgeCache = BuildEdges(baked);
+                edgesDirty = false;
+            }
+        }
+
         private void OnRenderObject()
         {
             if (baked == null || edgeCache == null || wireMat == null) return;
             if (targetRig == null) return;
+
             Transform root = skin.transform;
             Vector3[] verts = baked.vertices;
             Color c = wireColor;
@@ -1730,21 +1736,25 @@ namespace Arrakis.Mods
             GL.MultMatrix(root.localToWorldMatrix);
             GL.Begin(GL.LINES);
             GL.Color(c);
-            foreach (var (a, b) in edgeCache)
+            int vlen = verts.Length;
+            for (int i = 0; i < edgeCache.Length; i++)
             {
-                if (a >= verts.Length || b >= verts.Length) continue;
-                GL.Vertex(verts[a]);
-                GL.Vertex(verts[b]);
+                var e = edgeCache[i];
+                if (e.Item1 >= vlen || e.Item2 >= vlen) continue;
+                GL.Vertex(verts[e.Item1]);
+                GL.Vertex(verts[e.Item2]);
             }
             GL.End();
             GL.PopMatrix();
         }
+
         private static (int, int)[] BuildEdges(Mesh mesh)
         {
             int[] tris = mesh.triangles;
             var edgeSet = new HashSet<long>();
             var result = new List<(int, int)>();
-            for (int i = 0; i < tris.Length; i += 3)
+            const int stride = 8;
+            for (int i = 0; i < tris.Length; i += 3 * stride)
             {
                 int a = tris[i], b = tris[i + 1], c = tris[i + 2];
                 TryAddEdge(edgeSet, result, a, b);
@@ -1753,6 +1763,7 @@ namespace Arrakis.Mods
             }
             return result.ToArray();
         }
+
         private static void TryAddEdge(HashSet<long> set, List<(int, int)> result, int a, int b)
         {
             int lo = a < b ? a : b;
