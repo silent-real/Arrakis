@@ -99,6 +99,15 @@ namespace Arrakis.Mods
                 }
             }
         }
+
+        public static void ProjectileAura()
+        {
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
+                SpawnProjectile(CurrentProjectile, GorillaTagger.Instance.headCollider.transform.position + RandomVector3(), RandomVector3() * 20f, Settings.projectileColor);
+            else
+                cachedThrow.SetSnowballActiveLocal(false);
+        }
+
         public static void ProjectileBlindGun()
         {
             if (GetGunInput(false))

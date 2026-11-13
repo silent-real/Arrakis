@@ -595,6 +595,8 @@ namespace Arrakis.Menu
 
                 new() { buttonText = "Projectile Gun", method =() => Projectiles.ProjectileGun(), isTogglable = true, toolTip = "Lets you shoot a projectile where the gun is." },
 
+                new() { buttonText = "Projectile Aura <color=grey>[<color=cyan>G</color>]</color>", method =() => Projectiles.ProjectileAura(), isTogglable = true, toolTip = "Randomly spawns projectiles around you." },
+
                 new() { buttonText = "Projectile Blind Gun", method =() => Projectiles.ProjectileBlindGun(), isTogglable = true, toolTip = "Lets you blind a player with the egg projectile." },
                 new() { buttonText = "Projectile Blind All", method =() => Projectiles.ProjectileBlindAll(), isTogglable = true, toolTip = "Lets you blind everyone with the egg projectile." },
             },
