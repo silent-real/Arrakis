@@ -77,8 +77,6 @@ namespace Arrakis
 
         public void OnPlayerSpawned()
         {
-            SubscriptionKIDPatch.Apply();
-
             Settings.LoadSettings();
 
             holder = new GameObject("Arrakis");
