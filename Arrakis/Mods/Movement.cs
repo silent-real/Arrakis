@@ -69,12 +69,34 @@ namespace Arrakis.Mods
             }
         }
 
-        public static void MosaBoost() =>
-            GTPlayer.Instance.maxJumpSpeed = 7.5f;
+        public static int currentSpeedBoostIndex = 0;
+        private static float currentSpeedboostAmount = 7.5f;
+        private static string[] speedBoostNames = new string[]
+        {
+            "Default", "Fast", "Faster", "Extreme"
+        };
         public static void SpeedBoost() =>
-            GTPlayer.Instance.maxJumpSpeed = 9.5f;
-        public static void ExtremeSpeedBoost() =>
-            GTPlayer.Instance.maxJumpSpeed = 15f;
+            GTPlayer.Instance.maxJumpSpeed = currentSpeedboostAmount;
+        public static void ChangeSpeedBoostAmount(bool increment = true)
+        {
+            if (increment)
+            {
+                currentSpeedBoostIndex = (currentSpeedBoostIndex + 1) % speedBoostNames.Length;
+            }
+            else
+            {
+                currentSpeedBoostIndex = (currentSpeedBoostIndex - 1 + speedBoostNames.Length) % speedBoostNames.Length;
+            }
+
+            switch (currentSpeedBoostIndex)
+            {
+                case 0: currentSpeedboostAmount = 7.5f; break; // Default
+                case 1: currentSpeedboostAmount = 8.7f; break; // Fast
+                case 2: currentSpeedboostAmount = 9.7f; break; // Faster
+                case 3: currentSpeedboostAmount = 14.7f; break; // Extreme
+            }
+            GetIndex("Change Speedboost Amount").overlapText = $"Change Speedboost Amount <color=grey>[<color=cyan>{speedBoostNames[currentSpeedBoostIndex]}</color>]</color>";
+        }
 
         public static void SlideControl() =>
             GTPlayer.Instance.slideControl = 1.5f;

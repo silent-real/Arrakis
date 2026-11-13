@@ -158,6 +158,7 @@ namespace Arrakis.Menu
 
                 new() { buttonText = "Change Fly Speed", overlapText = "Change Fly Speed <color=grey>[<color=cyan>Default</color>]</color>", enableMethod =() => ChangeFlySpeed(), method =() => ChangeFlySpeed(), disableMethod =() => ChangeFlySpeed(false), isIncremental = true,  isTogglable = false, toolTip = "Changes the fly speed.", ShowInArraylist = false },
                 new() { buttonText = "Change Wall Walk Power", overlapText = "Change Wall Walk Power <color=grey>[<color=cyan>8.8f</color>]</color>", enableMethod =() => ChangeWallWalkAmount(), method =() => ChangeWallWalkAmount(), disableMethod =() => ChangeWallWalkAmount(false), isIncremental = true,  isTogglable = false, toolTip = "Changes the wall walk power.", ShowInArraylist = false },
+                new() { buttonText = "Change Speedboost Amount", overlapText = "Change Speedboost Amount <color=grey>[<color=cyan>Default</color>]</color>", enableMethod =() => Movement.ChangeSpeedBoostAmount(), method =() => Movement.ChangeSpeedBoostAmount(), disableMethod =() => Movement.ChangeSpeedBoostAmount(false), isIncremental = true,  isTogglable = false, toolTip = "Changes the speed boost amount.", ShowInArraylist = false },
                 new() { buttonText = "Sticky Platforms", method =() => stickyplats = true, disableMethod =() => stickyplats = false, isTogglable = true, toolTip = "Makes the platforms sticky.", ShowInArraylist = false, DontPanic = true },
             },
 
@@ -376,9 +377,7 @@ namespace Arrakis.Menu
                 new() { buttonText = "TP Gun", method =() => Movement.TPGun(), isTogglable = true, toolTip = "Lets you teleport with a gun." },
 
                 new() { buttonText = "PSA <color=grey>[<color=cyan>A</color>]</color>", method =() => Movement.PSA(), isTogglable = true, toolTip = "Lets you psa.", isKeybind = true },
-                new() { buttonText = "Mosa Boost", method =() => Movement.MosaBoost(), isTogglable = true, toolTip = "Gives you a slight speed boost." },
-                new() { buttonText = "Speed Boost", method =() => Movement.SpeedBoost(), isTogglable = true, toolTip = "Gives you a speed boost." },
-                new() { buttonText = "Extreme Speed Boost", method =() => Movement.ExtremeSpeedBoost(), isTogglable = true, toolTip = "Gives you a extreme speed boost." },
+                new() { buttonText = "Speed Boost", method =() => Movement.SpeedBoost(), isTogglable = true, toolTip = "Gives you a speed boost and lets you adjust speed in settings." },
 
                 new() { buttonText = "Slide Control", method =() => Movement.SlideControl(), disableMethod =() => Movement.FixSlideControl(), isTogglable = true, toolTip = "Gives you more control on ice." },
 

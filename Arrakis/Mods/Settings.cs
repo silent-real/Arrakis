@@ -1510,6 +1510,7 @@ namespace Arrakis
             public int fontstyle { get; set; }
             public int fonttype { get; set; }
             public int currentFlySpeed { get; set; }
+            public int currentSpeedBoostIndex { get; set; }
             public int currentDigSize { get; set; }
             public int currentprojectilecolor { get; set; }
             public int GunLineindex { get; set; }
@@ -1531,6 +1532,7 @@ namespace Arrakis
                 fontstyle = fontstyle,
                 fonttype = fonttype,
                 currentFlySpeed = currentFlySpeed,
+                currentSpeedBoostIndex = Movement.currentSpeedBoostIndex,
                 currentDigSize = currentDigSize,
                 currentprojectilecolor = currentprojectilecolor,
                 GunLineindex = GunLineindex,
@@ -1569,6 +1571,9 @@ namespace Arrakis
 
                 currentFlySpeed = settings.currentFlySpeed - 1;
                 ChangeFlySpeed();
+
+                Movement.currentSpeedBoostIndex = settings.currentSpeedBoostIndex - 1;
+                Movement.ChangeSpeedBoostAmount();
 
                 currentDigSize = settings.currentDigSize - 1;
                 ChangeDigSize();
