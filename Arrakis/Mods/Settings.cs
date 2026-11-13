@@ -150,6 +150,7 @@ namespace Arrakis
         public static bool disableNetworkedMenu;
 
         public static bool buttonAnimation = false;
+        public static bool scaleWithPlayer = false;
 
         public static void JoinDiscord()
         {

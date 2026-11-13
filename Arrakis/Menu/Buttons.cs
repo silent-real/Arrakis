@@ -118,6 +118,8 @@ namespace Arrakis.Menu
                 new() { buttonText = "Disable Click Vibrations", method =() => disablevibrations = true, disableMethod =() => disablevibrations = false, isTogglable = true, toolTip = "Disables the contorller vibrations you get when you press a button.", ShowInArraylist = false, DontPanic = true },
                 new() { buttonText = "Button Animation", method =() => buttonAnimation = true, disableMethod =() => buttonAnimation = false, isTogglable = true, toolTip = "Makes the menu buttons have animation.", ShowInArraylist = false, DontPanic = true },
 
+                new ButtonInfo { buttonText = "Player Scale Menu", enableMethod =() => scaleWithPlayer = true, disableMethod =() => scaleWithPlayer = false, toolTip = "Makes the menu scale follow your scasle." },
+
                 new() { buttonText = "Notifications", enableMethod =() => disableNotifications = false, disableMethod =() => disableNotifications = true, enabled = !disableNotifications, toolTip = "Toggles the notifications.", ShowInArraylist = false, DontPanic = true },
                 new() { buttonText = "Change Notification Delay", overlapText = "Change Notification Delay <color=grey>[<color=cyan>Default</color>]</color>", enableMethod =() => ChangeNotificationDelay(), method =() => ChangeNotificationDelay(), disableMethod =() => ChangeNotificationDelay(false), isIncremental = true, isTogglable = false, toolTip = "Changes the notification delay.", ShowInArraylist = false },
                 new() { buttonText = "Flip Notifications", enableMethod =() => flipnotifications = true, disableMethod =() => flipnotifications = false, toolTip = "Flips the notifications.", ShowInArraylist = false, DontPanic = true },

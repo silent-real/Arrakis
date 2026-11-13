@@ -1570,8 +1570,7 @@ namespace Arrakis.Menu
 
         public static void FixStickyColliders(GameObject platform)
         {
-            Vector3[] localPositions = new Vector3[]
-            {
+            Vector3[] localPositions = {
                 new Vector3(0, 1f, 0),
                 new Vector3(0, -1f, 0),
                 new Vector3(1f, 0, 0),
@@ -1579,8 +1578,7 @@ namespace Arrakis.Menu
                 new Vector3(0, 0, 1f),
                 new Vector3(0, 0, -1f)
             };
-            Quaternion[] localRotations = new Quaternion[]
-            {
+            Quaternion[] localRotations = {
                 Quaternion.Euler(90, 0, 0),
                 Quaternion.Euler(-90, 0, 0),
                 Quaternion.Euler(0, -90, 0),
@@ -1591,11 +1589,11 @@ namespace Arrakis.Menu
             for (int i = 0; i < localPositions.Length; i++)
             {
                 GameObject side = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                float size = 0.025f;
+                float size = 0.025f * (scaleWithPlayer ? GTPlayer.Instance.scale : 1f);
                 side.transform.SetParent(platform.transform);
                 side.transform.position = localPositions[i] * (size / 2);
                 side.transform.rotation = localRotations[i];
-                WorldScale(side, new Vector3(size, size, 0.01f));
+                WorldScale(side, new Vector3(size, size, 0.01f * (scaleWithPlayer ? GTPlayer.Instance.scale : 1f)));
                 side.GetComponent<Renderer>().enabled = false;
             }
         }
