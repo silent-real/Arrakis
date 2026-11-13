@@ -306,7 +306,7 @@ namespace Arrakis.Mods
                     enableMethod =() => ChangeVolume(),
                     disableMethod =() => ChangeVolume(false),
                     isIncremental = true,
-                    overlapText = $"Change Volume <color=grey>[<color=cyan>{LocalVolume:0.0}f</color><color=grey>]</color>",
+                    overlapText = $"Change Volume <color=grey>[</color><color=cyan>{LocalVolume:0.0}f</color><color=grey>]</color>",
                     isTogglable = false,
                     toolTip = "Changes the soundboard volume locally."
                 },
@@ -360,7 +360,7 @@ namespace Arrakis.Mods
 
             ButtonInfo button = Main.GetIndex("Change Volume");
             if (button != null)
-                button.overlapText = $"Change Volume <color=grey>[<color=cyan>{LocalVolume:0.0}f</color><color=grey>]</color>";
+                button.overlapText = $"Change Volume <color=grey>[</color><color=cyan>{LocalVolume:0.0}f</color><color=grey>]</color>";
         }
 
         private static AudioType GetAudioType(string path)
