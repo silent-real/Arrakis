@@ -666,24 +666,6 @@ namespace Arrakis.Menu
                 new() { buttonText = "Empty Lava", method =() => Master.ChangeLavaState(InfectionLavaController.RisingLavaState.Drained), isTogglable = false, toolTip = "Removes the lava." },
                 new() { buttonText = "Erupt Lava", method =() => Master.ChangeLavaState(InfectionLavaController.RisingLavaState.Erupting), isTogglable = false, toolTip = "Erupts the lava." },
 
-                new() { buttonText = "Spawn Blue Lucy", method =() => Master.SpawnBlueLucy(), isTogglable = false, toolTip = "Spawns the blue ghost Lucy in forest." },
-                new() { buttonText = "Spawn Red Lucy", method =() => Master.SpawnRedLucy(), isTogglable = false, toolTip = "Spawns the red ghost Lucy in forest." },
-                new() { buttonText = "Depawn Lucy", method =() => Master.DespawnLucy(), isTogglable = false, toolTip = "Despawns the red ghost Lucy in forest." },
-                new() { buttonText = "Fast Lucy", method =() => Master.FastLucy(), isTogglable = false, toolTip = "Makes the ghost Lucy become really fast." },
-                new() { buttonText = "Slow Lucy", method =() => Master.SlowLucy(), isTogglable = false, toolTip = "Makes the ghost Lucy become really slow." },
-                new() { buttonText = "Spaz Lucy", method =() => Master.SpazLucy(), isTogglable = true, toolTip = "Makes the ghost Lucy spaz out." },
-                new() { buttonText = "Spaz Lucy Target", method =() => Master.SpazLucyTarget(), isTogglable = true, toolTip = "Makes the ghost Lucy spaz the target." },
-                new() { buttonText = "Move Lucy Gun", method =() => Master.MoveLucyGun(), isTogglable = true, toolTip = "Makes the ghost Lucy go to your gun pointer." },
-                new() { buttonText = "Grab Lucy", method =() => Master.GrabLucy(), isTogglable = true, toolTip = "Makes the ghost Lucy go to your hand when holding your grips." },
-                new() { buttonText = "Lucy Float Gun", method =() => Master.LucyFloatGun(), isTogglable = true, toolTip = "Makes the ghost Lucy float who ever you shoot." },
-                new() { buttonText = "Break Lucy", method =() => Master.BreakLucy(), isTogglable = false, toolTip = "Makes the ghost Lucy be really far if spawned in." },
-
-                new() { buttonText = "Fast Broom Sticks", method =() => Master.ReallyFastBroomSticks(), isTogglable = false, toolTip = "Makes the broom sticks really fast." },
-                new() { buttonText = "Really Fast Broom Sticks", method =() => Master.FastBroomSticks(), isTogglable = false, toolTip = "Makes the broom sticks faster." },
-                new() { buttonText = "Slow Broom Sticks", method =() => Master.SlowBroomSticks(), isTogglable = false, toolTip = "Makes the broom sticks slower." },
-                new() { buttonText = "Normal Speed Broom Sticks", method =() => Master.NormalSpeedBroomSticks(), isTogglable = false, toolTip = "Makes the broom sticks normal speed." },
-                new() { buttonText = "Grab Broom Sticks", method =() => Master.GrabBroomSticks(), isTogglable = true, toolTip = "Makes it so you can grab the broomsticks." },
-
                 new() { buttonText = "Spaz Paintbrawl", method =() => Master.SpazPaintbrawl(), isTogglable = true, toolTip = "Spazes the paintbrawl gamemode if you are master client." },
 
                 new() { buttonText = "Water Ball Score Orange", method =() => Master.WaterBallScore(1), isTogglable = false, toolTip = "Scores in water ball in beach if you are master client." },
@@ -798,5 +780,23 @@ new() { buttonText = "Log Spam All", method =() => Overpowered.LogSpamAll(), isT
 new() { buttonText = "Deafen All", method =() => Overpowered.Deafen(Photon.Realtime.ReceiverGroup.All), isTogglable = true, toolTip = "Deafens everybody." },
 new() { buttonText = "Deafen Others", method =() => Overpowered.Deafen(Photon.Realtime.ReceiverGroup.Others), isTogglable = true, toolTip = "Deafens everybody but you." },
 new() { buttonText = "Deafen Master", method =() => Overpowered.Deafen(Photon.Realtime.ReceiverGroup.MasterClient), isTogglable = true, toolTip = "Deafens the master client." },
+
+new() { buttonText = "Spawn Blue Lucy", method =() => Master.SpawnBlueLucy(), isTogglable = false, toolTip = "Spawns the blue ghost Lucy in forest." },
+new() { buttonText = "Spawn Red Lucy", method =() => Master.SpawnRedLucy(), isTogglable = false, toolTip = "Spawns the red ghost Lucy in forest." },
+new() { buttonText = "Depawn Lucy", method =() => Master.DespawnLucy(), isTogglable = false, toolTip = "Despawns the red ghost Lucy in forest." },
+new() { buttonText = "Fast Lucy", method =() => Master.FastLucy(), isTogglable = false, toolTip = "Makes the ghost Lucy become really fast." },
+new() { buttonText = "Slow Lucy", method =() => Master.SlowLucy(), isTogglable = false, toolTip = "Makes the ghost Lucy become really slow." },
+new() { buttonText = "Spaz Lucy", method =() => Master.SpazLucy(), isTogglable = true, toolTip = "Makes the ghost Lucy spaz out." },
+new() { buttonText = "Spaz Lucy Target", method =() => Master.SpazLucyTarget(), isTogglable = true, toolTip = "Makes the ghost Lucy spaz the target." },
+new() { buttonText = "Move Lucy Gun", method =() => Master.MoveLucyGun(), isTogglable = true, toolTip = "Makes the ghost Lucy go to your gun pointer." },
+new() { buttonText = "Grab Lucy", method =() => Master.GrabLucy(), isTogglable = true, toolTip = "Makes the ghost Lucy go to your hand when holding your grips." },
+new() { buttonText = "Lucy Float Gun", method =() => Master.LucyFloatGun(), isTogglable = true, toolTip = "Makes the ghost Lucy float who ever you shoot." },
+new() { buttonText = "Break Lucy", method =() => Master.BreakLucy(), isTogglable = false, toolTip = "Makes the ghost Lucy be really far if spawned in." },
+
+new() { buttonText = "Fast Broom Sticks", method =() => Master.ReallyFastBroomSticks(), isTogglable = false, toolTip = "Makes the broom sticks really fast." },
+new() { buttonText = "Really Fast Broom Sticks", method =() => Master.FastBroomSticks(), isTogglable = false, toolTip = "Makes the broom sticks faster." },
+new() { buttonText = "Slow Broom Sticks", method =() => Master.SlowBroomSticks(), isTogglable = false, toolTip = "Makes the broom sticks slower." },
+new() { buttonText = "Normal Speed Broom Sticks", method =() => Master.NormalSpeedBroomSticks(), isTogglable = false, toolTip = "Makes the broom sticks normal speed." },
+new() { buttonText = "Grab Broom Sticks", method =() => Master.GrabBroomSticks(), isTogglable = true, toolTip = "Makes it so you can grab the broomsticks." },
 
  */
