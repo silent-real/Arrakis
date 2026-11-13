@@ -588,7 +588,7 @@ namespace Arrakis.Menu
             Destroy(menu.GetComponent<Rigidbody>());
             Destroy(menu.GetComponent<BoxCollider>());
             Destroy(menu.GetComponent<Renderer>());
-            menu.transform.localScale = new Vector3(0.1f, 0.3f, 0.3825f);
+            menu.transform.localScale = new Vector3(0.1f, 0.3f, 0.3825f) * (scaleWithPlayer ? GTPlayer.Instance.scale : 1f);
 
             // Menu Background
             menuBackground = GameObject.CreatePrimitive(PrimitiveType.Cube);
