@@ -43,7 +43,9 @@ namespace Arrakis.Managers
         {
             "smooth",
             "creamy",
-            "windows"
+            "windows",
+            "soft",
+            "gear"
         };
         private static readonly int[] ButtonSounds =
         {
@@ -97,13 +99,14 @@ namespace Arrakis.Managers
         }
         public static bool IsLoaded(string name) =>
             !string.IsNullOrEmpty(name) && audioClips.ContainsKey(name);
-        public static AudioClip LoadSound(string soundName)
+        public static AudioClip LoadSound(string soundName, string subfolder = "Buttons")
         {
             if (string.IsNullOrEmpty(soundName))
                 return null;
             if (audioClips.TryGetValue(soundName, out AudioClip cached))
                 return cached;
-            byte[] soundBytes = LoadEmbeddedBytes(soundName);
+            byte[] soundBytes = LoadEmbeddedBytes(soundName, subfolder) ?? LoadEmbeddedBytes(soundName, subfolder == "Buttons" ? "Menu" : "Buttons")
+                ?? LoadEmbeddedBytes(soundName, null);
             if (soundBytes == null)
                 return null;
             AudioClip clip = WavToAudioClip(soundBytes);
@@ -184,9 +187,9 @@ namespace Arrakis.Managers
             audioSource.loop = false;
             return audioSource;
         }
-        private static byte[] LoadEmbeddedBytes(string soundName)
+        private static byte[] LoadEmbeddedBytes(string soundName, string subfolder)
         {
-            string resourcePath = $"{ResourcePrefix}{soundName}.wav";
+            string resourcePath = string.IsNullOrEmpty(subfolder) ? $"{ResourcePrefix}{soundName}.wav" : $"{ResourcePrefix}{subfolder}.{soundName}.wav";
             Assembly assembly = Assembly.GetExecutingAssembly();
             using (Stream stream = assembly.GetManifestResourceStream(resourcePath))
             {
@@ -262,8 +265,7 @@ namespace Arrakis.Managers
             {
                 int customIndex = clicksound - ButtonSounds.Length;
 
-                if (customIndex < SoundNames.Length &&
-                    customSoundNames.TryGetValue(customIndex, out string registered))
+                if (customIndex < SoundNames.Length && customSoundNames.TryGetValue(customIndex, out string registered))
                 {
                     name = registered;
                 }

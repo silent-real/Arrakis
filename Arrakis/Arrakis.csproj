@@ -20,9 +20,13 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Audio\creamy.wav" />
+	  <None Remove="Resources\Audio\gear.wav" />
 	  <None Remove="Resources\Audio\menuclose.wav" />
 	  <None Remove="Resources\Audio\menuopen.wav" />
+	  <None Remove="Resources\Audio\plastic.wav" />
+	  <None Remove="Resources\Audio\Scifi.wav" />
 	  <None Remove="Resources\Audio\smooth.wav" />
+	  <None Remove="Resources\Audio\soft.wav" />
 	  <None Remove="Resources\Audio\windows.wav" />
 	  <None Remove="Resources\Bundles\arrakisassets" />
 	  <None Remove="Resources\Bundles\maxwell" />
@@ -36,11 +40,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Include="Resources\Audio\creamy.wav" />
-	  <EmbeddedResource Include="Resources\Audio\menuclose.wav" />
-	  <EmbeddedResource Include="Resources\Audio\menuopen.wav" />
-	  <EmbeddedResource Include="Resources\Audio\smooth.wav" />
-	  <EmbeddedResource Include="Resources\Audio\windows.wav" />
+	  <EmbeddedResource Include="Resources\Audio\Buttons\creamy.wav" />
+	  <EmbeddedResource Include="Resources\Audio\Buttons\gear.wav" />
+	  <EmbeddedResource Include="Resources\Audio\Menu\menuclose.wav" />
+	  <EmbeddedResource Include="Resources\Audio\Menu\menuopen.wav" />
+	  <EmbeddedResource Include="Resources\Audio\Buttons\smooth.wav" />
+	  <EmbeddedResource Include="Resources\Audio\Buttons\soft.wav" />
+	  <EmbeddedResource Include="Resources\Audio\Buttons\windows.wav" />
 	  <EmbeddedResource Include="Resources\Bundles\arrakisassets" />
 	  <EmbeddedResource Include="Resources\Bundles\maxwell" />
 	  <EmbeddedResource Include="Resources\Bundles\zeldasword" />
