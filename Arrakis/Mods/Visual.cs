@@ -40,6 +40,17 @@ namespace Arrakis.Mods
 {
     public class Visual
     {
+        private static Shader _espText;
+        public static Shader EspText
+        {
+            get
+            {
+                if (_espText != null) return _espText;
+                _espText = Shader.Find("GUI/Text Shader") ?? Shader.Find("Sprites/Default") ?? Shader.Find("Unlit/Color");
+                return _espText;
+            }
+        }
+
         private enum TagKind { Name = 0, Id = 1, Platform = 2, Fps = 3, Tagged = 4 }
         private const float TagBaseHeight = 1f;
         private const float TagStep = 0.1f;
@@ -288,71 +299,65 @@ namespace Arrakis.Mods
         public static void DisableChams()
         {
             DisableLimbChams();
-            if (!NetworkSystem.Instance.InRoom)
-                return;
+            if (!NetworkSystem.Instance.InRoom) return;
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
-                if (rig == null || rig.IsLocal())
-                    continue;
-                rig.mainSkin.material.shader = UberShader;
-                rig.mainSkin.material.color = rig.playerColor;
+                if (rig == null || rig.IsLocal()) continue;
+                Material m = rig.mainSkin.sharedMaterial;
+                if (m != null && m.shader != UberShader) rig.mainSkin.material.shader = UberShader;
+                if (m != null && m.color != rig.playerColor) rig.mainSkin.material.color = rig.playerColor;
             }
         }
 
-        private static Dictionary<VRRig, GameObject> tracersPool = new Dictionary<VRRig, GameObject>();
+        private sealed class TracerState
+        {
+            public GameObject holder;
+            public LineRenderer line;
+        }
+        private static readonly Dictionary<VRRig, TracerState> tracersPool = new Dictionary<VRRig, TracerState>();
         public static void Tracers()
         {
-            if (!NetworkSystem.Instance.InRoom)
-                return;
-            foreach (VRRig rig in VRRigCache.ActiveRigs)
+            if (!NetworkSystem.Instance.InRoom) return;
+            List<VRRig> remove = null;
+            foreach (var pair in tracersPool)
             {
-                if (!rig.IsLocal())
+                if (pair.Key == null || !VRRigCache.ActiveRigs.Contains(pair.Key))
                 {
-                    List<VRRig> remove = null;
-                    foreach (var pair in tracersPool)
-                    {
-                        if (pair.Key == null || !VRRigCache.ActiveRigs.Contains(pair.Key))
-                        {
-                            remove ??= new List<VRRig>();
-                            remove.Add(pair.Key);
-                            if (pair.Value != null)
-                                Object.Destroy(pair.Value);
-                        }
-                    }
-                    if (remove != null)
-                    {
-                        foreach (var vrrig in remove)
-                            tracersPool.Remove(vrrig);
-                    }
-                    if (!tracersPool.TryGetValue(rig, out GameObject holder))
-                    {
-                        holder = new GameObject();
-                        holder.transform.parent = rig.transform;
-                        LineRenderer line = holder.AddComponent<LineRenderer>();
-                        line.useWorldSpace = true;
-                        line.material = new Material(Shader.Find("GUI/Text Shader"));
-                        line.positionCount = 2;
-                        line.startWidth = 0.02f;
-                        line.endWidth = 0.02f;
-                        tracersPool[rig] = holder;
-                    }
-                    LineRenderer lr = holder.GetComponent<LineRenderer>();
-                    Color color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f) : rig.playerColor;
-                    color.a = 0.7f;
-                    lr.startColor = color;
-                    lr.endColor = color;
-                    lr.SetPosition(0, GorillaTagger.Instance.rightHandTransform.position);
-                    lr.SetPosition(1, rig.transform.position);
+                    remove ??= new List<VRRig>();
+                    remove.Add(pair.Key);
+                    if (pair.Value.holder != null) Object.Destroy(pair.Value.holder);
                 }
             }
+            if (remove != null) foreach (var r in remove) tracersPool.Remove(r);
+            foreach (VRRig rig in VRRigCache.ActiveRigs)
+            {
+                if (rig == null || rig.IsLocal()) continue;
+                if (!tracersPool.TryGetValue(rig, out var state) || state.holder == null)
+                {
+                    var holder = new GameObject("Arrakis_Tracer");
+                    holder.transform.SetParent(rig.transform, false);
+                    var line = holder.AddComponent<LineRenderer>();
+                    line.useWorldSpace = true;
+                    line.sharedMaterial = LimbChamMat;
+                    line.positionCount = 2;
+                    line.startWidth = 0.02f;
+                    line.endWidth = 0.02f;
+                    state = new TracerState { holder = holder, line = line };
+                    tracersPool[rig] = state;
+                }
+                Color color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f) : rig.playerColor;
+                color.a = 0.7f;
+                state.line.startColor = color;
+                state.line.endColor = color;
+                state.line.SetPosition(0, GorillaTagger.Instance.rightHandTransform.position);
+                state.line.SetPosition(1, rig.transform.position);
+            }
         }
+
         public static void DisableTracers()
         {
-            foreach (var obj in tracersPool.Values)
-            {
-                if (obj != null)
-                    Object.Destroy(obj);
-            }
+            foreach (var st in tracersPool.Values)
+                if (st.holder != null) Object.Destroy(st.holder);
             tracersPool.Clear();
         }
 
@@ -364,55 +369,56 @@ namespace Arrakis.Mods
         };
         public static void BoneESP()
         {
-            if (!NetworkSystem.Instance.InRoom)
-                return;
+            if (!NetworkSystem.Instance.InRoom) return;
             List<VRRig> remove = new List<VRRig>();
-            foreach (var bone in boneEspPool.Where(x => !VRRigCache.ActiveRigs.Contains(x.Key)))
+            foreach (var bone in boneEspPool)
             {
-                remove.Add(bone.Key);
-                foreach (LineRenderer line in bone.Value)
-                    GameObject.Destroy(line);
+                if (bone.Key == null || !VRRigCache.ActiveRigs.Contains(bone.Key))
+                {
+                    remove.Add(bone.Key);
+                    foreach (var line in bone.Value)
+                        if (line != null) Object.Destroy(line);
+                }
             }
-            foreach (VRRig rig in remove)
-                boneEspPool.Remove(rig);
+            foreach (var rig in remove) boneEspPool.Remove(rig);
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
-                if (!rig.IsLocal())
+                if (rig == null || rig.IsLocal()) continue;
+                if (!boneEspPool.TryGetValue(rig, out List<LineRenderer> lines) || lines == null || lines.Count == 0 || lines[0] == null)
                 {
-                    if (!boneEspPool.TryGetValue(rig, out List<LineRenderer> lines))
-                    {
-                        lines = new List<LineRenderer>();
-                        LineRenderer head = rig.head.rigTarget.AddComponent<LineRenderer>();
-                        head.material.shader = Shader.Find("GUI/Text Shader");
-                        lines.Add(head);
-                        for (int i = 0; i < 19; i++)
-                        {
-                            LineRenderer line = rig.mainSkin.bones[bones[i * 2]].gameObject.AddComponent<LineRenderer>();
-                            line.material.shader = Shader.Find("GUI/Text Shader");
-                            lines.Add(line);
-                        }
-                        boneEspPool.Add(rig, lines);
-                    }
-                    LineRenderer linee = lines[0];
-                    Color boneColor = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f) : rig.playerColor;
-                    boneColor.a = 0.9f;
-                    linee.startWidth = 0.02f;
-                    linee.endWidth = 0.02f;
-                    linee.startColor = boneColor;
-                    linee.endColor = boneColor;
-                    linee.SetPosition(0, rig.head.rigTarget.transform.position + new Vector3(0f, 0.16f, 0f));
-                    linee.SetPosition(1, rig.head.rigTarget.transform.position - new Vector3(0f, 0.4f, 0f));
+                    lines = new List<LineRenderer>();
+                    var head = rig.head.rigTarget.AddComponent<LineRenderer>();
+                    head.sharedMaterial = LimbChamMat;
+                    head.positionCount = 2;
+                    head.startWidth = 0.02f;
+                    head.endWidth = 0.02f;
+                    lines.Add(head);
                     for (int i = 0; i < 19; i++)
                     {
-                        linee = lines[i + 1];
-                        linee.startWidth = 0.02f;
-                        linee.endWidth = 0.02f;
-                        linee.startColor = boneColor;
-                        linee.endColor = boneColor;
-                        linee.material.shader = Shader.Find("GUI/Text Shader");
-                        linee.SetPosition(0, rig.mainSkin.bones[bones[i * 2]].position);
-                        linee.SetPosition(1, rig.mainSkin.bones[bones[i * 2 + 1]].position);
+                        var line = rig.mainSkin.bones[bones[i * 2]].gameObject.AddComponent<LineRenderer>();
+                        line.sharedMaterial = LimbChamMat;
+                        line.positionCount = 2;
+                        line.startWidth = 0.02f;
+                        line.endWidth = 0.02f;
+                        lines.Add(line);
                     }
+                    boneEspPool[rig] = lines;
+                }
+                Color boneColor = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f) : rig.playerColor;
+                boneColor.a = 0.9f;
+                LineRenderer l0 = lines[0];
+                l0.startColor = boneColor;
+                l0.endColor = boneColor;
+                l0.SetPosition(0, rig.head.rigTarget.transform.position + new Vector3(0f, 0.16f, 0f));
+                l0.SetPosition(1, rig.head.rigTarget.transform.position - new Vector3(0f, 0.4f, 0f));
+                for (int i = 0; i < 19; i++)
+                {
+                    var linee = lines[i + 1];
+                    if (linee == null) continue;
+                    linee.startColor = boneColor;
+                    linee.endColor = boneColor;
+                    linee.SetPosition(0, rig.mainSkin.bones[bones[i * 2]].position);
+                    linee.SetPosition(1, rig.mainSkin.bones[bones[i * 2 + 1]].position);
                 }
             }
         }
@@ -425,39 +431,43 @@ namespace Arrakis.Mods
 
         public static void SelfBoneESP()
         {
-            if (!selfBoneEspPool.TryGetValue(GorillaTagger.Instance.offlineVRRig, out List<LineRenderer> lines))
+            var local = GorillaTagger.Instance.offlineVRRig;
+            if (local == null) return;
+            if (!selfBoneEspPool.TryGetValue(local, out List<LineRenderer> lines) || lines == null || lines.Count == 0 || lines[0] == null)
             {
                 lines = new List<LineRenderer>();
-                LineRenderer head = GorillaTagger.Instance.offlineVRRig.head.rigTarget.AddComponent<LineRenderer>();
-                head.material.shader = Shader.Find("GUI/Text Shader");
+                var head = local.head.rigTarget.AddComponent<LineRenderer>();
+                head.sharedMaterial = LimbChamMat;
+                head.positionCount = 2;
+                head.startWidth = 0.02f;
+                head.endWidth = 0.02f;
                 lines.Add(head);
                 for (int i = 0; i < 19; i++)
                 {
-                    LineRenderer line = GorillaTagger.Instance.offlineVRRig.mainSkin.bones[bones[i * 2]].gameObject.AddComponent<LineRenderer>();
-                    line.material.shader = Shader.Find("GUI/Text Shader");
+                    var line = local.mainSkin.bones[bones[i * 2]].gameObject.AddComponent<LineRenderer>();
+                    line.sharedMaterial = LimbChamMat;
+                    line.positionCount = 2;
+                    line.startWidth = 0.02f;
+                    line.endWidth = 0.02f;
                     lines.Add(line);
                 }
-                selfBoneEspPool.Add(GorillaTagger.Instance.offlineVRRig, lines);
+                selfBoneEspPool[local] = lines;
             }
-            LineRenderer linee = lines[0];
-            Color boneColor = followmenutheme ? backgroundColor.GetCurrentColor() : GorillaTagger.Instance.offlineVRRig.playerColor;
+            Color boneColor = followmenutheme ? backgroundColor.GetCurrentColor() : local.playerColor;
             boneColor.a = 0.7f;
-            linee.startWidth = 0.02f;
-            linee.endWidth = 0.02f;
-            linee.startColor = boneColor;
-            linee.endColor = boneColor;
-            linee.SetPosition(0, GorillaTagger.Instance.offlineVRRig.headMesh.transform.position);
-            linee.SetPosition(1, GorillaTagger.Instance.offlineVRRig.headMesh.transform.position);
+            LineRenderer l0 = lines[0];
+            l0.startColor = boneColor;
+            l0.endColor = boneColor;
+            l0.SetPosition(0, local.headMesh.transform.position);
+            l0.SetPosition(1, local.headMesh.transform.position);
             for (int i = 0; i < 19; i++)
             {
-                linee = lines[i + 1];
-                linee.startWidth = 0.02f;
-                linee.endWidth = 0.02f;
+                var linee = lines[i + 1];
+                if (linee == null) continue;
                 linee.startColor = boneColor;
                 linee.endColor = boneColor;
-                linee.material.shader = Shader.Find("GUI/Text Shader");
-                linee.SetPosition(0, GorillaTagger.Instance.offlineVRRig.mainSkin.bones[bones[i * 2]].position);
-                linee.SetPosition(1, GorillaTagger.Instance.offlineVRRig.mainSkin.bones[bones[i * 2 + 1]].position);
+                linee.SetPosition(0, local.mainSkin.bones[bones[i * 2]].position);
+                linee.SetPosition(1, local.mainSkin.bones[bones[i * 2 + 1]].position);
             }
         }
         public static void DisableSelfBoneESP()
@@ -468,7 +478,6 @@ namespace Arrakis.Mods
         }
 
 
-        private static readonly Dictionary<VRRig, GameObject> boxEspPool = new Dictionary<VRRig, GameObject>();
         private static GameObject CreateObject(Transform parent, PrimitiveType type, Vector3 scale, Color color, Shader shader)
         {
             GameObject obj = GameObject.CreatePrimitive(type);
@@ -476,18 +485,22 @@ namespace Arrakis.Mods
             obj.transform.localPosition = Vector3.zero;
             obj.transform.localRotation = Quaternion.identity;
             obj.transform.localScale = scale;
-            if (obj.TryGetComponent(out Collider col))
-                Object.Destroy(col);
-            Renderer renderer = obj.GetComponent<Renderer>();
-            renderer.material.shader = shader;
-            renderer.material.color = color;
+            var col = obj.GetComponent<Collider>();
+            if (col != null) Object.Destroy(col);
+            var rend = obj.GetComponent<Renderer>();
+            rend.sharedMaterial = new Material(shader) { color = color };
             return obj;
         }
 
+        private sealed class BoxState { public GameObject obj; public Renderer renderer; }
+        private static readonly Dictionary<VRRig, BoxState> boxEspPool = new Dictionary<VRRig, BoxState>();
+
         public static void BoxESP()
         {
-            if (!NetworkSystem.Instance.InRoom)
-                return;
+            if (!NetworkSystem.Instance.InRoom) return;
+            Camera cam = Camera.main;
+            if (cam == null) return;
+
             List<VRRig> remove = null;
             foreach (var pair in boxEspPool)
             {
@@ -495,54 +508,47 @@ namespace Arrakis.Mods
                 {
                     remove ??= new List<VRRig>();
                     remove.Add(pair.Key);
-                    if (pair.Value != null)
-                        Object.Destroy(pair.Value);
+                    if (pair.Value.obj != null) Object.Destroy(pair.Value.obj);
                 }
             }
-            if (remove != null)
-            {
-                foreach (var rig in remove)
-                    boxEspPool.Remove(rig);
-            }
+            if (remove != null) foreach (var r in remove) boxEspPool.Remove(r);
+
+            Vector3 camPos = cam.transform.position;
+
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
-                if (rig == null || rig == VRRig.LocalRig)
-                    continue;
-                if (!boxEspPool.TryGetValue(rig, out GameObject box))
+                if (rig == null || rig.IsLocal()) continue;
+                if (!boxEspPool.TryGetValue(rig, out var st) || st.obj == null)
                 {
-                    box = CreateObject(rig.transform, PrimitiveType.Cube, new Vector3(0.5f, 0.5f, 0.1f),
-                        followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, Shader.Find("GUI/Text Shader"));
-                    boxEspPool[rig] = box;
+                    var obj = CreateObject(rig.transform, PrimitiveType.Cube, new Vector3(0.5f, 0.5f, 0.1f), followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, EspText);
+                    st = new BoxState { obj = obj, renderer = obj.GetComponent<Renderer>() };
+                    boxEspPool[rig] = st;
                 }
-                box.transform.localScale = new Vector3(0.5f, 0.5f, 0.1f) * rig.scaleFactor;
                 Color color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor;
                 color.a = 0.4f;
-                box.GetComponent<Renderer>().material.color = color;
-                float distance = Vector3.Distance(Camera.main.transform.position, rig.transform.position);
+                st.renderer.material.color = color;
+                float distance = Vector3.Distance(camPos, rig.transform.position);
                 float scale = Mathf.Clamp(distance * 0.05f, 0.25f, 3f);
-                box.transform.localScale = new Vector3(scale, scale, 0.02f);
-                box.transform.LookAt(Camera.main.transform);
+                st.obj.transform.localScale = new Vector3(scale, scale, 0.02f);
+                st.obj.transform.LookAt(cam.transform);
             }
         }
 
         public static void DisableBoxESP()
         {
-            foreach (var obj in boxEspPool.Values)
-            {
-                if (obj != null)
-                    Object.Destroy(obj);
-            }
+            foreach (var st in boxEspPool.Values)
+                if (st.obj != null) Object.Destroy(st.obj);
             boxEspPool.Clear();
         }
 
-        private static Dictionary<VRRig, GameObject> hollowBoxPool = new Dictionary<VRRig, GameObject>();
+        private sealed class HollowState { public GameObject obj; public TextMesh text; }
+        private static readonly Dictionary<VRRig, HollowState> hollowBoxPool = new Dictionary<VRRig, HollowState>();
+
         public static void HollowBoxESP()
         {
-            if (!NetworkSystem.Instance.InRoom)
-            {
-                DisableHollowBoxESP();
-                return;
-            }
+            if (!NetworkSystem.Instance.InRoom) { DisableHollowBoxESP(); return; }
+            Camera cam = Camera.main;
+            if (cam == null) return;
             List<VRRig> remove = null;
             foreach (var pair in hollowBoxPool)
             {
@@ -550,42 +556,39 @@ namespace Arrakis.Mods
                 {
                     remove ??= new List<VRRig>();
                     remove.Add(pair.Key);
-                    if (pair.Value != null)
-                        Object.Destroy(pair.Value);
+                    if (pair.Value.obj != null) Object.Destroy(pair.Value.obj);
                 }
             }
-            if (remove != null)
-                foreach (var r in remove) hollowBoxPool.Remove(r);
+            if (remove != null) foreach (var r in remove) hollowBoxPool.Remove(r);
+            Quaternion camRot = cam.transform.rotation;
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
                 if (rig == null || rig.IsLocal()) continue;
-                if (!hollowBoxPool.TryGetValue(rig, out GameObject box) || box == null)
+                if (!hollowBoxPool.TryGetValue(rig, out var st) || st.obj == null)
                 {
-                    box = new GameObject("HollowBoxESP");
-                    TextMesh text = box.AddComponent<TextMesh>();
-                    text.alignment = TextAlignment.Center;
-                    text.anchor = TextAnchor.MiddleCenter;
-                    text.text = "□";
-                    text.fontSize = 300;
-                    text.characterSize = 0.05f;
-                    hollowBoxPool[rig] = box;
+                    var obj = new GameObject("HollowBoxESP");
+                    var tm = obj.AddComponent<TextMesh>();
+                    tm.alignment = TextAlignment.Center;
+                    tm.anchor = TextAnchor.MiddleCenter;
+                    tm.text = "□";
+                    tm.fontSize = 300;
+                    tm.characterSize = 0.05f;
+                    st = new HollowState { obj = obj, text = tm };
+                    hollowBoxPool[rig] = st;
                 }
-                box.transform.localScale = Vector3.one * rig.scaleFactor;
+                st.obj.transform.localScale = Vector3.one * rig.scaleFactor;
                 Color color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? Color.red : rig.playerColor;
                 color.a = 0.7f;
-                box.GetComponent<TextMesh>().color = color;
-                box.transform.position = rig.transform.position;
-                if (Camera.main != null)
-                    box.transform.LookAt(box.transform.position + Camera.main.transform.rotation * Vector3.forward, Camera.main.transform.rotation * Vector3.up);
+                st.text.color = color;
+                st.obj.transform.position = rig.transform.position;
+                st.obj.transform.LookAt(st.obj.transform.position + camRot * Vector3.forward, camRot * Vector3.up);
             }
         }
+
         public static void DisableHollowBoxESP()
         {
-            foreach (var obj in hollowBoxPool.Values)
-            {
-                if (obj != null)
-                    Object.Destroy(obj);
-            }
+            foreach (var st in hollowBoxPool.Values)
+                if (st.obj != null) Object.Destroy(st.obj);
             hollowBoxPool.Clear();
         }
 
@@ -598,22 +601,24 @@ namespace Arrakis.Mods
                 RemoveTag(rig, TagKind.Name);
                 nameTagPool.Remove(rig);
             }
+            Camera cam = Camera.main;
+            if (cam == null) return;
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
                 if (rig == null || rig.IsLocal()) continue;
+                string nick = rig.Creator.NickName.CleanString();
                 if (!nameTagPool.TryGetValue(rig, out var tag) || tag == null)
                 {
-                    tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform,
-                        TextAlignmentOptions.Center, rig.Creator.NickName.CleanString(),
+                    tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, nick,
                         followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f);
                     nameTagPool[rig] = tag;
                 }
-                tag.text = rig.Creator.NickName.CleanString();
+                if (tag.text != nick) tag.text = nick;
                 Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
                 SetTag(rig, TagKind.Name, tag, parent,
                     followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor);
-                tag.transform.LookAt(Camera.main.transform);
-                tag.transform.Rotate(0f, 180f, 0f);
+                Vector3 tagToCam = cam.transform.position - tag.transform.position;
+                tag.transform.rotation = Quaternion.LookRotation(-tagToCam, cam.transform.up) * Quaternion.Euler(0f, 180f, 0f);
             }
         }
         public static void DisableNameTags()
@@ -1162,107 +1167,75 @@ namespace Arrakis.Mods
 
         public static void DisableFog() =>
             GorillaTag.Rendering.ZoneShaderSettings.activeInstance.SetGroundFogValue(Color.clear, 0f, 0f, 0f);
-        private static Dictionary<VRRig, GameObject> ringPool = new Dictionary<VRRig, GameObject>();
-        private static Dictionary<VRRig, GameObject> haloPool = new Dictionary<VRRig, GameObject>();
+
+        private sealed class RingState { public GameObject obj; public LineRenderer line; }
+        private static readonly Dictionary<VRRig, RingState> ringPool = new Dictionary<VRRig, RingState>();
         public static void Ring()
         {
-            if (!NetworkSystem.Instance.InRoom)
-                return;
-            foreach (VRRig rig in VRRigCache.ActiveRigs)
-            {
-                if (rig == null || rig.IsLocal())
-                    continue;
-                if (!ringPool.TryGetValue(rig, out GameObject obj))
-                {
-                    obj = new GameObject("Arrakis_Ring");
-                    obj.transform.SetParent(rig.transform, false);
-                    LineRenderer line = obj.AddComponent<LineRenderer>();
-                    line.useWorldSpace = false;
-                    line.loop = true;
-                    line.positionCount = 48;
-                    line.startWidth = 0.012f;
-                    line.endWidth = 0.012f;
-                    line.material = new Material(Shader.Find("GUI/Text Shader"));
-                    ringPool[rig] = obj;
-                }
-
-                float time = Time.time;
-                float rotationSpeed = 70f;
-                float rotation = time * rotationSpeed;
-                float pulse = Mathf.Sin(time * 3.5f) * 0.035f;
-                float radius = 0.38f + pulse;
-                float bob = Mathf.Sin(time * 2.5f) * 0.025f;
-                obj.transform.localPosition = new Vector3(0f, -0.35f + bob, 0f);
-                obj.transform.localRotation = Quaternion.Euler(0f, rotation, 0f);
-                LineRenderer renderer = obj.GetComponent<LineRenderer>();
-                renderer.startWidth = 0.012f + Mathf.Sin(time * 4f) * 0.002f;
-                renderer.endWidth = renderer.startWidth;
-                for (int i = 0; i < 48; i++)
-                {
-                    float angle = i * Mathf.PI * 2f / 48f;
-                    renderer.SetPosition(i, new Vector3(Mathf.Cos(angle) * radius, 0f, Mathf.Sin(angle) * radius));
-                }
-                Color color = followmenutheme
-                    ? backgroundColor.GetCurrentColor() : rig.IsTagged()
-                    ? new Color(0.6f, 0f, 0f) : rig.playerColor;
-                color.a = 0.7f;
-                renderer.startColor = color;
-                renderer.endColor = color;
-            }
+            if (!NetworkSystem.Instance.InRoom) return;
             List<VRRig> remove = null;
             foreach (var pair in ringPool)
             {
                 if (pair.Key == null || !VRRigCache.ActiveRigs.Contains(pair.Key))
                 {
-                    if (remove == null)
-                        remove = new List<VRRig>();
+                    remove ??= new List<VRRig>();
                     remove.Add(pair.Key);
-                    if (pair.Value != null)
-                        UnityEngine.Object.Destroy(pair.Value);
+                    if (pair.Value.obj != null) Object.Destroy(pair.Value.obj);
                 }
             }
             if (remove != null)
-            {
-                foreach (VRRig rig in remove)
-                    ringPool.Remove(rig);
-            }
-        }
-        public static void DisableRing()
-        {
-            foreach (GameObject obj in ringPool.Values)
-            {
-                if (obj != null)
-                    Object.Destroy(obj);
-            }
-            ringPool.Clear();
-        }
-        public static void Halo()
-        {
-            if (!NetworkSystem.Instance.InRoom)
-                return;
+                foreach (var r in remove) ringPool.Remove(r);
+            float time = Time.time;
+            float pulse = Mathf.Sin(time * 3.5f) * 0.035f;
+            float radius = 0.38f + pulse;
+            float bob = Mathf.Sin(time * 2.5f) * 0.025f;
+            float rot = time * 70f;
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
-                if (rig == null || rig.IsLocal())
-                    continue;
-                if (!haloPool.TryGetValue(rig, out GameObject obj))
+                if (rig == null || rig.IsLocal()) continue;
+                if (!ringPool.TryGetValue(rig, out var st) || st.obj == null)
                 {
-                    obj = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-                    obj.name = "Arrakis_Halo";
+                    var obj = new GameObject("Arrakis_Ring");
                     obj.transform.SetParent(rig.transform, false);
-                    obj.transform.localPosition = new Vector3(0f, 0.25f, 0f);
-                    obj.transform.localScale = new Vector3(0.85f, 0.003f, 0.85f);
-                    Object.Destroy(obj.GetComponent<Collider>());
-                    Renderer renderer = obj.GetComponent<Renderer>();
-                    renderer.material = new Material(Shader.Find("GUI/Text Shader"));
-                    haloPool[rig] = obj;
+                    var line = obj.AddComponent<LineRenderer>();
+                    line.useWorldSpace = false;
+                    line.loop = true;
+                    line.positionCount = 48;
+                    line.startWidth = 0.012f;
+                    line.endWidth = 0.012f;
+                    line.sharedMaterial = LimbChamMat;
+                    for (int i = 0; i < 48; i++)
+                    {
+                        float a = i * Mathf.PI * 2f / 48f;
+                        line.SetPosition(i, new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a)));
+                    }
+                    st = new RingState { obj = obj, line = line };
+                    ringPool[rig] = st;
                 }
-                Color color = followmenutheme
-                    ? backgroundColor.GetCurrentColor()
-                    : rig.IsTagged() ? new Color(0.6f, 0f, 0f) : rig.playerColor;
-                color.a = 0.18f;
-                Renderer halo = obj.GetComponent<Renderer>();
-                halo.material.color = color;
+                st.obj.transform.localPosition = new Vector3(0f, -0.35f + bob, 0f);
+                st.obj.transform.localRotation = Quaternion.Euler(0f, rot, 0f);
+                st.obj.transform.localScale = new Vector3(radius, 1f, radius);
+                Color color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f) : rig.playerColor;
+                color.a = 0.7f;
+                st.line.startColor = color;
+                st.line.endColor = color;
             }
+        }
+
+        public static void DisableRing()
+        {
+            foreach (var st in ringPool.Values)
+                if (st.obj != null) Object.Destroy(st.obj);
+            ringPool.Clear();
+        }
+
+
+        private sealed class HaloState { public GameObject obj; public Renderer renderer; }
+        private static readonly Dictionary<VRRig, HaloState> haloPool = new Dictionary<VRRig, HaloState>();
+
+        public static void Halo()
+        {
+            if (!NetworkSystem.Instance.InRoom) return;
             List<VRRig> remove = null;
             foreach (var pair in haloPool)
             {
@@ -1270,23 +1243,38 @@ namespace Arrakis.Mods
                 {
                     remove ??= new List<VRRig>();
                     remove.Add(pair.Key);
-                    if (pair.Value != null)
-                        Object.Destroy(pair.Value);
+                    if (pair.Value.obj != null) Object.Destroy(pair.Value.obj);
                 }
             }
             if (remove != null)
+                foreach (var r in remove) haloPool.Remove(r);
+            foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
-                foreach (VRRig rig in remove)
-                    haloPool.Remove(rig);
+                if (rig == null || rig.IsLocal()) continue;
+                if (!haloPool.TryGetValue(rig, out var st) || st.obj == null)
+                {
+                    var obj = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                    obj.name = "Arrakis_Halo";
+                    obj.transform.SetParent(rig.transform, false);
+                    obj.transform.localPosition = new Vector3(0f, 0.25f, 0f);
+                    obj.transform.localScale = new Vector3(0.85f, 0.003f, 0.85f);
+                    var col = obj.GetComponent<Collider>();
+                    if (col != null) Object.Destroy(col);
+                    var rend = obj.GetComponent<Renderer>();
+                    rend.material.shader = EspText;
+                    st = new HaloState { obj = obj, renderer = rend };
+                    haloPool[rig] = st;
+                }
+                Color color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f) : rig.playerColor;
+                color.a = 0.18f;
+                st.renderer.material.color = color;
             }
         }
+
         public static void DisableHalo()
         {
-            foreach (GameObject obj in haloPool.Values)
-            {
-                if (obj != null)
-                    Object.Destroy(obj);
-            }
+            foreach (var st in haloPool.Values)
+                if (st.obj != null) Object.Destroy(st.obj);
             haloPool.Clear();
         }
 
@@ -1395,42 +1383,23 @@ namespace Arrakis.Mods
                 selfWireframeRenderer = null;
             }
         }
+        private static Color _lastSelfWireColor;
+
         public static void UpdateSelfWireframeColor()
         {
             if (selfWireframeRenderer == null) return;
-            selfWireframeRenderer.wireColor = backgroundColor.GetCurrentColor();
+            Color c = backgroundColor.GetCurrentColor();
+            if (c == _lastSelfWireColor) return;
+            _lastSelfWireColor = c;
+            selfWireframeRenderer.wireColor = c;
         }
-        private static Dictionary<VRRig, TrailRenderer> breakcujmpool = new Dictionary<VRRig, TrailRenderer>();
+
+        private sealed class BreadcrumbState { public TrailRenderer trail; public Renderer renderer; }
+        private static readonly Dictionary<VRRig, BreadcrumbState> breakcujmpool = new Dictionary<VRRig, BreadcrumbState>();
+
         public static void Breadcrumbs()
         {
-            if (!NetworkSystem.Instance.InRoom)
-                return;
-            foreach (VRRig rig in VRRigCache.ActiveRigs)
-            {
-                if (rig == null || rig.IsLocal())
-                    continue;
-                if (!breakcujmpool.TryGetValue(rig, out TrailRenderer trail))
-                {
-                    trail = rig.head.rigTarget.gameObject.GetOrAddComponent<TrailRenderer>();
-                    trail.minVertexDistance = 0.05f;
-                    trail.numCapVertices = 10;
-                    trail.numCornerVertices = 5;
-                    trail.startWidth = 0.0055f;
-                    trail.endWidth = 0.0055f;
-                    trail.time = 3f;
-                    trail.name = "Arrakis_Breadcrumb";
-                    Object.Destroy(trail.GetComponent<Collider>());
-                    Renderer renderer = trail.GetComponent<Renderer>();
-                    renderer.material = new Material(Shader.Find("GUI/Text Shader"));
-                    breakcujmpool[rig] = trail;
-                }
-                Color color = followmenutheme
-                    ? backgroundColor.GetCurrentColor()
-                    : rig.IsTagged() ? new Color(0.6f, 0f, 0f) : rig.playerColor;
-                color.a = 0.18f;
-                Renderer halo = trail.GetComponent<Renderer>();
-                halo.material.color = color;
-            }
+            if (!NetworkSystem.Instance.InRoom) return;
             List<VRRig> remove = null;
             foreach (var pair in breakcujmpool)
             {
@@ -1438,25 +1407,41 @@ namespace Arrakis.Mods
                 {
                     remove ??= new List<VRRig>();
                     remove.Add(pair.Key);
-                    if (pair.Value != null)
-                        Object.Destroy(pair.Value);
+                    if (pair.Value.trail != null) Object.Destroy(pair.Value.trail);
                 }
             }
-            if (remove != null)
+            if (remove != null) foreach (var r in remove) breakcujmpool.Remove(r);
+            foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
-                foreach (VRRig rig in remove)
-                    breakcujmpool.Remove(rig);
+                if (rig == null || rig.IsLocal()) continue;
+                if (!breakcujmpool.TryGetValue(rig, out var st) || st.trail == null)
+                {
+                    var trail = rig.head.rigTarget.gameObject.GetOrAddComponent<TrailRenderer>();
+                    trail.minVertexDistance = 0.05f;
+                    trail.numCapVertices = 10;
+                    trail.numCornerVertices = 5;
+                    trail.startWidth = 0.0055f;
+                    trail.endWidth = 0.0055f;
+                    trail.time = 3f;
+                    trail.name = "Arrakis_Breadcrumb";
+                    var c = trail.GetComponent<Collider>();
+                    if (c != null) Object.Destroy(c);
+                    trail.material = new Material(EspText);
+                    st = new BreadcrumbState { trail = trail, renderer = trail };
+                    breakcujmpool[rig] = st;
+                }
+                Color color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f) : rig.playerColor;
+                color.a = 0.18f;
+                st.renderer.material.color = color;
             }
         }
         public static void DisableBreadcrumbs()
         {
-            foreach (TrailRenderer obj in breakcujmpool.Values)
-            {
-                if (obj != null)
-                    Object.Destroy(obj);
-            }
+            foreach (var st in breakcujmpool.Values)
+                if (st.trail != null) Object.Destroy(st.trail);
             breakcujmpool.Clear();
         }
+
         public static void fullBright(bool fullBright) =>
             GameLightingManager.instance.SetCustomDynamicLightingEnabled(fullBright);
 
@@ -1552,7 +1537,7 @@ namespace Arrakis.Mods
             {
                 if (limbChamPool.TryGetValue(rig, out var lc) && lc.holder != null) Object.Destroy(lc.holder);
                 limbChamPool.Remove(rig);
-                if (tracersPool.TryGetValue(rig, out var tr) && tr != null) Object.Destroy(tr);
+                if (tracersPool.TryGetValue(rig, out var tr) && tr.holder != null) Object.Destroy(tr.holder);
                 tracersPool.Remove(rig);
                 if (boneEspPool.TryGetValue(rig, out var bl))
                     foreach (var l in bl) if (l != null) Object.Destroy(l);
@@ -1560,9 +1545,9 @@ namespace Arrakis.Mods
                 if (selfBoneEspPool.TryGetValue(rig, out var sbl))
                     foreach (var l in sbl) if (l != null) Object.Destroy(l);
                 selfBoneEspPool.Remove(rig);
-                if (boxEspPool.TryGetValue(rig, out var b) && b != null) Object.Destroy(b);
+                if (boxEspPool.TryGetValue(rig, out var b) && b.obj != null) Object.Destroy(b.obj);
                 boxEspPool.Remove(rig);
-                if (hollowBoxPool.TryGetValue(rig, out var hb) && hb != null) Object.Destroy(hb);
+                if (hollowBoxPool.TryGetValue(rig, out var hb) && hb.obj != null) Object.Destroy(hb.obj);
                 hollowBoxPool.Remove(rig);
                 RemoveTag(rig, TagKind.Name); nameTagPool.Remove(rig);
                 RemoveTag(rig, TagKind.Id); IDnameTagPool.Remove(rig);
@@ -1570,9 +1555,9 @@ namespace Arrakis.Mods
                 RemoveTag(rig, TagKind.Fps); FpsnametagPool.Remove(rig);
                 RemoveTag(rig, TagKind.Tagged); TaggednametagPool.Remove(rig);
                 tagStack.Remove(rig);
-                if (ringPool.TryGetValue(rig, out var r) && r != null) Object.Destroy(r);
+                if (ringPool.TryGetValue(rig, out var r) && r.obj != null) Object.Destroy(r.obj);
                 ringPool.Remove(rig);
-                if (haloPool.TryGetValue(rig, out var h) && h != null) Object.Destroy(h);
+                if (haloPool.TryGetValue(rig, out var h) && h.obj != null) Object.Destroy(h.obj);
                 haloPool.Remove(rig);
                 if (wireframeEspPool.TryGetValue(rig, out var w))
                 {
@@ -1585,7 +1570,7 @@ namespace Arrakis.Mods
                 }
                 wireframeEspPool.Remove(rig);
                 originalRigColors.Remove(rig);
-                if (breakcujmpool.TryGetValue(rig, out var bc) && bc != null) Object.Destroy(bc);
+                if (breakcujmpool.TryGetValue(rig, out var bc) && bc.trail != null) Object.Destroy(bc.trail);
                 breakcujmpool.Remove(rig);
                 if (redactPool.TryGetValue(rig, out var m) && m.root != null) Object.Destroy(m.root);
                 redactPool.Remove(rig);
@@ -1692,19 +1677,13 @@ namespace Arrakis.Mods
         private Mesh baked;
         private (int, int)[] edgeCache;
         private bool edgesDirty = true;
-        private void Awake()
-        {
-            wireMat = new Material(Shader.Find("GUI/Text Shader"));
-            wireMat.SetInt("_ZTest", 8);
-            wireMat.renderQueue = 4000;
-            baked = new Mesh();
-            baked.MarkDynamic();
-        }
         private void OnDestroy()
         {
             if (baked != null) Destroy(baked);
             if (wireMat != null) Destroy(wireMat);
         }
+        private int frameCounter;
+
         private void LateUpdate()
         {
             if (targetRig == null) return;
@@ -1713,12 +1692,29 @@ namespace Arrakis.Mods
                 skin = targetRig.mainSkin;
                 edgesDirty = true;
             }
+            if (skin == null) return;
+            if ((frameCounter++ & 1) != 0) return;
+            Camera cam = Camera.main;
+            if (cam != null)
+            {
+                Vector3 vp = cam.WorldToViewportPoint(skin.transform.position);
+                if (vp.z < 0f || vp.x < -0.15f || vp.x > 1.15f || vp.y < -0.15f || vp.y > 1.15f)
+                    return;
+            }
             skin.BakeMesh(baked);
             if (edgesDirty)
             {
                 edgeCache = BuildEdges(baked);
                 edgesDirty = false;
             }
+        }
+        private void Awake()
+        {
+            wireMat = new Material(Visual.EspText);
+            wireMat.SetInt("_ZTest", 8);
+            wireMat.renderQueue = 4000;
+            baked = new Mesh();
+            baked.MarkDynamic();
         }
         private void OnRenderObject()
         {
