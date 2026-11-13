@@ -106,6 +106,7 @@ namespace Arrakis
         public static bool disablediscordrpc = true;
         public static bool smoothMenuPosition = false;
         public static bool smoothMenuRotation = false;
+        public static bool TagAuraVisualizer = false;
 
         public static void EnableDiscordRPC()
         {
@@ -1368,7 +1369,7 @@ namespace Arrakis
         private static int TagAuraDistanceIndex = 0;
         public static void ChangeTagAuraDistance(bool increment = true)
         {
-            string[] ranges = new string[] { "Default", "Close", "Far" };
+            string[] ranges = new string[] { "Default", "Far", "Very Far", "Close", "Very Close" };
             if (increment)
             {
                 TagAuraDistanceIndex = (TagAuraDistanceIndex + 1) % ranges.Length;
@@ -1381,8 +1382,10 @@ namespace Arrakis
             switch (TagAuraDistanceIndex)
             {
                 case 0: Advantage.TagAuraRange = 1.2f; break; // Default
-                case 1: Advantage.TagAuraRange = 0.7f; break; // Close
-                case 2: Advantage.TagAuraRange = 3f; break; // Far
+                case 1: Advantage.TagAuraRange = 3f; break; // Far
+                case 2: Advantage.TagAuraRange = 5f; break; // Very Far
+                case 3: Advantage.TagAuraRange = 0.7f; break; // Close
+                case 4: Advantage.TagAuraRange = 0.4f; break; // Very Close
             }
             GetIndex("Change Tag Aura Range").overlapText = $"Change Tag Aura Range <color=grey>[<color=cyan>{ranges[TagAuraDistanceIndex]}</color>]</color>";
         }

@@ -174,6 +174,7 @@ namespace Arrakis.Menu
             new ButtonInfo[] { // Advantage Settings
                 new() { buttonText = "Exit Advantage Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Returns to the main settings page for the menu." },
 
+                new() { buttonText = "Tag Aura Visualizer", method =() => TagAuraVisualizer = true, disableMethod =() => { TagAuraVisualizer = false; Advantage.ClearRings(); }, isTogglable = true, toolTip = "Lets you see how far your tag aura is.", ShowInArraylist = true },
                 new() { buttonText = "Change Tag Aura Range", overlapText = "Change Tag Aura Range <color=grey>[<color=cyan>Default</color>]</color>", enableMethod =() => ChangeTagAuraDistance(), method =() => ChangeTagAuraDistance(), disableMethod =() => ChangeTagAuraDistance(false), isIncremental = true,  isTogglable = false, toolTip = "Changes the tag aura range.", ShowInArraylist = false },
                 new() { buttonText = "Instant Tag", enableMethod =() => instanttag = true, disableMethod =() => instanttag = false, toolTip = "Makes it so tag mods are instant.", ShowInArraylist = false , DontPanic = true},
                 new() { buttonText = "Show Hitboxes", enableMethod =() => Advantage.ShowHitboxes = true, disableMethod =() => Advantage.ShowHitboxes = false, toolTip = "Shows the hitboxes in the hitbox mod.", ShowInArraylist = false , DontPanic = true},
