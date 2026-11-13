@@ -45,15 +45,12 @@ namespace Arrakis
             CustomConsole.LoadStart();
 
             DiscordRpc.Initialize();
-            discordC = StartCoroutine(DRPC());
 
             GorillaTagger.OnPlayerSpawned(OnPlayerSpawned);
         }
 
         private static IEnumerator DRPC()
         {
-            if (Settings.disablediscordrpc || discordC == null)
-                CRunner.instance.StopCoroutine(discordC);
             var retry = new WaitForSeconds(10f);
             var refresh = new WaitForSeconds(60f);
             while (!DiscordRpc.Connected)
@@ -110,6 +107,9 @@ namespace Arrakis
                 else
                     Main.RareChance = true;
             }
+
+            if (!Settings.disablediscordrpc)
+                discordC = CRunner.instance.StartCoroutine(DRPC());
         }
 
         public void OnDisable()
