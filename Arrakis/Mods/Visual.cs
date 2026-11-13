@@ -1411,8 +1411,8 @@ namespace Arrakis.Mods
                     trail.minVertexDistance = 0.05f;
                     trail.numCapVertices = 10;
                     trail.numCornerVertices = 5;
-                    trail.startWidth = 0.0055f;
-                    trail.endWidth = 0.0055f;
+                    trail.startWidth = 0.02f;
+                    trail.endWidth = 0.01f;
                     trail.time = 3f;
                     trail.name = "Arrakis_Breadcrumb";
                     var c = trail.GetComponent<Collider>();
