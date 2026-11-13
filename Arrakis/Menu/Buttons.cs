@@ -279,7 +279,7 @@ namespace Arrakis.Menu
                 new() { buttonText = "Disable Quit Box", method =() => AntiQuitBox.disable = true, disableMethod =() => AntiQuitBox.disable = false, isTogglable = true, toolTip = "Disables the quit box." },
 
                 new() { buttonText = "PC Button Click", method =() => Important.ButtonClick(), isTogglable = true, toolTip = "Lets you click buttons with your mouse." },
-                new() { buttonText = "Reauth", method =() => Important.Reauth(), isTogglable = false, toolTip = "Reauths you to gtag." },
+                new() { buttonText = "Reauthenticate", method =() => Important.Reauth(), isTogglable = false, toolTip = "Reauths you to gtag." },
                 new() { buttonText = "Disable Wind Barriers", enableMethod =() => WindPatch.enabled = true, method =() => Important.DisableWindBarriers(), disableMethod =() => { WindPatch.enabled = false; Important.EnableWindBarriers(); }, isTogglable = true, toolTip = "Disables the wind barriers." },
                 new() { buttonText = "Unload Menu", method =() => Important.UnloadMenu(), isTogglable = false, toolTip = "Unloads the menu and you wont be able to use it until you restart." },
             },
