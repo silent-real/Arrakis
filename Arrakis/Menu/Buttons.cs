@@ -308,6 +308,7 @@ namespace Arrakis.Menu
                 new() { buttonText = "Join 'GROUND'", method =() => Important.JoinRoom("GROUND"), isTogglable = false, toolTip = "Attempts to make you join a certain room." },
                 new() { buttonText = "Join 'LUCIO'", method =() => Important.JoinRoom("LUCIO"), isTogglable = false, toolTip = "Attempts to make you join a certain room." },
                 new() { buttonText = "Join 'SOLAR'", method =() => Important.JoinRoom("SOLAR"), isTogglable = false, toolTip = "Attempts to make you join a certain room." },
+                new() { buttonText = "Join 'CREATOR'", method =() => Important.JoinRoom("CREATOR"), isTogglable = false, toolTip = "Attempts to make you join a certain room." },
                 new() { buttonText = "Join Custom Room", method =() => Important.JoinCustomRoom(), isTogglable = false, toolTip = "Attempts to make you join a certain room." },
                 new() { buttonText = "Join Random Private Room", method =() => Important.JoinRoom(Main.GenerateRandomString(UnityEngine.Random.Range(1, 12))), isTogglable = false, toolTip = "Attempts to make you join a certain room." },
 
