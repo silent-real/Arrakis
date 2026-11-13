@@ -107,6 +107,13 @@ namespace Arrakis
         public static bool smoothMenuPosition = false;
         public static bool smoothMenuRotation = false;
 
+        public static void EnableDiscordRPC()
+        {
+            disablediscordrpc = false;
+            DiscordRpc.Initialize();
+            Plugin.discordC = CRunner.instance.StartCoroutine(Plugin.DRPC());
+        }
+
         public static string animTitleSource = "";
 
         public static int currentPageType = 0;

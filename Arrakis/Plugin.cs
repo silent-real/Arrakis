@@ -37,7 +37,7 @@ namespace Arrakis
     public class Plugin : BaseUnityPlugin
     {
         public static GameObject holder;
-        private static Coroutine discordC;
+        public static Coroutine discordC;
 
         public void Awake()
         {
@@ -49,7 +49,7 @@ namespace Arrakis
             GorillaTagger.OnPlayerSpawned(OnPlayerSpawned);
         }
 
-        private static IEnumerator DRPC()
+        public static IEnumerator DRPC()
         {
             var retry = new WaitForSeconds(10f);
             var refresh = new WaitForSeconds(60f);
