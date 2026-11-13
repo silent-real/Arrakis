@@ -53,21 +53,23 @@ namespace Arrakis
         {
             var retry = new WaitForSeconds(10f);
             var refresh = new WaitForSeconds(60f);
-            while (!DiscordRpc.Connected)
-            {
-                yield return retry;
-                if (!DiscordRpc.Connected)
-                    DiscordRpc.Initialize();
-            }
             while (true)
             {
-                yield return refresh;
-                if (DiscordRpc.Connected)
-                    DiscordRpc.Update();
-                else
+                if (Settings.disablediscordrpc)
+                {
+                    DiscordRpc.Shutdown();
+                    discordC = null;
+                    yield break;
+                }
+                if (!DiscordRpc.Connected)
                 {
                     DiscordRpc.Initialize();
                     yield return retry;
+                }
+                else
+                {
+                    DiscordRpc.Update();
+                    yield return refresh;
                 }
             }
         }
