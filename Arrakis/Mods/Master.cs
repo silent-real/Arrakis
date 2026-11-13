@@ -542,7 +542,8 @@ namespace Arrakis.Mods
                 PhotonNetwork.Destroy(CrittersManager.instance.GetView);
             }
         }
-        private static HalloweenGhostChaser _lucy;
+
+        /*private static HalloweenGhostChaser _lucy;
         public static HalloweenGhostChaser Lucy
         {
             get
@@ -751,7 +752,9 @@ namespace Arrakis.Mods
                 lockTarget = null;
                 gunLocked = false;
             }
-        }
+        }*/
+
+
         public static void SpazPaintbrawl()
         {
             if (PhotonNetwork.IsMasterClient)
@@ -867,7 +870,8 @@ namespace Arrakis.Mods
                     SportScoreboard.Instance.TeamScored(1);
             }
         }
-        private static NoncontrollableBroomstick[] _broomSticks;
+
+        /*private static NoncontrollableBroomstick[] _broomSticks;
         public static NoncontrollableBroomstick[] BroomSticks
         {
             get
@@ -952,6 +956,6 @@ namespace Arrakis.Mods
             {
                 NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
             }
-        }
+        }*/
     }
 }
