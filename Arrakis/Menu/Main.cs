@@ -587,7 +587,7 @@ namespace Arrakis.Menu
             Destroy(menu.GetComponent<Rigidbody>());
             Destroy(menu.GetComponent<BoxCollider>());
             Destroy(menu.GetComponent<Renderer>());
-            menu.transform.localScale = new Vector3(0.1f, 0.3f, 0.3825f) * (scaleWithPlayer ? GTPlayer.Instance.scale : 1f);
+            menu.transform.localScale = new Vector3(0.1f, 0.3f, 0.3825f);
 
             // Menu Background
             menuBackground = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -907,6 +907,8 @@ namespace Arrakis.Menu
             for (int i = 0; i < renderButtons.Length; i++)
                 AddButton((i + buttonIndexOffset) * 0.1f + (0.1f / 10), i, renderButtons[i]);
             RecenterMenu(rightHanded, false);
+
+            menu.transform.localScale *= scaleWithPlayer && XRSettings.isDeviceActive ? GTPlayer.Instance.scale * 1f : 1f;
         }
 
         public static void AddButton(float offset, int buttonIndex, ButtonInfo method)
@@ -1565,45 +1567,6 @@ namespace Arrakis.Menu
         {
             Vector3 parentScale = obj.transform.parent.lossyScale;
             obj.transform.localScale = new Vector3(targetWorldScale.x / parentScale.x, targetWorldScale.y / parentScale.y, targetWorldScale.z / parentScale.z);
-        }
-
-        public static void FixStickyColliders(GameObject platform)
-        {
-            float s = Settings.scaleWithPlayer ? GTPlayer.Instance.scale : 1f;
-            Vector3 size = platform.transform.localScale;
-            Vector3 half = size * 0.5f;
-            var physMat = new PhysicsMaterial("StickyPlat")
-            {
-                dynamicFriction = 1f,
-                staticFriction = 1f,
-                bounciness = 0f,
-                frictionCombine = PhysicsMaterialCombine.Maximum,
-                bounceCombine = PhysicsMaterialCombine.Minimum,
-            };
-            var mainCol = platform.GetComponent<BoxCollider>();
-            if (mainCol == null) mainCol = platform.AddComponent<BoxCollider>();
-            mainCol.material = physMat;
-            mainCol.contactOffset = 0.005f * s;
-            (Vector3 pos, Vector3 scale)[] faces =
-            {
-                (new Vector3(0,  half.y, 0), new Vector3(size.x, 0.01f, size.z)),
-                (new Vector3(0, -half.y, 0), new Vector3(size.x, 0.01f, size.z)),
-                (new Vector3( half.x, 0, 0), new Vector3(0.01f, size.y, size.z)),
-                (new Vector3(-half.x, 0, 0), new Vector3(0.01f, size.y, size.z)),
-                (new Vector3(0, 0,  half.z), new Vector3(size.x, size.y, 0.01f)),
-                (new Vector3(0, 0, -half.z), new Vector3(size.x, size.y, 0.01f)),
-            };
-            foreach (var (pos, scale) in faces)
-            {
-                var side = new GameObject("StickyFace");
-                side.transform.SetParent(platform.transform, false);
-                side.transform.localPosition = pos;
-                side.transform.localRotation = Quaternion.identity;
-                side.transform.localScale = scale;
-                var col = side.AddComponent<BoxCollider>();
-                col.material = physMat;
-                col.isTrigger = false;
-            }
         }
 
         private static int? noInvisLayerMask;
