@@ -64,9 +64,9 @@ namespace Arrakis.Mods
             {
                 GTPlayer.Instance.transform.position += GTPlayer.Instance.headCollider.transform.forward * Time.deltaTime * Settings.flyspeed;
                 GTPlayer.Instance.bodyCollider.attachedRigidbody.linearVelocity = Vector3.zero;
-                foreach (MeshCollider collider in GameObject.FindObjectsByType<MeshCollider>(FindObjectsSortMode.None))
-                    collider.enabled = !InputManager.GetInput(InputManager.InputType.Primary, InputManager.Hand.Right, !XRSettings.isDeviceActive);
             }
+             foreach (MeshCollider collider in GameObject.FindObjectsByType<MeshCollider>(FindObjectsSortMode.None))
+                    collider.enabled = !InputManager.GetInput(InputManager.InputType.Primary, InputManager.Hand.Right, !XRSettings.isDeviceActive);
         }
 
         public static int currentSpeedBoostIndex = 0;
@@ -180,22 +180,73 @@ namespace Arrakis.Mods
                 pos = GorillaTagger.Instance.rigidbody.transform.position;
         }
 
+
         private static GameObject platR = null;
         private static GameObject platL = null;
+        private static GameObject[] platRHandCover = null;
+        private static GameObject[] platLHandCover = null;
+        private static GameObject CreateCoverPanel(Transform hand, Vector3 offset, Vector3 dimensions, float scale, Color color)
+        {
+            GameObject panel = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            panel.transform.position = hand.TransformPoint(offset * scale);
+            panel.transform.rotation = hand.rotation;
+            panel.transform.localScale = dimensions * scale;
+            panel.GetComponent<Renderer>().enabled = false;
+            return panel;
+        }
+
+        private static GameObject[] CreateHandCover(Transform hand, float scale)
+        {
+            float thickness = 0.0125f;
+            float width = 0.18f;
+            float height = 0.16f;
+            float depth = 0.22f;
+            float x = width / 2f;
+            float y = height / 2f;
+            float z = depth / 2f;
+            float t = thickness;
+            Color color = Settings.backgroundColor.GetCurrentColor();
+            return new GameObject[]
+            {
+                CreateCoverPanel(hand, new Vector3(-x + t / 2f, 0f, 0f), new Vector3(t, height, depth), scale, color),
+                CreateCoverPanel(hand, new Vector3(x - t / 2f, 0f, 0f), new Vector3(t, height, depth), scale, color),
+                CreateCoverPanel(hand, new Vector3(0f, y - t / 2f, 0f), new Vector3(width - 2f * t, t, depth), scale, color),
+                CreateCoverPanel(hand, new Vector3(0f, -y + t / 2f, 0f), new Vector3(width - 2f * t, t, depth), scale, color),
+                CreateCoverPanel(hand, new Vector3(0f, 0f, z - t / 2f), new Vector3(width - 2f * t, height - 2f * t, t), scale, color),
+                CreateCoverPanel(hand, new Vector3(0f, 0f, -z + t / 2f), new Vector3(width - 2f * t, height - 2f * t, t), scale, color)
+            };
+        }
+
+        private static void DestroyHandCover(ref GameObject[] cover)
+        {
+            if (cover == null)
+                return;
+            foreach (GameObject panel in cover)
+            {
+                if (panel != null)
+                    GameObject.Destroy(panel);
+            }
+            cover = null;
+        }
+
         public static void Platforms(bool trigger = false, bool invis = false)
         {
-            if (trigger ? InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Right, !XRSettings.isDeviceActive) : InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
+            float scale = Settings.scaleWithPlayer ? GTPlayer.Instance.scale : 1f;
+            if (trigger ? InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Right, !XRSettings.isDeviceActive)
+                : InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
                 if (platR == null)
                 {
+                    Transform hand = GorillaTagger.Instance.rightHandTransform;
                     platR = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    platR.transform.position = GorillaTagger.Instance.rightHandTransform.position;
-                    platR.transform.rotation = GorillaTagger.Instance.rightHandTransform.rotation;
-                    platR.transform.localScale = new Vector3(0.0125f, 0.28f, 0.3825f) * (Settings.scaleWithPlayer ? GTPlayer.Instance.scale : 1f);
+                    platR.transform.position = hand.position;
+                    platR.transform.rotation = hand.rotation;
+                    platR.transform.localScale = new Vector3(0.0125f, 0.28f, 0.3825f) * scale;
                     platR.GetComponent<Renderer>().material.color = Settings.backgroundColor.GetCurrentColor();
-                    platR.GetComponent<Renderer>().enabled = !invis;
                     if (Settings.stickyplats)
-                        FixStickyColliders(platR);
+                    {
+                        platRHandCover = CreateHandCover(hand, scale);
+                    }
                 }
             }
             else
@@ -205,19 +256,26 @@ namespace Arrakis.Mods
                     GameObject.Destroy(platR);
                     platR = null;
                 }
+                DestroyHandCover(ref platRHandCover);
             }
-            if (trigger ? InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Left, !XRSettings.isDeviceActive) : InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Left, !XRSettings.isDeviceActive))
+
+            if (trigger ? InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Left, !XRSettings.isDeviceActive)
+                : InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Left, !XRSettings.isDeviceActive))
             {
                 if (platL == null)
                 {
+                    Transform hand = GorillaTagger.Instance.leftHandTransform;
+
                     platL = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    platL.transform.position = GorillaTagger.Instance.leftHandTransform.position;
-                    platL.transform.rotation = GorillaTagger.Instance.leftHandTransform.rotation;
-                    platL.transform.localScale = new Vector3(0.0125f, 0.28f, 0.3825f) * (Settings.scaleWithPlayer ? GTPlayer.Instance.scale : 1f);
+                    platL.transform.position = hand.position;
+                    platL.transform.rotation = hand.rotation;
+                    platL.transform.localScale = new Vector3(0.0125f, 0.28f, 0.3825f) * scale;
                     platL.GetComponent<Renderer>().material.color = Settings.backgroundColor.GetCurrentColor();
                     platL.GetComponent<Renderer>().enabled = !invis;
                     if (Settings.stickyplats)
-                        FixStickyColliders(platL);
+                    {
+                        platLHandCover = CreateHandCover(hand, scale);
+                    }
                 }
             }
             else
@@ -227,8 +285,10 @@ namespace Arrakis.Mods
                     GameObject.Destroy(platL);
                     platL = null;
                 }
+                DestroyHandCover(ref platLHandCover);
             }
         }
+
 
         public static void NoClip()
         {
