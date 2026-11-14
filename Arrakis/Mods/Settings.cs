@@ -390,7 +390,7 @@ namespace Arrakis
                 {
                     if (stumpText != null)
                     {
-                        stumpText.transform.position = NewPointer.transform.position + new Vector3(0f, 0.8f, 0f);
+                        stumpText.transform.position = NewPointer.transform.position + new Vector3(0f, 0.65f, 0f);
                     }
                 }
             }
