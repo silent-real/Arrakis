@@ -227,7 +227,7 @@ namespace Arrakis.Menu
                         }
                     }
                     break;
-                case 2: // Grip
+                case 2: // Grips
                     if (menu != null)
                     {
                         if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive) && !rightTriggerPageOnce)
@@ -245,7 +245,6 @@ namespace Arrakis.Menu
                             Toggle("PreviousPage");
                             leftTriggerPageOnce = true;
                         }
-
                         if (!InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Left, !XRSettings.isDeviceActive) && leftTriggerPageOnce)
                         {
                             leftTriggerPageOnce = false;
@@ -1357,9 +1356,9 @@ namespace Arrakis.Menu
                 lastPage = ((favorites.Count + buttonsPerPage - 1) / buttonsPerPage) - 1;
             }
 
-            if ((ControllerInputPoller.instance.leftGrab || Keyboard.current.gKey.isPressed) && !disableFavBinds)
+            if ((ControllerInputPoller.instance.leftGrab || Keyboard.current.gKey.isPressed) && !disableFavBinds && currentPageType != 2)
             {
-                if (buttonText != "Exit Favorites" && buttonText != "Favorites")
+                if (buttonText != "Exit Favorites" && buttonText != "Favorites" && buttonText != "Disable Favorites Bind")
                 {
                     if (favorites.Contains(buttonText))
                     {
@@ -1378,7 +1377,7 @@ namespace Arrakis.Menu
                 }
             }
 
-            if ((ControllerInputPoller.instance.leftControllerTriggerButton || Keyboard.current.vKey.isPressed) && !disableQuickactionsBinds)
+            if ((ControllerInputPoller.instance.leftControllerTriggerButton || Keyboard.current.vKey.isPressed) && !disableQuickactionsBinds && currentPageType != 1)
             {
                 string actionButton = GetIndex(buttonText).buttonText;
                 if (!quickactions.Contains(actionButton))
