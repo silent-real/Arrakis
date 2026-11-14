@@ -2801,7 +2801,7 @@ namespace Arrakis.Menu
         }
 
         private static bool stumptextonce = false;
-        private static TextMeshPro stumpText;
+        public static TextMeshPro stumpText;
         public static void CreateStumpText()
         {
             stumpText = new GameObject().AddComponent<TextMeshPro>();

@@ -379,6 +379,23 @@ namespace Arrakis
             }
         }
 
+        public static void MoveStumpTextGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                RaycastHit Ray = GunData.Ray;
+                if (GetGunInput(true))
+                {
+                    if (stumpText != null)
+                    {
+                        stumpText.transform.position = NewPointer.transform.position + new Vector3(0f, 0.8f, 0f);
+                    }
+                }
+            }
+        }
+
         private static int AntiReportIndexRange = 0;
         public static float AntiReportRange = 0.55f;
         public static void ChangeAntiReportRange(bool increment = true)
