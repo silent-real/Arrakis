@@ -1619,8 +1619,8 @@ namespace Arrakis.Menu
 
         public static bool GetGunInput(bool isShooting)
         {
-            return isShooting ? ControllerInputPoller.instance.rightControllerTriggerButton || Mouse.current.leftButton.isPressed :
-                ControllerInputPoller.instance.rightGrab|| Mouse.current.rightButton.isPressed;
+            return isShooting ? swapgunhand ? ControllerInputPoller.instance.leftControllerTriggerButton : ControllerInputPoller.instance.rightControllerTriggerButton || Mouse.current.leftButton.isPressed :
+                swapgunhand ? ControllerInputPoller.instance.leftGrab : ControllerInputPoller.instance.rightGrab || Mouse.current.rightButton.isPressed;
         }
 
         public static Vector3 MidPosition;
