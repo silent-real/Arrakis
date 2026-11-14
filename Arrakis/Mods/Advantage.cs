@@ -79,25 +79,67 @@ namespace Arrakis.Mods
         public static float TagAuraRange = 1.2f;
         public static void TagAura()
         {
+            if (Settings.TagAuraVisualizer)
+            {
+                CreateRing(GorillaTagger.Instance.bodyCollider.transform, Settings.backgroundColor.GetCurrentColor(), TagAuraRange);
+            }
             if (NetworkSystem.Instance.InRoom)
             {
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
                     if (!rig.IsLocal())
                     {
-                        if (rig.IsTagged() || !VRRig.LocalRig.IsTagged())
-                            continue;
-                        if (VRRig.LocalRig.IsTagged() && !rig.IsTagged())
+                        if (!VRRig.LocalRig.IsTagged()) continue;
+                        if (rig.IsTagged()) continue;
+                        float distance = Vector3.Distance(Camera.main.transform.position, rig.transform.position);
+                        if (distance < TagAuraRange)
                         {
-                            float distance = Vector3.Distance(VRRig.LocalRig.transform.position, rig.transform.position);
-                            if (distance < TagAuraRange)
-                            {
-                                GameMode.ReportTag(rig.Creator);
-                            }
+                            GameMode.ReportTag(rig.Creator);
                         }
                     }
                 }
             }
+        }
+
+        private static readonly Dictionary<Transform, LineRenderer> RingPool = new Dictionary<Transform, LineRenderer>();
+
+        private static void CreateRing(Transform center, Color ringColor, float scale, float yOffset = -0.2f)
+        {
+            const int segments = 64;
+            const float lineWidth = 0.05f;
+            if (!RingPool.TryGetValue(center, out LineRenderer line) || line == null)
+            {
+                GameObject ring = new GameObject("Arrakis Ring");
+                ring.transform.SetParent(center, false);
+                line = ring.AddComponent<LineRenderer>();
+                line.useWorldSpace = false;
+                line.loop = true;
+                line.positionCount = segments;
+                line.startWidth = lineWidth;
+                line.endWidth = lineWidth;
+                line.material = new Material(Shader.Find("Sprites/Default"));
+                RingPool[center] = line;
+            }
+            line.transform.localPosition = new Vector3(0f, yOffset, 0f);
+            line.material.color = ringColor;
+            for (int i = 0; i < segments; i++)
+            {
+                float angle = (i / (float)segments) * Mathf.PI * 2f;
+                line.SetPosition(i, new Vector3(Mathf.Cos(angle) * scale, 0f, Mathf.Sin(angle) * scale));
+            }
+        }
+
+        public static void ClearRings()
+        {
+            foreach (LineRenderer line in RingPool.Values)
+            {
+                if (line != null)
+                {
+                    UnityEngine.Object.Destroy(line.material);
+                    UnityEngine.Object.Destroy(line.gameObject);
+                }
+            }
+            RingPool.Clear();
         }
 
         public static void TagSelf()
