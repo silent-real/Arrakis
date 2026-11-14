@@ -142,7 +142,7 @@ namespace Arrakis.Menu
                 new() { buttonText = "Disable Stump Text", enableMethod =() => stumptext = false, disableMethod =() => stumptext = true, toolTip = "Disables the stump text that is in stump.", ShowInArraylist = false, DontPanic = true },
                 new() { buttonText = "Move Stump Text Gun", method =() => MoveStumpTextGun(), isTogglable = true, toolTip = "Lets you move the stump text.", ShowInArraylist = true, DontPanic = true },
                 new() { buttonText = "Disable Custom Boards", enableMethod =() => disablecustomboards = true, disableMethod =() => disablecustomboards = false, toolTip = "Disables the custom boards.", ShowInArraylist = false, DontPanic = true },
-                new() { buttonText = "Disable Networked Menu", method =() => disableNetworkedMenu = true, disableMethod =() => disableNetworkedMenu = false, isTogglable = true, toolTip = "Disables the menus networking.", ShowInArraylist = false, DontPanic = true },
+                //new() { buttonText = "Disable Networked Menu", method =() => disableNetworkedMenu = true, disableMethod =() => disableNetworkedMenu = false, isTogglable = true, toolTip = "Disables the menus networking.", ShowInArraylist = false, DontPanic = true },
                 new() { buttonText = "Disable Panic Prompt", enableMethod =() => panicPrompt = false, disableMethod =() => panicPrompt = true, toolTip = "Disables the prompt you get when you use panic.", ShowInArraylist = false, DontPanic = true },
                 new() { buttonText = "Disable Discord RPC", enableMethod =() => disablediscordrpc = true, disableMethod =() => EnableDiscordRPC(), enabled = false, toolTip = "Disables the discord rpc.", ShowInArraylist = true, DontPanic = true },
 
@@ -233,7 +233,7 @@ namespace Arrakis.Menu
                 new() { buttonText = "Exit Global", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
                 new() { buttonText = "Disable Map Triggers", enableMethod =() => GameObject.Find("Environment Objects/TriggerZones_Prefab/ZoneTransitions_Prefab").SetActive(false), disableMethod =() => GameObject.Find("Environment Objects/TriggerZones_Prefab/ZoneTransitions_Prefab").SetActive(true), toolTip = "Disables the map triggers so you can goto maps without loading them." },
-                //new() { buttonText = "Disable Network Triggers", enableMethod =() => NetworkTriggerPatch.enabled = true, disableMethod =() => NetworkTriggerPatch.enabled = false, toolTip = "Disables the network triggers so you can change maps without leaving/joining a room." },
+                new() { buttonText = "Disable Network Triggers", enableMethod =() => NetworkTriggerPatch.enabled = true, disableMethod =() => NetworkTriggerPatch.enabled = false, toolTip = "Disables the network triggers so you can change maps without leaving/joining a room." },
 
                 new() { buttonText = "Show Map Triggers", method =() => Important.ShowMapTriggers(true), disableMethod =() => Important.ShowMapTriggers(false), toolTip = "Shows you where the map triggers are." },
                 new() { buttonText = "Show Network Triggers", method =() => Important.ShowNetworkTriggers(true), disableMethod =() => Important.ShowNetworkTriggers(false), toolTip = "Shows you where the network triggers are." },
