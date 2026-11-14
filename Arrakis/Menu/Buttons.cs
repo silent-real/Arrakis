@@ -232,7 +232,7 @@ namespace Arrakis.Menu
                 new() { buttonText = "Exit Global", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
                 new() { buttonText = "Disable Map Triggers", enableMethod =() => GameObject.Find("Environment Objects/TriggerZones_Prefab/ZoneTransitions_Prefab").SetActive(false), disableMethod =() => GameObject.Find("Environment Objects/TriggerZones_Prefab/ZoneTransitions_Prefab").SetActive(true), toolTip = "Disables the map triggers so you can goto maps without loading them." },
-                new() { buttonText = "Disable Network Triggers", enableMethod =() => NetworkTriggerPatch.enabled = true, disableMethod =() => NetworkTriggerPatch.enabled = false, toolTip = "Disables the network triggers so you can change maps without leaving/joining a room." },
+                //new() { buttonText = "Disable Network Triggers", enableMethod =() => NetworkTriggerPatch.enabled = true, disableMethod =() => NetworkTriggerPatch.enabled = false, toolTip = "Disables the network triggers so you can change maps without leaving/joining a room." },
 
                 new() { buttonText = "Show Map Triggers", method =() => Important.ShowMapTriggers(true), disableMethod =() => Important.ShowMapTriggers(false), toolTip = "Shows you where the map triggers are." },
                 new() { buttonText = "Show Network Triggers", method =() => Important.ShowNetworkTriggers(true), disableMethod =() => Important.ShowNetworkTriggers(false), toolTip = "Shows you where the network triggers are." },
