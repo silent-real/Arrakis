@@ -594,10 +594,10 @@ namespace Arrakis.Menu
             Destroy(menuBackground.GetComponent<Rigidbody>());
             Destroy(menuBackground.GetComponent<BoxCollider>());
             menuBackground.transform.parent = menu.transform;
-            menuBackground.transform.rotation = Quaternion.identity;
+            menuBackground.transform.localRotation = Quaternion.identity;
             menuBackground.transform.localScale = menuSize;
             menuBackground.GetComponent<Renderer>().material.color = backgroundColor.colors[0].color;
-            menuBackground.transform.position = new Vector3(0.05f, 0f, 0f);
+            menuBackground.transform.localPosition = new Vector3(0.50f, 0f, 0f);
 
             ColorChanger colorChanger = menuBackground.AddComponent<ColorChanger>();
             colorChanger.colors = backgroundColor;
@@ -608,10 +608,10 @@ namespace Arrakis.Menu
                 Destroy(outline.GetComponent<Rigidbody>());
                 Destroy(outline.GetComponent<BoxCollider>());
                 outline.transform.parent = menu.transform;
-                outline.transform.rotation = Quaternion.identity;
+                outline.transform.localRotation = Quaternion.identity;
                 outline.transform.localScale = new Vector3(0.09f, 1.04f, 1.04f);
                 outline.GetComponent<Renderer>().material.color = buttonColors[0].GetCurrentColor();
-                outline.transform.position = new Vector3(0.05f, 0f, 0f);
+                outline.transform.localPosition = new Vector3(0.50f, 0f, 0f);
             }
 
             // Canvas
@@ -674,8 +674,8 @@ namespace Arrakis.Menu
             RectTransform component = title.GetComponent<RectTransform>();
             component.localPosition = Vector3.zero;
             component.sizeDelta = new Vector2(0.28f, 0.05f);
-            component.position = new Vector3(0.06f, 0f, 0.165f);
-            component.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+            component.localPosition = new Vector3(0.06f, 0f, 0.165f);
+            component.localRotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
 
             // FPS
             if (fpsCounter)
@@ -707,8 +707,8 @@ namespace Arrakis.Menu
                 RectTransform component2 = fpsObject.GetComponent<RectTransform>();
                 component2.localPosition = Vector3.zero;
                 component2.sizeDelta = new Vector2(0.28f, 0.02f);
-                component2.position = new Vector3(0.06f, 0f, 0.135f);
-                component2.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+                component2.localPosition = new Vector3(0.06f, 0f, 0.135f);
+                component2.localRotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
             }
 
             // Disconnect
@@ -755,7 +755,7 @@ namespace Arrakis.Menu
                 Destroy(gameObject.GetComponent<Rigidbody>());
                 gameObject.GetComponent<BoxCollider>().isTrigger = true;
                 gameObject.transform.parent = menu.transform;
-                gameObject.transform.rotation = Quaternion.identity;
+                gameObject.transform.localRotation = Quaternion.identity;
                 gameObject.transform.localScale = new Vector3(0.09f, 0.2f, 0.9f);
                 gameObject.transform.localPosition = new Vector3(0.56f, 0.65f, 0);
                 gameObject.GetComponent<Renderer>().material.color = buttonColors[0].colors[0].color;
@@ -788,7 +788,7 @@ namespace Arrakis.Menu
                 component.localPosition = Vector3.zero;
                 component.sizeDelta = new Vector2(0.2f, 0.03f);
                 component.localPosition = new Vector3(0.064f, 0.195f, 0f);
-                component.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+                component.localRotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
 
                 gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 if (!UnityInput.Current.GetKey(keyboardButton))
@@ -798,7 +798,7 @@ namespace Arrakis.Menu
                 Destroy(gameObject.GetComponent<Rigidbody>());
                 gameObject.GetComponent<BoxCollider>().isTrigger = true;
                 gameObject.transform.parent = menu.transform;
-                gameObject.transform.rotation = Quaternion.identity;
+                gameObject.transform.localRotation = Quaternion.identity;
                 gameObject.transform.localScale = new Vector3(0.09f, 0.2f, 0.9f);
                 gameObject.transform.localPosition = new Vector3(0.56f, -0.65f, 0);
                 gameObject.GetComponent<Renderer>().material.color = buttonColors[0].colors[0].color;
@@ -831,7 +831,7 @@ namespace Arrakis.Menu
                 component.localPosition = Vector3.zero;
                 component.sizeDelta = new Vector2(0.2f, 0.03f);
                 component.localPosition = new Vector3(0.064f, -0.195f, 0f);
-                component.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+                component.localRotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
 
                 if (lowercasetext)
                     text.text = text.text.ToLower();
@@ -919,7 +919,7 @@ namespace Arrakis.Menu
                     Destroy(decrement.GetComponent<Rigidbody>());
                     decrement.GetComponent<BoxCollider>().isTrigger = true;
                     decrement.transform.parent = menu.transform;
-                    decrement.transform.rotation = Quaternion.identity;
+                    decrement.transform.localRotation = Quaternion.identity;
                     decrement.transform.localScale = new Vector3(0.09f, 0.102f, 0.08f);
                     decrement.transform.localPosition = new Vector3(0.56f, 0.399f, 0.28f - offset);
                     ButtonCollider decrementCollider = decrement.AddComponent<ButtonCollider>();
@@ -935,7 +935,7 @@ namespace Arrakis.Menu
                     Destroy(increment.GetComponent<Rigidbody>());
                     increment.GetComponent<BoxCollider>().isTrigger = true;
                     increment.transform.parent = menu.transform;
-                    increment.transform.rotation = Quaternion.identity;
+                    increment.transform.localRotation = Quaternion.identity;
                     increment.transform.localScale = new Vector3(0.09f, 0.102f, 0.08f);
                     increment.transform.localPosition = new Vector3(0.56f, -0.399f, 0.28f - offset);
                     ButtonCollider incrementCollider = increment.AddComponent<ButtonCollider>();
@@ -975,7 +975,7 @@ namespace Arrakis.Menu
                     valueTransform.localPosition = Vector3.zero;
                     valueTransform.sizeDelta = new Vector2(0.2f, 0.03f);
                     valueTransform.localPosition = new Vector3(0.064f, 0f, 0.111f - offset / 2.6f);
-                    valueTransform.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+                    valueTransform.localRotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
 
                     if (lowercasetext)
                         valueText.text = valueText.text.ToLower();
@@ -1003,7 +1003,7 @@ namespace Arrakis.Menu
                     decrementTransform.sizeDelta = new Vector2(0.1f, 0.03f);
                     decrementTransform.localPosition =
                     new Vector3(0.064f, 0.12f, 0.111f - offset / 2.6f);
-                    decrementTransform.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+                    decrementTransform.localRotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
 
                     if (lowercasetext)
                         decrementText.text = decrementText.text.ToLower();
@@ -1030,7 +1030,7 @@ namespace Arrakis.Menu
                     incrementTransform.localPosition = Vector3.zero;
                     incrementTransform.sizeDelta = new Vector2(0.1f, 0.03f);
                     incrementTransform.localPosition = new Vector3(0.064f, -0.12f, 0.111f - offset / 2.6f);
-                    incrementTransform.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+                    incrementTransform.localRotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
 
                     if (lowercasetext)
                         incrementText.text = incrementText.text.ToLower();
@@ -1047,7 +1047,7 @@ namespace Arrakis.Menu
                 Destroy(gameObject.GetComponent<Rigidbody>());
                 gameObject.GetComponent<BoxCollider>().isTrigger = true;
                 gameObject.transform.parent = menu.transform;
-                gameObject.transform.rotation = Quaternion.identity;
+                gameObject.transform.localRotation = Quaternion.identity;
                 gameObject.transform.localScale = new Vector3(0.09f, method.isKeybind ? 0.78f : 0.9f, 0.08f);
                 gameObject.transform.localPosition = new Vector3(0.56f, method.isKeybind ? 0.06f : 0f, 0.28f - offset);
                 gameObject.AddComponent<ButtonCollider>().relatedText = method.buttonText;
@@ -1069,7 +1069,7 @@ namespace Arrakis.Menu
                     Destroy(bind.GetComponent<Rigidbody>());
                     bind.GetComponent<BoxCollider>().isTrigger = true;
                     bind.transform.parent = menu.transform;
-                    bind.transform.rotation = Quaternion.identity;
+                    bind.transform.localRotation = Quaternion.identity;
                     bind.transform.localScale = new Vector3(0.09f, 0.102f, 0.08f);
                     bind.transform.localPosition = new Vector3(0.56f, -0.399f, 0.28f - offset);
                     bind.AddComponent<ButtonCollider>().relatedText = "Keybind_" + method.buttonText;
@@ -1091,7 +1091,7 @@ namespace Arrakis.Menu
                         bindRect.localPosition = Vector3.zero;
                         bindRect.sizeDelta = new Vector2(0.03f, 0.03f);
                         bindRect.localPosition = new Vector3(0.064f, -0.12f, 0.111f - offset / 2.6f);
-                        bindRect.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+                        bindRect.localRotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
                     }
                     else
                     {
@@ -1107,7 +1107,7 @@ namespace Arrakis.Menu
                         RectTransform bindRect = bindText.GetComponent<RectTransform>();
                         bindRect.sizeDelta = new Vector2(0.028f, 0.02f);
                         bindRect.localPosition = new Vector3(0.064f, -0.12f, 0.111f - offset / 2.6f);
-                        bindRect.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+                        bindRect.localRotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
                     }
                 }
             }
@@ -1132,7 +1132,7 @@ namespace Arrakis.Menu
             component.localPosition = Vector3.zero;
             component.sizeDelta = new Vector2(0.2f, 0.03f);
             component.localPosition = new Vector3(0.064f, method.isKeybind ? 0.018f : 0f, 0.111f - offset / 2.6f);
-            component.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+            component.localRotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
 
             if (lowercasetext)
                 text.text = text.text.ToLower();
@@ -1247,7 +1247,7 @@ namespace Arrakis.Menu
             GameObject box = GameObject.CreatePrimitive(PrimitiveType.Cube);
             UnityEngine.Object.Destroy(box.GetComponent<BoxCollider>());
             box.transform.parent = menu.transform;
-            box.transform.rotation = Quaternion.identity;
+            box.transform.localRotation = Quaternion.identity;
             box.transform.localScale = new Vector3(0.09f, 0.9f, 0.08f);
             box.transform.localPosition = new Vector3(0.56f, 0f, 0.28f - offset);
             box.GetOrAddComponent<Renderer>().material.color = buttonColors[0].GetCurrentColor();
@@ -1267,7 +1267,7 @@ namespace Arrakis.Menu
             rt.localPosition = Vector3.zero;
             rt.sizeDelta = new Vector2(0.2f, 0.03f);
             rt.localPosition = new Vector3(.064f, 0f, .111f - offset / 2.6f);
-            rt.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+            rt.localRotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
         }
 
         public static GameObject leftReference;
@@ -1569,31 +1569,40 @@ namespace Arrakis.Menu
 
         public static void FixStickyColliders(GameObject platform)
         {
-            Vector3[] localPositions = {
-                new Vector3(0, 1f, 0),
-                new Vector3(0, -1f, 0),
-                new Vector3(1f, 0, 0),
-                new Vector3(-1f, 0, 0),
-                new Vector3(0, 0, 1f),
-                new Vector3(0, 0, -1f)
-            };
-            Quaternion[] localRotations = {
-                Quaternion.Euler(90, 0, 0),
-                Quaternion.Euler(-90, 0, 0),
-                Quaternion.Euler(0, -90, 0),
-                Quaternion.Euler(0, 90, 0),
-                Quaternion.identity,
-                Quaternion.Euler(0, 180, 0)
-            };
-            for (int i = 0; i < localPositions.Length; i++)
+            float s = Settings.scaleWithPlayer ? GTPlayer.Instance.scale : 1f;
+            Vector3 size = platform.transform.localScale;
+            Vector3 half = size * 0.5f;
+            var physMat = new PhysicsMaterial("StickyPlat")
             {
-                GameObject side = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                float size = 0.025f * (scaleWithPlayer ? GTPlayer.Instance.scale : 1f);
-                side.transform.SetParent(platform.transform);
-                side.transform.position = localPositions[i] * (size / 2);
-                side.transform.rotation = localRotations[i];
-                WorldScale(side, new Vector3(size, size, 0.01f * (scaleWithPlayer ? GTPlayer.Instance.scale : 1f)));
-                side.GetComponent<Renderer>().enabled = false;
+                dynamicFriction = 1f,
+                staticFriction = 1f,
+                bounciness = 0f,
+                frictionCombine = PhysicsMaterialCombine.Maximum,
+                bounceCombine = PhysicsMaterialCombine.Minimum,
+            };
+            var mainCol = platform.GetComponent<BoxCollider>();
+            if (mainCol == null) mainCol = platform.AddComponent<BoxCollider>();
+            mainCol.material = physMat;
+            mainCol.contactOffset = 0.005f * s;
+            (Vector3 pos, Vector3 scale)[] faces =
+            {
+                (new Vector3(0,  half.y, 0), new Vector3(size.x, 0.01f, size.z)),
+                (new Vector3(0, -half.y, 0), new Vector3(size.x, 0.01f, size.z)),
+                (new Vector3( half.x, 0, 0), new Vector3(0.01f, size.y, size.z)),
+                (new Vector3(-half.x, 0, 0), new Vector3(0.01f, size.y, size.z)),
+                (new Vector3(0, 0,  half.z), new Vector3(size.x, size.y, 0.01f)),
+                (new Vector3(0, 0, -half.z), new Vector3(size.x, size.y, 0.01f)),
+            };
+            foreach (var (pos, scale) in faces)
+            {
+                var side = new GameObject("StickyFace");
+                side.transform.SetParent(platform.transform, false);
+                side.transform.localPosition = pos;
+                side.transform.localRotation = Quaternion.identity;
+                side.transform.localScale = scale;
+                var col = side.AddComponent<BoxCollider>();
+                col.material = physMat;
+                col.isTrigger = false;
             }
         }
 
@@ -2510,12 +2519,12 @@ namespace Arrakis.Menu
             RectTransform rect = prompttext.GetComponent<RectTransform>();
             rect.sizeDelta = new Vector2(0.28f, 0.28f);
             rect.localPosition = new Vector3(0.06f, 0f, 0f);
-            rect.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+            rect.localRotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
             {
                 GameObject button = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 button.GetComponent<BoxCollider>().isTrigger = true;
                 button.transform.parent = menu.transform;
-                button.transform.rotation = Quaternion.identity;
+                button.transform.localRotation = Quaternion.identity;
                 button.transform.localScale = new Vector3(0.09f, CurrentPrompt.declinetext == null ? 0.9f : 0.4375f, 0.08f);
                 button.transform.localPosition = new Vector3(0.56f, CurrentPrompt.declinetext == null ? 0f : 0.2375f, -0.43f);
                 button.AddComponent<ButtonCollider>().relatedText = "AcceptPrompt";
@@ -2533,14 +2542,14 @@ namespace Arrakis.Menu
                 RectTransform textRect = text.GetComponent<RectTransform>();
                 textRect.sizeDelta = new Vector2(0.2f, 0.03f);
                 textRect.localPosition = new Vector3(0.064f, CurrentPrompt.declinetext != null ? 0.075f : 0f, -0.16f);
-                textRect.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+                textRect.localRotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
             }
             if (CurrentPrompt.declinetext != null)
             {
                 GameObject button = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 button.GetComponent<BoxCollider>().isTrigger = true;
                 button.transform.parent = menu.transform;
-                button.transform.rotation = Quaternion.identity;
+                button.transform.localRotation = Quaternion.identity;
                 button.transform.localScale = new Vector3(0.09f, 0.4375f, 0.08f);
                 button.transform.localPosition = new Vector3(0.56f, -0.2375f, -0.43f);
                 button.AddComponent<ButtonCollider>().relatedText = "DeclinePrompt";
@@ -2558,7 +2567,7 @@ namespace Arrakis.Menu
                 RectTransform rect2 = text.GetComponent<RectTransform>();
                 rect2.sizeDelta = new Vector2(0.2f, 0.03f);
                 rect2.localPosition = new Vector3(0.064f, -0.075f, -0.16f);
-                rect2.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+                rect2.localRotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
             }
         }
 
@@ -2573,7 +2582,7 @@ namespace Arrakis.Menu
             GameObject buttonObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             buttonObject.GetComponent<BoxCollider>().isTrigger = true;
             buttonObject.transform.parent = menu.transform;
-            buttonObject.transform.rotation = Quaternion.identity;
+            buttonObject.transform.localRotation = Quaternion.identity;
             buttonObject.transform.localScale = new Vector3(0.09f, 0.102f, 0.08f);
             buttonObject.transform.localPosition = new Vector3(0.56f, -0.450f, -0.58f);
             if (showsearchbutton)
@@ -2598,7 +2607,7 @@ namespace Arrakis.Menu
             imageTransform.localPosition = new Vector3(.064f, -0.35f / 2.6f, -0.58f / 2.6f);
             if (showsearchbutton)
                 imageTransform.localPosition += new Vector3(0f, 0.0475f, 0f);
-            imageTransform.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+            imageTransform.localRotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
         }
 
 
@@ -2610,7 +2619,7 @@ namespace Arrakis.Menu
             GameObject buttonObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             buttonObject.GetComponent<BoxCollider>().isTrigger = true;
             buttonObject.transform.parent = menu.transform;
-            buttonObject.transform.rotation = Quaternion.identity;
+            buttonObject.transform.localRotation = Quaternion.identity;
             buttonObject.transform.localScale = new Vector3(0.09f, 0.102f, 0.08f);
             buttonObject.transform.localPosition = new Vector3(0.56f, -0.450f, -0.58f);
             buttonObject.AddComponent<ButtonCollider>().relatedText = "Search";
@@ -2634,7 +2643,7 @@ namespace Arrakis.Menu
             imageTransform.localPosition = Vector3.zero;
             imageTransform.sizeDelta = new Vector2(.03f, .03f);
             imageTransform.localPosition = new Vector3(.064f, -0.35f / 2.6f, -0.58f / 2.6f);
-            imageTransform.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+            imageTransform.localRotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
         }
 
 
