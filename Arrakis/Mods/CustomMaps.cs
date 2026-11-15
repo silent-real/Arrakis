@@ -106,8 +106,8 @@ namespace Arrakis.Mods
             {
                 object[] data = new object[]
                 {
-                "slapped", plr.GetPlayerRef(), velo,
-                PhotonNetwork.LocalPlayer, 1.0
+                    "slapped", plr.GetPlayerRef(), velo,
+                    PhotonNetwork.LocalPlayer, 1.0
                 };
                 PhotonNetwork.RaiseEvent(180, data, new RaiseEventOptions { Receivers = ReceiverGroup.All }, SendOptions.SendReliable);
             }
