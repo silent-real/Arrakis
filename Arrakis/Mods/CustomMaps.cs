@@ -19,6 +19,7 @@
  */
 
 using ExitGames.Client.Photon;
+using Fusion;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -30,11 +31,45 @@ namespace Arrakis.Mods
     {
         public class SlapBattles
         {
+
+            public static void MoveAllRight()
+            {
+                foreach(NetPlayer plr in NetworkSystem.Instance.PlayerListOthers)
+                {
+                    MovePlayer(plr, Vector3.up * 10f + Vector3.right * 50f * 10f);
+                }
+            }
+
+            public static void MoveAllLeft()
+            {
+                foreach (NetPlayer plr in NetworkSystem.Instance.PlayerListOthers)
+                {
+                    MovePlayer(plr, Vector3.up * 10f + -Vector3.right * 50f * 10f);
+                }
+            }
+
+            public static void MoveAllForward()
+            {
+                foreach (NetPlayer plr in NetworkSystem.Instance.PlayerListOthers)
+                {
+                    MovePlayer(plr, Vector3.up * 10f + Vector3.forward * 50f * 10f);
+                }
+            }
+
+            public static void MoveAllBack()
+            {
+                foreach (NetPlayer plr in NetworkSystem.Instance.PlayerListOthers)
+                {
+                    MovePlayer(plr, Vector3.up * 10f + -Vector3.forward * 50f * 10f);
+                }
+            }
+
+
             public static void FlingAll()
             {
                 foreach (NetPlayer plr in NetworkSystem.Instance.PlayerListOthers)
                 {
-                    MovePlayer(plr, Vector3.up * 50f * 5f);
+                    MovePlayer(plr, Vector3.up * 50f * 10f);
                 }
             }
 
@@ -96,7 +131,7 @@ namespace Arrakis.Mods
                         VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
                         if (rig != null && rig != VRRig.LocalRig)
                         {
-                            MovePlayer(rig.Creator, Vector3.up * 50f * 5f);
+                            MovePlayer(rig.Creator, Vector3.up * 50f * 10f);
                         }
                     }
                 }

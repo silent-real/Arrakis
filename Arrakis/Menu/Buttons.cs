@@ -654,6 +654,11 @@ namespace Arrakis.Menu
                 new() { buttonText = "Fling Gun", method =() => CustomMaps.SlapBattles.FLingGun(), isTogglable = true, toolTip = "Fling gun." },
                 new() { buttonText = "Bring All", method =() => CustomMaps.SlapBattles.BringAll(), isTogglable = false, toolTip = "Bring All." },
                 new() { buttonText = "Give Fly Gun", method =() => CustomMaps.SlapBattles.GiveFlyGun(), isTogglable = true, toolTip = "Gives the person you shoot fly." },
+
+                new() { buttonText = "Move All Right", method =() => CustomMaps.SlapBattles.MoveAllRight(), isTogglable = false, toolTip = "Moves everyone to the right." },
+                new() { buttonText = "Move All Left", method =() => CustomMaps.SlapBattles.MoveAllLeft(), isTogglable = false, toolTip = "Moves everyone to the left." },
+                new() { buttonText = "Move All Forward", method =() => CustomMaps.SlapBattles.MoveAllForward(), isTogglable = false, toolTip = "Moves everyone to the forward." },
+                new() { buttonText = "Move All Backward", method =() => CustomMaps.SlapBattles.MoveAllBack(), isTogglable = false, toolTip = "Moves everyone to the backwards." },
             },
 
             new ButtonInfo[] { // Master
