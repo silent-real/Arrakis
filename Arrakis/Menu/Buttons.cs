@@ -640,8 +640,20 @@ namespace Arrakis.Menu
                 new() { buttonText = "Schizophrenic Gun", method =() => Overpowered.SchizophrenicGun(), isTogglable = true, toolTip = "Makes who ever you shoot only see you." },
                 new() { buttonText = "Schizophrenic Master", method =() => Overpowered.SchizophrenicMaster(), isTogglable = true, toolTip = "Makes the master client only see you." },
             },
+
             new ButtonInfo[] { // Custom Maps
                 new() { buttonText = "Exit Custom Maps", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+
+                new() { buttonText = "Slap Battles", method =() => CurrentCategoryName = "Slap Battles", isTogglable = false, toolTip = "Opens the slap battle category." },
+            },
+
+            new ButtonInfo[] { // Slap Battles
+                new() { buttonText = "Exit Slap Battles", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+
+                new() { buttonText = "Fling All", method =() => CustomMaps.SlapBattles.FlingAll(), isTogglable = false, toolTip = "Fling all." },
+                new() { buttonText = "Fling Gun", method =() => CustomMaps.SlapBattles.FLingGun(), isTogglable = true, toolTip = "Fling gun." },
+                new() { buttonText = "Bring All", method =() => CustomMaps.SlapBattles.BringAll(), isTogglable = false, toolTip = "Bring All." },
+                new() { buttonText = "Give Fly Gun", method =() => CustomMaps.SlapBattles.GiveFlyGun(), isTogglable = true, toolTip = "Gives the person you shoot fly." },
             },
 
             new ButtonInfo[] { // Master
@@ -765,7 +777,10 @@ namespace Arrakis.Menu
             "Fun",
             "Projectiles",
             "Overpowered",
+
             "Custom Maps",
+            "Slap Battles",
+
             "Master",
             "Experimental",
             "Soundboard",

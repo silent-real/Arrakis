@@ -18,11 +18,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Arrakis.Classes;
 using Arrakis.Classes.Menu;
 using Arrakis.Extensions;
@@ -34,7 +29,13 @@ using GorillaNetworking;
 using GorillaTagScripts;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.XR;
 using static Arrakis.Classes.RigManager;
 using static Arrakis.Menu.Main;
@@ -58,6 +59,7 @@ namespace Arrakis.Mods
                 }
             }
         }
+
         private static bool antiKickEvents;
         public static bool AntiKickEvents // kinda works? -sleepy
         {
