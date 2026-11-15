@@ -752,6 +752,7 @@ namespace Arrakis.Menu
         public static string[] categoryNames =
         {
             "Main",
+
             "Settings",
             "Menu Settings",
             "Movement Settings",
