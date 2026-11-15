@@ -745,7 +745,7 @@ namespace Arrakis.Menu
                 new() { buttonText = "GlobalReturn", method =() => { GlobalReturn(); }, isTogglable = false, toolTip = "Returns you to the previous category." },
                 new() { buttonText = "AcceptPrompt", method =() => { NotificationManager.ClearAllNotifications(); CurrentPrompt.accept?.Invoke(); StopCurrentPrompt(); }, isTogglable = false },
                 new() { buttonText = "DeclinePrompt", method =() => { NotificationManager.ClearAllNotifications(); CurrentPrompt.decline?.Invoke(); StopCurrentPrompt(); }, isTogglable = false },
-                new() { buttonText = "Search", method = Search, toolTip = "Allows you to search for mods.", isTogglable = false },
+                new() { buttonText = "Search", method = Search, toolTip = "Lets you search for specific mods.", isTogglable = false },
             },
         };
 
