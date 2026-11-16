@@ -655,10 +655,14 @@ namespace Arrakis.Menu
                 new() { buttonText = "Bring All", method =() => CustomMaps.SlapBattles.BringAll(), isTogglable = false, toolTip = "Bring All." },
                 new() { buttonText = "Give Fly Gun", method =() => CustomMaps.SlapBattles.GiveFlyGun(), isTogglable = true, toolTip = "Gives the person you shoot fly." },
 
-                new() { buttonText = "Move All Right", method =() => CustomMaps.SlapBattles.MoveAllRight(), isTogglable = false, toolTip = "Moves everyone to the right." },
-                new() { buttonText = "Move All Left", method =() => CustomMaps.SlapBattles.MoveAllLeft(), isTogglable = false, toolTip = "Moves everyone to the left." },
-                new() { buttonText = "Move All Forward", method =() => CustomMaps.SlapBattles.MoveAllForward(), isTogglable = false, toolTip = "Moves everyone to the forward." },
-                new() { buttonText = "Move All Backward", method =() => CustomMaps.SlapBattles.MoveAllBack(), isTogglable = false, toolTip = "Moves everyone to the backwards." },
+                new() { buttonText = "Move All Right", method =() => CustomMaps.SlapBattles.MoveAllRight(false), isTogglable = false, toolTip = "Moves everyone to the right." },
+                new() { buttonText = "Move Right Gun", method =() => CustomMaps.SlapBattles.MoveAllRight(true), isTogglable = true, toolTip = "Moves who you shoot." },
+                new() { buttonText = "Move All Left", method =() => CustomMaps.SlapBattles.MoveAllLeft(false), isTogglable = false, toolTip = "Moves everyone to the left." },
+                new() { buttonText = "Move Left Gun", method =() => CustomMaps.SlapBattles.MoveAllLeft(true), isTogglable = true, toolTip = "Moves who you shoot." },
+                new() { buttonText = "Move All Forward", method =() => CustomMaps.SlapBattles.MoveAllForward(false), isTogglable = false, toolTip = "Moves everyone to the forward." },
+                new() { buttonText = "Move Forward Gun", method =() => CustomMaps.SlapBattles.MoveAllForward(true), isTogglable = true, toolTip = "Moves who you shoot." },
+                new() { buttonText = "Move All Backward", method =() => CustomMaps.SlapBattles.MoveAllBack(false), isTogglable = false, toolTip = "Moves everyone to the backwards." },
+                new() { buttonText = "Move Backward Gun", method =() => CustomMaps.SlapBattles.MoveAllBack(true), isTogglable = true, toolTip = "Moves who you shoot." },
             },
 
             new ButtonInfo[] { // Master

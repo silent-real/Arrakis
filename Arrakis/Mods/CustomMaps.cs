@@ -24,6 +24,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 using static Arrakis.Menu.Main;
+using static Mono.Math.BigInteger;
 
 namespace Arrakis.Mods
 {
@@ -32,35 +33,119 @@ namespace Arrakis.Mods
         public class SlapBattles
         {
 
-            public static void MoveAllRight()
+            public static void MoveAllRight(bool isgun)
             {
-                foreach(NetPlayer plr in NetworkSystem.Instance.PlayerListOthers)
+                if (isgun)
                 {
-                    MovePlayer(plr, Vector3.up * 10f + Vector3.right * 50f * 10f);
+                    if (GetGunInput(false))
+                    {
+                        var GunData = RenderGun();
+                        GameObject NewPointer = GunData.NewPointer;
+                        RaycastHit Ray = GunData.Ray;
+                        if (GetGunInput(true))
+                        {
+                            VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                            if (rig != null && rig != VRRig.LocalRig)
+                            {
+                                MovePlayer(rig.Creator, Vector3.up * 25f + Vector3.right * 50f * 25f);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+
+                    foreach (NetPlayer plr in NetworkSystem.Instance.PlayerListOthers)
+                    {
+                        MovePlayer(plr, Vector3.up * 25f + Vector3.right * 50f * 25f);
+                    }
                 }
             }
 
-            public static void MoveAllLeft()
+            public static void MoveAllLeft(bool isgun)
             {
-                foreach (NetPlayer plr in NetworkSystem.Instance.PlayerListOthers)
+                if (isgun)
                 {
-                    MovePlayer(plr, Vector3.up * 10f + -Vector3.right * 50f * 10f);
+                    if (GetGunInput(false))
+                    {
+                        var GunData = RenderGun();
+                        GameObject NewPointer = GunData.NewPointer;
+                        RaycastHit Ray = GunData.Ray;
+                        if (GetGunInput(true))
+                        {
+                            VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                            if (rig != null && rig != VRRig.LocalRig)
+                            {
+                                MovePlayer(rig.Creator, Vector3.up * 25f + -Vector3.right * 50f * 25f);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+
+                    foreach (NetPlayer plr in NetworkSystem.Instance.PlayerListOthers)
+                    {
+                        MovePlayer(plr, Vector3.up * 25f + -Vector3.right * 50f * 25f);
+                    }
                 }
             }
 
-            public static void MoveAllForward()
+            public static void MoveAllForward(bool isgun)
             {
-                foreach (NetPlayer plr in NetworkSystem.Instance.PlayerListOthers)
+                if (isgun)
                 {
-                    MovePlayer(plr, Vector3.up * 10f + Vector3.forward * 50f * 10f);
+                    if (GetGunInput(false))
+                    {
+                        var GunData = RenderGun();
+                        GameObject NewPointer = GunData.NewPointer;
+                        RaycastHit Ray = GunData.Ray;
+                        if (GetGunInput(true))
+                        {
+                            VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                            if (rig != null && rig != VRRig.LocalRig)
+                            {
+                                MovePlayer(rig.Creator, Vector3.up * 25f + Vector3.forward * 50f * 25f);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+
+                    foreach (NetPlayer plr in NetworkSystem.Instance.PlayerListOthers)
+                    {
+                        MovePlayer(plr, Vector3.up * 25f + Vector3.forward * 50f * 25f);
+                    }
                 }
             }
 
-            public static void MoveAllBack()
+            public static void MoveAllBack(bool isgun)
             {
-                foreach (NetPlayer plr in NetworkSystem.Instance.PlayerListOthers)
+                if (isgun)
                 {
-                    MovePlayer(plr, Vector3.up * 10f + -Vector3.forward * 50f * 10f);
+                    if (GetGunInput(false))
+                    {
+                        var GunData = RenderGun();
+                        GameObject NewPointer = GunData.NewPointer;
+                        RaycastHit Ray = GunData.Ray;
+                        if (GetGunInput(true))
+                        {
+                            VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                            if (rig != null && rig != VRRig.LocalRig)
+                            {
+                                MovePlayer(rig.Creator, Vector3.up * 25f + -Vector3.forward * 50f * 25f);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+
+                    foreach (NetPlayer plr in NetworkSystem.Instance.PlayerListOthers)
+                    {
+                        MovePlayer(plr, Vector3.up * 25f + -Vector3.forward * 50f * 25f);
+                    }
                 }
             }
 
@@ -69,7 +154,7 @@ namespace Arrakis.Mods
             {
                 foreach (NetPlayer plr in NetworkSystem.Instance.PlayerListOthers)
                 {
-                    MovePlayer(plr, Vector3.up * 50f * 10f);
+                    MovePlayer(plr, Vector3.up * 100f * 50f);
                 }
             }
 
@@ -98,7 +183,7 @@ namespace Arrakis.Mods
                     {
                         if (lockTarget.rightThumb.calcT > 0f)
                         {
-                            MovePlayer(lockTarget.Creator, lockTarget.transform.position += lockTarget.headConstraint.transform.position * Time.deltaTime * 15f);
+                            MovePlayer(lockTarget.Creator, lockTarget.transform.position += lockTarget.headConstraint.transform.position * Time.deltaTime * 7f);
                         }
                     }
 
@@ -131,7 +216,7 @@ namespace Arrakis.Mods
                         VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
                         if (rig != null && rig != VRRig.LocalRig)
                         {
-                            MovePlayer(rig.Creator, Vector3.up * 50f * 10f);
+                            MovePlayer(rig.Creator, Vector3.up * 100f * 50f);
                         }
                     }
                 }
