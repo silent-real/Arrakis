@@ -1457,8 +1457,8 @@ namespace Arrakis.Mods
                     line = new GameObject().AddComponent<LineRenderer>();
                     line.useWorldSpace = true;
                     line.material = new Material(TextShader);
-                    line.startWidth = 0.02f;
-                    line.endWidth = 0.02f;
+                    line.startWidth = 0.2f;
+                    line.endWidth = 0.2f;
                     line.positionCount = 2;
                     beaconPool[rig] = line;
                 }
@@ -1481,7 +1481,7 @@ namespace Arrakis.Mods
         {
             LineRenderer line = new GameObject().AddComponent<LineRenderer>();
             line.useWorldSpace = true; line.material = new Material(TextShader);
-            line.startWidth = 0.02f; line.endWidth = 0.02f; line.material.color = Settings.backgroundColor.GetCurrentColor();
+            line.startWidth = 0.2f; line.endWidth = 0.2f; line.material.color = Settings.backgroundColor.GetCurrentColor();
             line.positionCount = 2; line.SetPosition(0, pos.position + new Vector3(0f, 999f, 0f)); line.SetPosition(1, pos.position + new Vector3(0f, -999f, 0f));
             GameObject.Destroy(line.gameObject, Time.deltaTime);
         }
