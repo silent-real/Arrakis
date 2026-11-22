@@ -25,6 +25,7 @@ using GorillaNetworking;
 using GorillaTagScripts;
 using HarmonyLib;
 using Photon.Pun;
+using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -195,6 +196,8 @@ namespace Arrakis.Mods
             return roomName;
         }
 
+
+        private static Dictionary<int, GameObject> triggersPool = new Dictionary<int, GameObject>();
         public static void ShowNetworkTriggers(bool isShowing)
         {
             GameObject triggers = GameObject.Find("Environment Objects/TriggerZones_Prefab/JoinRoomTriggers_Prefab");
@@ -204,7 +207,31 @@ namespace Arrakis.Mods
                 {
                     Transform child = triggers.transform.GetChild(i);
                     if (child.gameObject.activeSelf)
-                        child.GetComponent<MeshRenderer>().enabled = isShowing;
+                    {
+                        if (isShowing)
+                        {
+                            if (!triggersPool.TryGetValue(i, out GameObject box))
+                            {
+                                box = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                                box.transform.position = child.transform.position;
+                                box.transform.rotation = child.transform.rotation;
+                                box.transform.localScale = child.transform.lossyScale;
+                                GameObject.Destroy(box.GetComponent<BoxCollider>());
+                                triggersPool[i] = box;
+                            }
+                            Renderer rend = box.GetComponent<Renderer>();
+                            rend.material.shader = Shader.Find("GUI/Text Shader");
+                            rend.material.color = Settings.backgroundColor.GetCurrentColor();
+                        }
+                        else
+                        {
+                            foreach (var thing in triggersPool)
+                            {
+                                GameObject.Destroy(thing.Value);
+                            }
+                            triggersPool.Clear();
+                        }
+                    }
                 }
                 catch { }
             }
@@ -212,14 +239,38 @@ namespace Arrakis.Mods
 
         public static void ShowMapTriggers(bool isShowing)
         {
-            GameObject triggers = GameObject.Find("Environment Objects/TriggerZones_Prefab/ZoneTransitions_Prefab");
+            GameObject triggers = GameObject.Find("Environment Objects/TriggerZones_Prefab/ZoneTransitions_Prefab/Regional Transition");
             for (int i = 0; i < triggers.transform.childCount; i++)
             {
                 try
                 {
                     Transform child = triggers.transform.GetChild(i);
                     if (child.gameObject.activeSelf)
-                        child.GetComponent<MeshRenderer>().enabled = isShowing;
+                    {
+                        if (isShowing)
+                        {
+                            if (!triggersPool.TryGetValue(i, out GameObject box))
+                            {
+                                box = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                                box.transform.position = child.transform.position;
+                                box.transform.rotation = child.transform.rotation;
+                                box.transform.localScale = child.transform.lossyScale;
+                                GameObject.Destroy(box.GetComponent<BoxCollider>());
+                                triggersPool[i] = box;
+                            }
+                            Renderer rend = box.GetComponent<Renderer>();
+                            rend.material.shader = Shader.Find("GUI/Text Shader");
+                            rend.material.color = Settings.backgroundColor.GetCurrentColor();
+                        }
+                        else
+                        {
+                            foreach (var thing in triggersPool)
+                            {
+                                GameObject.Destroy(thing.Value);
+                            }
+                            triggersPool.Clear();
+                        }
+                    }
                 }
                 catch { }
             }
