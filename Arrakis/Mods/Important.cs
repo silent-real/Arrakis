@@ -161,8 +161,8 @@ namespace Arrakis.Mods
 
         private static readonly HashSet<string> GoodCosmeticIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
-            "LBAAK.", "LMAPY.", "LBAAD.",
-            "LBADE.", "LBAGS.", "LBANI."
+            "LBAAD.", "LBAAK.", "LBADE.",
+            "LBAGS.", "LMAPY.", "LBANI."
         };
         public static void SavePlayerInfo()
         {
