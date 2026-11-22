@@ -30,44 +30,10 @@ namespace Arrakis.Mods
 {
     public class CustomMaps
     {
+
         public static void GetCurrentScript()
         {
-            var hud = LuauHud.Instance;
-            if (hud == null)
-            {
-                NotificationManager.SendNotification("LuauHud instance not available");
-                return;
-            }
-
-            // Source script path (full path set in Awake)
-            string sourcePath = hud.script;
-            if (string.IsNullOrEmpty(sourcePath))
-            {
-                NotificationManager.SendNotification("Couldn't get path due to empty");
-                return;
-            }
-            if (!File.Exists(sourcePath))
-            {
-                NotificationManager.SendNotification($"Script file not found: {sourcePath}");
-                return;
-            }
-
-            string content = File.ReadAllText(sourcePath);
-            if (string.IsNullOrEmpty(content))
-            {
-                NotificationManager.SendNotification("Couldn't get script due to empty");
-                return;
-            }
-
-            // Destination directory
-            string dir = Path.Combine(PluginInfo.BaseDirectory, "CustomMaps");
-            Directory.CreateDirectory(dir);
-
-            // Use only the file name, not the full source path
-            string destPath = Path.Combine(dir, Path.GetFileName(sourcePath));
-            File.WriteAllText(destPath, content);
-
-            NotificationManager.SendNotification($"Saved script to {destPath}");
+            
         }
 
 
