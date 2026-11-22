@@ -87,6 +87,7 @@ namespace Arrakis
         public static bool disablepointer = false;
         public static bool disablemenudrop = false;
         public static bool disableautosave = false;
+        public static bool disableRoomSaving = false;
         public static bool disableReturnButton = false;
         public static bool disableSearchButton = false;
         public static bool lowgravitymenu = false;

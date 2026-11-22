@@ -151,6 +151,7 @@ namespace Arrakis.Menu
 
                 new() { buttonText = "Log Photon Events", enableMethod =() => logphotonevents = true, disableMethod =() => logphotonevents = false, toolTip = "Logs all photon events to your console.", DontPanic = true },
 
+                new() { buttonText = "Disable Room Saving", enableMethod =() => disableRoomSaving = true, disableMethod =() => disableRoomSaving = false, toolTip = "Disables the auto room file saving.", ShowInArraylist = false, DontPanic = true },
                 new() { buttonText = "Disable Auto Save", enableMethod =() => disableautosave = true, disableMethod =() => disableautosave = false, toolTip = "Disables the auto saving of menu settings that happen every 2 minutes.", ShowInArraylist = false, DontPanic = true },
                 new() { buttonText = "Save Preferences", method =() => SaveSettings(), isTogglable = false, toolTip = "Saves your settings and enabled mods to a file." },
                 new() { buttonText = "Load Preferences", method =() => LoadSettings(), isTogglable = false, toolTip = "Loads your settings and enabled mods from a file." },

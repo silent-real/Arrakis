@@ -433,7 +433,7 @@ namespace Arrakis.Menu
 
             try
             {
-                if (PhotonNetwork.InRoom && saveRoomDelay < Time.time)
+                if (!disableRoomSaving && PhotonNetwork.InRoom && saveRoomDelay < Time.time)
                 {
                     saveRoomDelay = Time.time + 5;
                     string[] roomdata = new string[4];
