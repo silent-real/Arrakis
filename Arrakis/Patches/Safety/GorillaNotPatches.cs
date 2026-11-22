@@ -98,20 +98,6 @@ namespace Arrakis.Patches.Safety
                 false;
         }
 
-        [HarmonyPatch(typeof(GorillaPlayerScoreboardLine), nameof(GorillaPlayerScoreboardLine.ReportPlayer))]
-        public class NoReportPlayer
-        {
-            public static bool Prefix() =>
-                !enabled;
-        }
-
-        [HarmonyPatch(typeof(GorillaScoreboardTotalUpdater), nameof(GorillaScoreboardTotalUpdater.ReportMute))]
-        public class NoReportMute
-        {
-            public static bool Prefix() =>
-                !enabled;
-        }
-
         [HarmonyPatch(typeof(GorillaServer), nameof(GorillaServer.UploadGorillanalytics))]
         public class NoUGA
         {
