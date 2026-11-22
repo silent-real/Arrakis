@@ -185,7 +185,6 @@ namespace Arrakis.Mods
                 info.AppendLine($"PlayerName: {plr.NickName}");
                 info.AppendLine($"UserId: {plr.UserId}");
                 info.AppendLine($"MasterClient: {plr.IsMasterClient}");
-                info.AppendLine($"CustomProperties: {plr.CustomProperties}");
                 foreach (DictionaryEntry entry in plr.CustomProperties)
                 {
                     string valStr = FormatPropValue(entry.Value);
@@ -203,7 +202,7 @@ namespace Arrakis.Mods
                 info.AppendLine("Cosmetics: " + string.Join(", ", cosmetics));
                 info.AppendLine();
             }
-            string final = System.IO.Path.Combine(path, roomname);
+            string final = System.IO.Path.Combine(path, roomname + ".txt");
             File.AppendAllText(final, info.ToString());
             NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>INFO</color><color=grey>]</color> Saved player info to: {final}.");
         }
