@@ -334,6 +334,27 @@ namespace Arrakis.Mods
                     tp = false;
             }
         }
+
+        private static bool airstried = false;
+        public static void Airstrike()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                if (GetGunInput(true))
+                {
+                    if (!airstried)
+                    {
+                        GTPlayer.Instance.TeleportTo(NewPointer.transform.position + new Vector3(0f, 70f, 0f), Quaternion.identity, true);
+                        airstried = true;
+                    }
+                }
+                else
+                    airstried = false;
+            }
+        }
+
         public static GameObject lp;
         public static GameObject rp;
         public static void CreatePredThingy()
