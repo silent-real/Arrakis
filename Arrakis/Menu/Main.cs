@@ -1595,7 +1595,7 @@ namespace Arrakis.Menu
         public static Vector3 MidPosition;
         public static Vector3 MidVelocity;
 
-        public static (RaycastHit Ray, GameObject NewPointer) RenderGun(int? overrideLayerMask = null)
+        public static (RaycastHit Ray, GameObject NewPointer) RenderGun()
         {
             Transform gunTransform = swapgunhand ? GorillaTagger.Instance.leftHandTransform : GorillaTagger.Instance.rightHandTransform;
             Vector3 startPos = gunTransform.position;
