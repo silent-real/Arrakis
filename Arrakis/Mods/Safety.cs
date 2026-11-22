@@ -33,6 +33,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using static Arrakis.Menu.Main;
 using static Arrakis.Settings;
 
@@ -75,10 +76,62 @@ namespace Arrakis.Mods
                 HandleAntiReportRadius(AntiReportRange);
                 HandleAntiReport(() =>
                 {
-                    NetworkSystem.Instance.ReturnToSinglePlayer();
                     PhotonNetworkController.Instance.AttemptToJoinPublicRoom(PhotonNetworkController.Instance.currentJoinTrigger);
                 });
             }
+        }
+
+        public static void ReportNotification()
+        {
+            if (NetworkSystem.Instance.InRoom)
+            {
+                foreach (GorillaPlayerScoreboardLine line in GorillaScoreboardTotalUpdater.allScoreboardLines.Where(line => line.linePlayer == NetworkSystem.Instance.LocalPlayer))
+                {
+                    Transform reportButton = line.reportButton.transform;
+                    bool triggered = false;
+                    foreach (VRRig rig in VRRigCache.ActiveRigs.Where(rig => rig != null && rig != VRRig.LocalRig))
+                    {
+                        if (triggered) break;
+                        float disR = Vector3.Distance(reportButton.position, rig.rightHandTransform.position);
+                        float disL = Vector3.Distance(reportButton.position, rig.leftHandTransform.position);
+                        if (disR < AntiReportRange || disL < AntiReportRange)
+                        {
+                            triggered = true;
+                            NotificationManager.SendNotification($"<color=yellow>[ANTIREPORT]</color> {rig.Creator.NickName} Attempted to report you.");
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void OculusEvent() =>
+            PhotonNetwork.NetworkingClient.EventReceived += HandleOculusReport;
+        public static void OculusEventDisable() =>
+            PhotonNetwork.NetworkingClient.EventReceived -= HandleOculusReport;
+        
+        private static void HandleOculusReport(EventData data)
+        {
+            try
+            {
+                if (data.Code == PunEvent.RPC)
+                {
+                    Photon.Realtime.Player sender = PhotonNetwork.NetworkingClient.CurrentRoom.GetPlayer(data.Sender);
+                    if (sender.IsLocal)
+                        return;
+                    string rpc = PhotonNetwork.PhotonServerSettings.RpcList[int.Parse(((Hashtable)data.CustomData)[5].ToString())];
+                    object[] stuff = (object[])((Hashtable)data.CustomData)[4];
+                    if (rpc == "RPC_PlayHandTap" && (int)stuff[0] == 67)
+                    {
+                        VRRig reporter = RigManager.GetVRRigFromPlayer(sender);
+                        if (Vector3.Distance(reporter.leftHandTransform.position, reporter.rightHandTransform.position) < 0.1f)
+                        {
+                            NotificationManager.SendNotification($"<color=yellow>[ANTIREPORT]</color> {reporter.Creator.NickName} Attempted to report you.");
+                            NetworkSystem.Instance.ReturnToSinglePlayer();
+                        }
+                    }
+                }
+            }
+            catch { }
         }
 
         private static void HandleAntiReportRadius(float radius)

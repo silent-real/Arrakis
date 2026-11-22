@@ -326,6 +326,8 @@ namespace Arrakis.Menu
                 new() { buttonText = "Anti Report <color=grey>[<color=cyan>Disconnect</color>]</color>", method =() => Safety.AntiReportDisconnect(), disableMethod =() => Safety.DestroyARSphere(), isTogglable = true, toolTip = "Disconnects you from the lobby when someone tries to report you." },
                 new() { buttonText = "Anti Report <color=grey>[<color=cyan>Reconnect</color>]</color>", method =() => Safety.AntiReportReconnect(), disableMethod =() => Safety.DestroyARSphere(), isTogglable = true, toolTip = "Reconnects you to the current lobby when someone tries to report you." },
                 new() { buttonText = "Anti Report <color=grey>[<color=cyan>Join Random</color>]</color>", method =() => Safety.AntiReportJoinRandom(), disableMethod =() => Safety.DestroyARSphere(), isTogglable = true, toolTip = "Attempts to make you join a random room when someone tries to report you." },
+                new() { buttonText = "Anti Report <color=grey>[<color=cyan>Oculus</color>]</color>", enableMethod =() => Safety.OculusEvent(), disableMethod =() => Safety.OculusEventDisable(), isTogglable = true, toolTip = "Disconnects you when someone reports you through the oculus report menu." },
+                new() { buttonText = "Report Notification", method =() => Safety.ReportNotification(), isTogglable = true, toolTip = "Sends a notification when someone reports you." },
 
                 new() { buttonText = "Flush RPC's", method =() => Safety.RPCProc(), isTogglable = false, toolTip = "Flushes all your rpc calls." },
                 new() { buttonText = "No Finger Movement", method =() => Safety.NoFingerMovement(), isTogglable = true, toolTip = "Disables your finger movement." },
