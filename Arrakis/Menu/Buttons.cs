@@ -276,7 +276,9 @@ namespace Arrakis.Menu
                 new() { buttonText = "Quit GTAG", method =() => Important.QuitGame(), isTogglable = false, toolTip = "Quits your game." },
                 new() { buttonText = "First Person", method =() => Important.FirstPerson(), disableMethod =() => Important.DisableFirstPerson(), isTogglable = true, toolTip = "Makes your pc view see what your vr sees." },
                 new() { buttonText = "Unlock Comp", method =() => Important.UnlockComp(), isTogglable = false, toolTip = "Unlocks the comp queue." },
-                new() { buttonText = "Clear Notifications", method =() => Important.CLearNotis(), isTogglable = false, toolTip = "Clears your notifications." },
+                new() { buttonText = "Clear Notifications", method =() => Important.ClearNotis(), isTogglable = false, toolTip = "Clears your notifications." },
+
+                new() { buttonText = "Save Player Info", method =() => Important.SavePlayerInfo(), isTogglable = false, toolTip = "Saves player info to a file." },
 
                 new() { buttonText = "Accept TOS", method =() => TOSPatches.enabled = true, disableMethod =() => TOSPatches.enabled = false, isTogglable = true, toolTip = "Acccepts the tos." },
 

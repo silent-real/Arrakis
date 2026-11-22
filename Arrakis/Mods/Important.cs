@@ -20,17 +20,22 @@
 
 using Arrakis.Managers;
 using Arrakis.Notifications;
-using ExitGames.Client.Photon;
 using GorillaNetworking;
 using GorillaTagScripts;
 using HarmonyLib;
 using Photon.Pun;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR;
 using static Arrakis.Menu.Main;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace Arrakis.Mods
 {
@@ -151,8 +156,79 @@ namespace Arrakis.Mods
             GorillaComputer.instance.currentQueue = queue;
         public static void ChangeGamemode(string gamemode) =>
             GorillaComputer.instance.SetGameModeWithoutButton(gamemode);
-        public static void CLearNotis() =>
+        public static void ClearNotis() =>
             NotificationManager.ClearAllNotifications();
+
+        private static string[] goodCosmeticIds =
+        {
+            "LBAAK.", "LMAPY.", "LBAAD.",
+            "LBADE.", "LBAGS.", "LBANI."
+        };
+        public static void SavePlayerInfo()
+        {
+            if (!PhotonNetwork.InRoom)
+            {
+                return;
+            }
+            string path = PluginInfo.BaseDirectory + "/RoomInfo";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            string roomname = PhotonNetwork.CurrentRoom.Name;
+            StringBuilder info = new StringBuilder();
+            info.AppendLine($"---Dumped {roomname} @ {DateTime.Now:yyyy-MM-dd HH:mm:ss}---");
+            info.AppendLine($"PlayerCount: {PhotonNetwork.CurrentRoom.PlayerCount}");
+            info.AppendLine("--------------------");
+            foreach (Photon.Realtime.Player plr in PhotonNetwork.PlayerList)
+            {
+                info.AppendLine($"PlayerName: {plr.NickName}");
+                info.AppendLine($"UserId: {plr.UserId}");
+                info.AppendLine($"MasterClient: {plr.IsMasterClient}");
+                info.AppendLine($"CustomProperties: {plr.CustomProperties}");
+                foreach (DictionaryEntry entry in plr.CustomProperties)
+                {
+                    string valStr = FormatPropValue(entry.Value);
+                    info.AppendLine($"[{entry.Key}] = {valStr}");
+                }
+                info.AppendLine("---COSMETICS---");
+                var cosmetics = GorillaGameManager.StaticFindRigForPlayer(plr)._playerOwnedCosmetics;
+                if (cosmetics == null)
+                    continue;
+                foreach (string cosmeticId in cosmetics)
+                {
+                    if (goodCosmeticIds.Contains(cosmeticId))
+                        info.AppendLine($"!!SPECIAL COSMETIC!! : {cosmeticId}");
+                }
+                info.AppendLine("Cosmetics: " + string.Join(", ", cosmetics));
+                info.AppendLine();
+            }
+            string final = System.IO.Path.Combine(path, roomname);
+            File.AppendAllText(final, info.ToString());
+            NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>INFO</color><color=grey>]</color> Saved player info to: {final}.");
+        }
+
+        private static string FormatPropValue(object value)
+        {
+            if (value == null)
+                return "null";
+            if (value is Hashtable ht)
+            {
+                StringBuilder inner = new StringBuilder("{ ");
+                foreach (DictionaryEntry e in ht)
+                    inner.Append($"{e.Key}={FormatPropValue(e.Value)}, ");
+                inner.Append("}");
+                return inner.ToString();
+            }
+            if (value is Array arr)
+            {
+                string[] parts = new string[arr.Length];
+                for (int i = 0; i < arr.Length; i++)
+                    parts[i] = FormatPropValue(arr.GetValue(i));
+                return $"[{string.Join(", ", parts)}]";
+            }
+            return $"{value} ({value.GetType().Name})";
+        }
 
         public static async void CreatePublicLobby(string roomName)
         {
@@ -160,7 +236,7 @@ namespace Arrakis.Mods
             if (trigger == null || trigger.networkZone == "private")
             {
                 float closest = float.MaxValue;
-                foreach (GorillaNetworkJoinTrigger joinTrigger in Object.FindObjectsByType<GorillaNetworkJoinTrigger>(FindObjectsSortMode.None))
+                foreach (GorillaNetworkJoinTrigger joinTrigger in GameObject.FindObjectsByType<GorillaNetworkJoinTrigger>(FindObjectsSortMode.None))
                 {
                     float distance = Vector3.Distance(VRRig.LocalRig.transform.position, joinTrigger.transform.position);
                     if (distance < closest)
