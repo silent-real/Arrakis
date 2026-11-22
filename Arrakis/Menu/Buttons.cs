@@ -362,6 +362,7 @@ namespace Arrakis.Menu
                 new() { buttonText = "Hand Fly <color=grey>[<color=cyan>A</color>]</color>", method =() => Movement.HandFly(), isTogglable = true, toolTip = "Lets you fly while holding <color=grey>[<color=cyan>A</color>]</color>.", isKeybind = true },
                 new() { buttonText = "Trigger Fly <color=grey>[<color=cyan>T</color>]</color>", method =() => Movement.TriggerFly(), isTogglable = true, toolTip = "Lets you fly while holding <color=grey>[<color=cyan>T</color>]</color>.", isKeybind = true },
                 new() { buttonText = "Noclip Fly <color=grey>[<color=cyan>A</color>]</color>", method =() => Movement.NoclipFly(), isTogglable = true, toolTip = "Lets you fly while with noclip holding <color=grey>[<color=cyan>A</color>]</color>.", isKeybind = true },
+                new() { buttonText = "Hover Fly <color=grey>[<color=cyan>A</color>]</color>", method =() => Movement.HoverFly(), isTogglable = true, toolTip = "Lets you fly while keeping you in a hover mode when not holding <color=grey>[<color=cyan>A</color>]</color>.", isKeybind = true },
                 new() { buttonText = "Iron Monkey", method =() => Movement.ExcelFly(), isTogglable = true, toolTip = "Lets you fly like iron man." },
 
                 new() { buttonText = "Platforms", method =() => Movement.Platforms(), isTogglable = true, toolTip = "Lets you walk on air with platforms." },

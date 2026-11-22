@@ -69,6 +69,13 @@ namespace Arrakis.Mods
                     collider.enabled = !InputManager.GetInput(InputManager.InputType.Primary, InputManager.Hand.Right, !XRSettings.isDeviceActive);
         }
 
+        public static void HoverFly()
+        {
+            GTPlayer.Instance.bodyCollider.attachedRigidbody.linearVelocity = Vector3.zero;
+            if (InputManager.GetInput(InputManager.InputType.Primary, InputManager.Hand.Right, !XRSettings.isDeviceActive))
+                GTPlayer.Instance.transform.position += GTPlayer.Instance.headCollider.transform.forward * Time.deltaTime * Settings.flyspeed;
+        }
+
         public static int currentSpeedBoostIndex = 0;
         private static float currentSpeedboostAmount = 7.5f;
         private static string[] speedBoostNames = new string[]
