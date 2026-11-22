@@ -644,6 +644,8 @@ namespace Arrakis.Menu
             new ButtonInfo[] { // Custom Maps
                 new() { buttonText = "Exit Custom Maps", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
+                new() { buttonText = "Get Custom Map Script", method =() => CustomMaps.GetCurrentScript(), isTogglable = false, toolTip = "Gets the current map script and puts it in your Arrakis folder." },
+
                 new() { buttonText = "Slap Battles", method =() => CurrentCategoryName = "Slap Battles", isTogglable = false, toolTip = "Opens the slap battle category." },
             },
 
