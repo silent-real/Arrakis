@@ -18,12 +18,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using Arrakis.Extensions;
 using Arrakis.Managers;
 using Arrakis.Notifications;
@@ -32,7 +26,14 @@ using GorillaNetworking;
 using GorillaTagScripts;
 using Liv.Lck.GorillaTag;
 using Photon.Pun;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.XR;
 using Voxels;
 using static Arrakis.Menu.Main;
@@ -967,6 +968,16 @@ namespace Arrakis.Mods
             }
         }
 
+        public static void SetName(string name)
+        {
+            PhotonNetwork.LocalPlayer.NickName = name;
+            GorillaComputer.instance.currentName = name;
+            GorillaComputer.instance.savedName = name;
+        }
+
+        public static void CustomName() =>
+            KeyboardManager.Input("Enter a custom name", newName => SetName(newName));
+
         public static void StealNameGun()
         {
             if (GetGunInput(false))
@@ -980,9 +991,7 @@ namespace Arrakis.Mods
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
                     if (!rig.IsLocal())
                     {
-                        PhotonNetwork.LocalPlayer.NickName = rig.Creator.NickName;
-                        GorillaComputer.instance.currentName = rig.Creator.NickName;
-                        GorillaComputer.instance.savedName = rig.Creator.NickName;
+                        SetName(rig.Creator.NickName);
                     }
                 }
             }

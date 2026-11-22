@@ -591,6 +591,16 @@ namespace Arrakis.Menu
 
                 new() { buttonText = "Animated Name", method =() => Fun.AnimatedName(), disableMethod =() => Fun.name = null, isTogglable = true, toolTip = "Makes your name animated." },
 
+                new() { buttonText = "Change Name To Custom Name", method =() => Fun.CustomName(), isTogglable = false, toolTip = "Lets you input a custom name when not near a computer." },
+                new() { buttonText = "Change Name To 'NOVA'", method =() => Fun.SetName("NOVA"), isTogglable = false, toolTip = "Changes your name to NOVA." },
+                new() { buttonText = "Change Name To 'SILENT'", method =() => Fun.SetName("SILENT"), isTogglable = false, toolTip = "Changes your name to SILENT." },
+                new() { buttonText = "Change Name To 'SLEEPY'", method =() => Fun.SetName("SLEEPY"), isTogglable = false, toolTip = "Changes your name to SLEEPY." },
+                new() { buttonText = "Change Name To 'PBBV'", method =() => Fun.SetName("PBBV"), isTogglable = false, toolTip = "Changes your name to PBBV." },
+                new() { buttonText = "Change Name To 'RUN'", method =() => Fun.SetName("RUN"), isTogglable = false, toolTip = "Changes your name to RUN." },
+                new() { buttonText = "Change Name To 'ECHO'", method =() => Fun.SetName("ECHO"), isTogglable = false, toolTip = "Changes your name to ECHO." },
+                new() { buttonText = "Change Name To 'DAISY09'", method =() => Fun.SetName("DAISY09"), isTogglable = false, toolTip = "Changes your name to DAISY09." },
+                new() { buttonText = "Change Name To 'J3VU'", method =() => Fun.SetName("J3VU"), isTogglable = false, toolTip = "Changes your name to J3VU." },
+
                 new() { buttonText = "Steal Name Gun", method =() => Fun.StealNameGun(), isTogglable = true, toolTip = "Steals the name of the person you shoot." },
                 new() { buttonText = "Steal Color Gun", method =() => Fun.StealColorGun(), isTogglable = true, toolTip = "Steals the color of the person you shoot." },
 
