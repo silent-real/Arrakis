@@ -896,7 +896,7 @@ namespace Arrakis.Mods
                 System.Random random = new System.Random();
                 int rand = random.Next(0, rigs.Count);
                 VRRig rig = rigs[rand];
-                GorillaLocomotion.GTPlayer.Instance.TeleportTo(rig.transform.position - GorillaLocomotion.GTPlayer.Instance.bodyCollider.transform.position + GorillaLocomotion.GTPlayer.Instance.transform.position, new Quaternion(0, 0, 0, 0));
+                GTPlayer.Instance.TeleportTo(rig.transform.position - GTPlayer.Instance.bodyCollider.transform.position + GTPlayer.Instance.transform.position, new Quaternion(0, 0, 0, 0));
             }
         }
     }
