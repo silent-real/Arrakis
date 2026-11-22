@@ -478,19 +478,18 @@ namespace Arrakis.Mods
         }
 
 
-        public static void TagHuntTarget()
+        public static void HuntTargetBeacon()
         {
-            if (PhotonNetwork.InRoom)
-            {
-                if (huntManager.currentTarget != null)
-                {
-
-                }
-                else
-                {
-                    VRRig.LocalRig.enabled = true;
-                }
-            }
+            if (!PhotonNetwork.InRoom)
+                return;
+            NetPlayer me = NetworkSystem.Instance.LocalPlayer;
+            NetPlayer target = huntManager.GetTargetOf(me);
+            if (target == null)
+                return;
+            VRRig them = GorillaGameManager.StaticFindRigForPlayer(target);
+            if (them == null)
+                return;
+            Visual.CreateLine(them.transform);
         }
     }
 }

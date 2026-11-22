@@ -42,7 +42,6 @@ namespace Arrakis.Mods
     {
         public static Shader EspText =>
             EspShader;
-
         private enum TagKind { Name = 0, Id = 1, Platform = 2, Fps = 3, Tagged = 4 }
         private const float TagBaseHeight = 1f;
         private const float TagStep = 0.1f;
@@ -105,11 +104,13 @@ namespace Arrakis.Mods
             public bool[] hidden;
             public float nextCheck;
         }
+
         private static readonly Dictionary<VRRig, LimbChamState> limbChamPool = new Dictionary<VRRig, LimbChamState>();
         private static readonly List<VRRig> limbChamStale = new List<VRRig>();
         private static Material _limbChamMat;
         private static Material LimbChamMat =>
             _limbChamMat != null ? _limbChamMat : (_limbChamMat = new Material(TextShader));
+
         private const int LimbSegments = 20;
         private const float LimbCheckInterval = 0.15f;
         private const float LimbWidth = 0.02f;
@@ -1221,7 +1222,6 @@ namespace Arrakis.Mods
             ringPool.Clear();
         }
 
-
         private sealed class HaloState { public GameObject obj; public Renderer renderer; }
         private static readonly Dictionary<VRRig, HaloState> haloPool = new Dictionary<VRRig, HaloState>();
 
@@ -1269,7 +1269,6 @@ namespace Arrakis.Mods
                 if (st.obj != null) Object.Destroy(st.obj);
             haloPool.Clear();
         }
-
 
         private sealed class WireframeState { public GameObject obj; public WireframeRenderer renderer; }
         private static readonly Dictionary<VRRig, WireframeState> wireframeEspPool = new Dictionary<VRRig, WireframeState>();
@@ -1431,6 +1430,16 @@ namespace Arrakis.Mods
             foreach (var st in breakcujmpool.Values)
                 if (st.trail != null) Object.Destroy(st.trail);
             breakcujmpool.Clear();
+        }
+
+
+        public static void CreateLine(Transform pos)
+        {
+            LineRenderer line = new GameObject().AddComponent<LineRenderer>();
+            line.useWorldSpace = true; line.material = new Material(TextShader);
+            line.startWidth = 0.02f; line.endWidth = 0.02f; line.material.color = Settings.backgroundColor.GetCurrentColor();
+            line.positionCount = 2; line.SetPosition(0, pos.position + new Vector3(0f, 999f, 0f)); line.SetPosition(1, pos.position + new Vector3(0f, -999f, 0f));
+            GameObject.Destroy(line.gameObject, Time.deltaTime);
         }
 
         public static void fullBright(bool fullBright) =>

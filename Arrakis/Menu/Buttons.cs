@@ -452,6 +452,8 @@ namespace Arrakis.Menu
                 new() { buttonText = "Fps Name Tags", method =() => Visual.FpsNameTags(), disableMethod =() => Visual.DisableFpsNameTags(), isTogglable = true, toolTip = "Gives everyone a nametag that shows they're fps." },
                 new() { buttonText = "Tagged Name Tags", method =() => Visual.TaggedNameTags(), disableMethod =() => Visual.DisableTaggedNameTags(), isTogglable = true, toolTip = "Gives everyone a nametag that shows if they're tagged." },
 
+                new() { buttonText = "Hunt Target Beacon", method =() => Advantage.HuntTargetBeacon(), isTogglable = true, toolTip = "Puts a beacon on your hunt target." },
+
                 new() { buttonText = "Morning Time", method =() => BetterDayNightManager.instance.SetTimeOfDay(1), toolTip = "Sets your time of day to morning." },
                 new() { buttonText = "Day Time", method =() => BetterDayNightManager.instance.SetTimeOfDay(3), toolTip = "Sets your time of day to daytime." },
                 new() { buttonText = "Evening Time", method =() => BetterDayNightManager.instance.SetTimeOfDay(7), toolTip = "Sets your time of day to evening." },
