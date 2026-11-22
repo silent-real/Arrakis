@@ -967,6 +967,49 @@ namespace Arrakis.Mods
             }
         }
 
+        public static void StealNameGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                RaycastHit Ray = GunData.Ray;
+
+                if (GetGunInput(true))
+                {
+                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                    if (!rig.IsLocal())
+                    {
+                        PhotonNetwork.LocalPlayer.NickName = rig.Creator.NickName;
+                        GorillaComputer.instance.currentName = rig.Creator.NickName;
+                        GorillaComputer.instance.savedName = rig.Creator.NickName;
+                    }
+                }
+            }
+        }
+
+        public static void StealColorGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                RaycastHit Ray = GunData.Ray;
+
+                if (GetGunInput(true))
+                {
+                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                    if (!rig.IsLocal())
+                    {
+                        GorillaTagger.Instance.myVRRig.SendRPC("RPC_InitializeNoobMaterial", RpcTarget.All, new object[]
+                        {
+                            rig.playerColor.r, rig.playerColor.b, rig.playerColor.g
+                        });
+                    }
+                }
+            }
+        }
+
         public static void BreakAudioGun()
         {
             if (GetGunInput(false))

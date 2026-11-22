@@ -590,6 +590,9 @@ namespace Arrakis.Menu
 
                 new() { buttonText = "Animated Name", method =() => Fun.AnimatedName(), disableMethod =() => Fun.name = null, isTogglable = true, toolTip = "Makes your name animated." },
 
+                new() { buttonText = "Steal Name Gun", method =() => Fun.StealNameGun(), isTogglable = true, toolTip = "Steals the name of the person you shoot." },
+                new() { buttonText = "Steal Color Gun", method =() => Fun.StealColorGun(), isTogglable = true, toolTip = "Steals the color of the person you shoot." },
+
                 new() { buttonText = "Break Audio Gun", method =() => Fun.BreakAudioGun(), isTogglable = true, toolTip = "Attempts to break the persons audio who you shoot." },
                 new() { buttonText = "Break Audio All", method =() => Fun.BreakAudioAll(), isTogglable = true, toolTip = "Attempts to break everyones audio." },
 
