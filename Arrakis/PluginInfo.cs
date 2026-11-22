@@ -24,7 +24,7 @@ namespace Arrakis
     {
         public const string GUID = "org.nova.arrakis";
         public const string Name = "Arrakis";
-        public const string Description = "Developed by nova (@s1lnt). and Sleepy (@stay.sober.idiot)"; // sleepy changes name to much -nova
+        public const string Description = "Owned by nova and Developed by nova (@s1lnt). and Sleepy (@stay.sober.idiot)"; // sleepy changes name to much -nova
         public const string Version = "2.8.0"; // use /arraiis version cmd when updating -nova | my fault i forgot -sleepy (dont remove pls)
         public const string BaseDirectory = "Arrakis";
         public const string ServerApi = "https://novax.lol/arrakis/api";
