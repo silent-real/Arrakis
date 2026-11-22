@@ -18,9 +18,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Arrakis.Classes;
 using Arrakis.Classes.Mods;
 using Arrakis.Extensions;
@@ -28,6 +25,11 @@ using Arrakis.Managers;
 using Arrakis.Menu;
 using GorillaExtensions;
 using GorillaLocomotion;
+using Pathfinding.RVO;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Technie.PhysicsCreator;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -1432,6 +1434,48 @@ namespace Arrakis.Mods
             breakcujmpool.Clear();
         }
 
+        private static Dictionary<VRRig, LineRenderer> beaconPool = new Dictionary<VRRig, LineRenderer>();
+        public static void Beacons()
+        {
+            if (!NetworkSystem.Instance.InRoom) return;
+            List<VRRig> remove = null;
+            foreach (var pair in beaconPool)
+            {
+                if (pair.Key == null || !VRRigCache.ActiveRigs.Contains(pair.Key))
+                {
+                    remove ??= new List<VRRig>();
+                    remove.Add(pair.Key);
+                    if (pair.Value != null) Object.Destroy(pair.Value);
+                }
+            }
+            if (remove != null) foreach (var r in remove) beaconPool.Remove(r);
+            foreach (VRRig rig in VRRigCache.ActiveRigs)
+            {
+                if (rig == null || rig.IsLocal()) continue;
+                if (!beaconPool.TryGetValue(rig, out var line) || line.gameObject == null)
+                {
+                    line = new GameObject().AddComponent<LineRenderer>();
+                    line.useWorldSpace = true;
+                    line.material = new Material(TextShader);
+                    line.startWidth = 0.02f;
+                    line.endWidth = 0.02f;
+                    line.positionCount = 2;
+                    beaconPool[rig] = line;
+                }
+                Color color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f) : rig.playerColor;
+                color.a = 0.18f;
+                line.material.color = color;
+                line.SetPosition(0, rig.transform.position + new Vector3(0f, 999f, 0f));
+                line.SetPosition(1, rig.transform.position + new Vector3(0f, -999f, 0f));
+            }
+        }
+
+        public static void DisableBeacons()
+        {
+            foreach (var st in beaconPool.Values)
+                if (st.gameObject != null) Object.Destroy(st.gameObject);
+            beaconPool.Clear();
+        }
 
         public static void CreateLine(Transform pos)
         {
@@ -1532,6 +1576,7 @@ namespace Arrakis.Mods
                 DisableBreadcrumbs();
                 DisableRedact();
                 tagStack.Clear();
+                DisableBeacons();
             }
             else
             {
@@ -1574,6 +1619,8 @@ namespace Arrakis.Mods
                 breakcujmpool.Remove(rig);
                 if (redactPool.TryGetValue(rig, out var m) && m.root != null) Object.Destroy(m.root);
                 redactPool.Remove(rig);
+                if (beaconPool.TryGetValue(rig, out var thing) && thing.gameObject != null) Object.Destroy(thing.gameObject);
+                beaconPool.Remove(rig);
             }
         }
 

@@ -450,6 +450,9 @@ namespace Arrakis.Menu
                 new() { buttonText = "Self Wireframe ESP", enableMethod =() => Visual.EnableSelfWireframeMesh(), method =() => Visual.UpdateSelfWireframeColor(), disableMethod =() => Visual.DisableSelfWireframeMesh(), isTogglable = true, toolTip = "Wireframe ESP on yourself." },
                 new() { buttonText = "Redact", method =() => Visual.Redact(), disableMethod =() => Visual.DisableRedact(), isTogglable = true, toolTip = "Redacts people faces with a black pixel like in the game BodyCam." },
 
+                new() { buttonText = "Beacon", method =() => Visual.Beacons(), disableMethod =() => Visual.DisableBeacons(), isTogglable = true, toolTip = "Puts a beacon on everyone." },
+                new() { buttonText = "Hunt Target Beacon", method =() => Advantage.HuntTargetBeacon(), isTogglable = true, toolTip = "Puts a beacon on your hunt target." },
+
                 new() { buttonText = "Breadcrumbs", method =() => Visual.Breadcrumbs(), disableMethod =() => Visual.DisableBreadcrumbs(), toolTip = "Puts trails on players.", isTogglable = true },
                 new() { buttonText = "Ring", method =() => Visual.Ring(), disableMethod =() => Visual.DisableRing(), toolTip = "Makes other people have a ring under them.", isTogglable = true },
                 new() { buttonText = "Halo", method =() => Visual.Halo(), disableMethod =() => Visual.DisableHalo(), toolTip = "Makes other people have a halo above them like an angel.", isTogglable = true },
@@ -459,8 +462,6 @@ namespace Arrakis.Menu
                 new() { buttonText = "Platform Name Tags", method =() => Visual.PlatformNameTags(), disableMethod =() => Visual.DisablePlatformNameTags(), isTogglable = true, toolTip = "Gives everyone a nametag that shows they're platform." },
                 new() { buttonText = "Fps Name Tags", method =() => Visual.FpsNameTags(), disableMethod =() => Visual.DisableFpsNameTags(), isTogglable = true, toolTip = "Gives everyone a nametag that shows they're fps." },
                 new() { buttonText = "Tagged Name Tags", method =() => Visual.TaggedNameTags(), disableMethod =() => Visual.DisableTaggedNameTags(), isTogglable = true, toolTip = "Gives everyone a nametag that shows if they're tagged." },
-
-                new() { buttonText = "Hunt Target Beacon", method =() => Advantage.HuntTargetBeacon(), isTogglable = true, toolTip = "Puts a beacon on your hunt target." },
 
                 new() { buttonText = "Morning Time", method =() => BetterDayNightManager.instance.SetTimeOfDay(1), toolTip = "Sets your time of day to morning." },
                 new() { buttonText = "Day Time", method =() => BetterDayNightManager.instance.SetTimeOfDay(3), toolTip = "Sets your time of day to daytime." },
