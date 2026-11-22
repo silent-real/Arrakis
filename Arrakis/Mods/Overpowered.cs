@@ -19,7 +19,6 @@
  */
 
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using Arrakis.Classes;
 using Arrakis.Extensions;
@@ -31,8 +30,6 @@ using GorillaLocomotion.Gameplay;
 using GorillaNetworking;
 using Photon.Pun;
 using Photon.Realtime;
-using Photon.Voice;
-using Photon.Voice.PUN;
 using UnityEngine;
 using static Arrakis.Classes.RigManager;
 using static Arrakis.Menu.Main;
@@ -42,6 +39,19 @@ namespace Arrakis.Mods
 {
     public class Overpowered
     {
+        private static GorillaGuardianManager _gman;
+        public static GorillaGuardianManager guardianManager
+        {
+            get
+            {
+                if (_gman == null)
+                {
+                    _gman = GameObject.FindObjectsByType<GorillaGuardianManager>(FindObjectsSortMode.None).FirstOrDefault();
+                }
+                return _gman;
+            }
+        }
+
         public static void GuardianFlingGun()
         {
             if (GetGunInput(false))
@@ -54,8 +64,7 @@ namespace Arrakis.Mods
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
                     if (!rig.IsLocal())
                     {
-                        GorillaGuardianManager guard = (GorillaGuardianManager)GorillaGameManager.instance;
-                        if (guard.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
+                        if (guardianManager.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
                         {
                             GetNetworkViewFromVRRig(GetVRRigFromPlayer(rig.Creator)).SendRPC("GrabbedByPlayer", rig.Creator, true, false, false);
                             GetNetworkViewFromVRRig(GetVRRigFromPlayer(rig.Creator)).SendRPC("DroppedByPlayer", rig.Creator, new Vector3(0f, 25f, 0f));
@@ -79,8 +88,7 @@ namespace Arrakis.Mods
 
                 if (gunLocked && lockTarget != null)
                 {
-                    GorillaGuardianManager guard = (GorillaGuardianManager)GorillaGameManager.instance;
-                    if (guard.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
+                    if (guardianManager.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
                     {
                         GetNetworkViewFromVRRig(lockTarget).SendRPC("GrabbedByPlayer", lockTarget.Creator, true, false, false);
                         GetNetworkViewFromVRRig(lockTarget).SendRPC("DroppedByPlayer", lockTarget.Creator, Vector3.right * 50f - (Vector3.down * 2f) + (lockTarget.transform.position * 2f / 21f) - 2f * Vector3.forward); // shitty numbers was testing random shit and it worked so -nova
@@ -112,8 +120,7 @@ namespace Arrakis.Mods
         private static float delaytimething = 0f;
         public static void GuardianWallAll()
         {
-            GorillaGuardianManager guard = (GorillaGuardianManager)GorillaGameManager.instance;
-            if (guard.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
+            if (guardianManager.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
             {
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
@@ -138,8 +145,7 @@ namespace Arrakis.Mods
 
         public static void GuardianFlingAll()
         {
-            GorillaGuardianManager guard = (GorillaGuardianManager)GorillaGameManager.instance;
-            if (guard.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
+            if (guardianManager.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
             {
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
@@ -168,8 +174,7 @@ namespace Arrakis.Mods
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
                     if (!rig.IsLocal())
                     {
-                        GorillaGuardianManager guard = (GorillaGuardianManager)GorillaGameManager.instance;
-                        if (guard.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
+                        if (guardianManager.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
                         {
                             GetNetworkViewFromVRRig(GetVRRigFromPlayer(rig.Creator)).SendRPC("GrabbedByPlayer", rig.Creator, true, false, false);
                             GetNetworkViewFromVRRig(GetVRRigFromPlayer(rig.Creator)).SendRPC("DroppedByPlayer", rig.Creator, (GorillaTagger.Instance.bodyCollider.transform.position - lockTarget.transform.position).normalized * 50f);
@@ -185,8 +190,7 @@ namespace Arrakis.Mods
 
         public static void GuardianBringAll()
         {
-            GorillaGuardianManager guard = (GorillaGuardianManager)GorillaGameManager.instance;
-            if (guard.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
+            if (guardianManager.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
             {
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
@@ -242,8 +246,7 @@ namespace Arrakis.Mods
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
                     if (!rig.IsLocal())
                     {
-                        GorillaGuardianManager guard = (GorillaGuardianManager)GorillaGameManager.instance;
-                        if (guard.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
+                        if (guardianManager.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
                         {
                             float theonefloatidkwhattonameit = UnityEngine.Random.Range(-1f, 1f);
                             GetNetworkViewFromVRRig(rig).SendRPC("GrabbedByPlayer", rig.Creator, true, false, false);
@@ -259,8 +262,7 @@ namespace Arrakis.Mods
         }
         public static void GuardianBreakMovementAll()
         {
-            GorillaGuardianManager guard = (GorillaGuardianManager)GorillaGameManager.instance;
-            if (guard.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
+            if (guardianManager.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
             {
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
@@ -279,8 +281,7 @@ namespace Arrakis.Mods
         }
         public static void GuardianFreezeAll()
         {
-            GorillaGuardianManager guard = (GorillaGuardianManager)GorillaGameManager.instance;
-            if (guard.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
+            if (guardianManager.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
             {
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
@@ -309,8 +310,7 @@ namespace Arrakis.Mods
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
                     if (!rig.IsLocal())
                     {
-                        GorillaGuardianManager guard = (GorillaGuardianManager)GorillaGameManager.instance;
-                        if (guard.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
+                        if (guardianManager.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
                         {
                             GetNetworkViewFromVRRig(rig).SendRPC("GrabbedByPlayer", rig.Creator, true, false, false);
                             GetNetworkViewFromVRRig(rig).SendRPC("DroppedByPlayer", rig.Creator, Vector3.zero);
