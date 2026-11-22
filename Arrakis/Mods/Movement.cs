@@ -19,12 +19,14 @@
  */
 
 using System.Collections.Generic;
+using System.Linq;
 using Arrakis.Extensions;
 using Arrakis.Managers;
 using Arrakis.Patches.Patchers;
 using GorillaExtensions;
 using GorillaLocomotion;
 using GorillaLocomotion.Climbing;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR;
@@ -883,8 +885,19 @@ namespace Arrakis.Mods
         {
             foreach (var vel in velocityArchive)
                 vel.Key.extraVelMultiplier = vel.Value;
-
             velocityArchive.Clear();
+        }
+
+        public static void TeleportToRandom()
+        {
+            if (PhotonNetwork.InRoom)
+            {
+                List<VRRig> rigs = VRRigCache.ActiveRigs.ToList();
+                System.Random random = new System.Random();
+                int rand = random.Next(0, rigs.Count);
+                VRRig rig = rigs[rand];
+                GorillaLocomotion.GTPlayer.Instance.TeleportTo(rig.transform.position - GorillaLocomotion.GTPlayer.Instance.bodyCollider.transform.position + GorillaLocomotion.GTPlayer.Instance.transform.position, new Quaternion(0, 0, 0, 0));
+            }
         }
     }
 }

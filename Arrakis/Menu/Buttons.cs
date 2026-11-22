@@ -402,6 +402,8 @@ namespace Arrakis.Menu
                 new() { buttonText = "Predictions", enableMethod =() => Movement.CreatePredThingy(), method =() => Movement.Preds(), disableMethod =() => Movement.RemovePredThingy(), isTogglable = true, toolTip = "Give you predictions, fails checks." },
 
                 new() { buttonText = "Slip Slap", enableMethod =() => Movement.SlipSlap(), disableMethod =() => Movement.DisableSlipSlap(), isTogglable = true, toolTip = "Brings back the old glitch that let syou slip slap." },
+
+                new() { buttonText = "Teleport To Random", method =() => Movement.TeleportToRandom(), isTogglable = false, toolTip = "Lets you teleport to a random player." },
             },
 
             new ButtonInfo[] { // VRRig
