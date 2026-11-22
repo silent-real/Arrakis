@@ -46,8 +46,8 @@ namespace Arrakis.Notifications
         private void Init()
         {
             MainCamera = Camera.main.gameObject;
-            HUDObj = new GameObject("HUD");
-            HUDObj2 = new GameObject("HUD_PARENT");
+            HUDObj = new GameObject("NOTI_HUD");
+            HUDObj2 = new GameObject("NOTI_HUD");
             HUDObj.transform.SetParent(HUDObj2.transform);
             HUDObj.AddComponent<Canvas>();
             HUDObj.AddComponent<CanvasScaler>();
@@ -162,7 +162,6 @@ namespace Arrakis.Notifications
         public static void ClearAllNotifications()
         {
             activeNotifications.Clear();
-
             if (NotifiText != null)
                 NotifiText.text = "";
         }
