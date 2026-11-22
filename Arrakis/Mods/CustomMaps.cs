@@ -22,7 +22,9 @@ using Arrakis.Notifications;
 using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 using System.IO;
+using System.Text;
 using UnityEngine;
 using static Arrakis.Menu.Main;
 
@@ -30,10 +32,39 @@ namespace Arrakis.Mods
 {
     public class CustomMaps
     {
-
+        private static readonly string folderPath = Path.Combine(PluginInfo.BaseDirectory, "CustomMaps");
         public static void GetCurrentScript()
         {
-            
+            if (CustomMapLoader.IsLoading())
+            {
+                NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>INFO</color><color=grey>]</color> Map is loading please wait.");
+                return;
+            }
+            long mapId = CustomMapLoader.GetLoadingMapModId();
+            if (mapId <= 0)
+            {
+                NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>INFO</color><color=grey>]</color> Please load a map first.");
+                return;
+            }
+            string script = CustomMapLoader.GetLuauGamemodeScript();
+            if (string.IsNullOrEmpty(script))
+            {
+                NotificationManager.SendNotification($"<color=grey>[</color><color=yellow>WARNING</color><color=grey>]</color> Map script is empty.");
+                return;
+            }
+            try
+            {
+                Directory.CreateDirectory(folderPath);
+                string fileName = $"Map_{mapId}.luau";
+                string fullPath = Path.Combine(folderPath, fileName);
+                File.WriteAllText(fullPath, script, new UTF8Encoding(false));
+                NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>INFO</color><color=grey>]</color> Saved map file to {fullPath}.");
+            }
+            catch (Exception ex)
+            {
+                NotificationManager.SendNotification($"<color=grey>[</color><color=red>ERROR</color><color=grey>]</color> Error getting file {ex.Message}.");
+                CustomConsole.Log($"Failed to write Luau script for map {mapId}: {ex.Message}", CustomConsole.LogType.Error);
+            }
         }
 
 
