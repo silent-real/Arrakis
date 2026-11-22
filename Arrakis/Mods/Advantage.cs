@@ -39,19 +39,55 @@ namespace Arrakis.Mods
 {
     public class Advantage
     {
+        private static GorillaTagManager _tag;
+        private static GorillaTagManager tagManager
+        {
+            get
+            {
+                if (_tag == null)
+                {
+                    _tag = GameObject.FindObjectsByType<GorillaTagManager>(FindObjectsSortMode.None).FirstOrDefault();
+                }
+                return _tag;
+            }
+        }
+
+        private static GorillaHuntManager _hunt;
+        private static GorillaHuntManager huntManager
+        {
+            get
+            {
+                if (_hunt == null)
+                {
+                    _hunt = GameObject.FindObjectsByType<GorillaHuntManager>(FindObjectsSortMode.None).FirstOrDefault();
+                }
+                return _hunt;
+            }
+        }
+
+        private static GorillaPaintbrawlManager _paint;
+        private static GorillaPaintbrawlManager paintbrawlManager
+        {
+            get
+            {
+                if (_paint == null)
+                {
+                    _paint = GameObject.FindObjectsByType<GorillaPaintbrawlManager>(FindObjectsSortMode.None).FirstOrDefault();
+                }
+                return _paint;
+            }
+        }
+
         public static void TagAll()
         {
             if (PhotonNetwork.LocalPlayer.IsMasterClient)
             {
-                foreach (GorillaTagManager tag in GameObject.FindObjectsByType<GorillaTagManager>(FindObjectsSortMode.None))
+                foreach (NetPlayer plr in NetworkSystem.Instance.PlayerListOthers)
                 {
-                    foreach (NetPlayer plr in NetworkSystem.Instance.PlayerListOthers)
-                    {
-                        if (!tag.currentInfected.Contains(plr))
-                                tag.AddInfectedPlayer(plr);
-                        Toggle("Tag All");
-                        ReloadMenu();
-                    }
+                    if (!tagManager.currentInfected.Contains(plr))
+                        tagManager.AddInfectedPlayer(plr);
+                    Toggle("Tag All");
+                    ReloadMenu();
                 }
             }
             else
@@ -146,13 +182,10 @@ namespace Arrakis.Mods
         {
             if (PhotonNetwork.LocalPlayer.IsMasterClient)
             {
-                foreach (GorillaTagManager tag in GameObject.FindObjectsByType<GorillaTagManager>(FindObjectsSortMode.None))
-                {
-                    if (!tag.currentInfected.Contains(NetworkSystem.Instance.LocalPlayer))
-                        tag.AddInfectedPlayer(NetworkSystem.Instance.LocalPlayer);
-                    Toggle("Tag Self");
-                    return;
-                }
+                if (!tagManager.currentInfected.Contains(NetworkSystem.Instance.LocalPlayer))
+                    tagManager.AddInfectedPlayer(NetworkSystem.Instance.LocalPlayer);
+                Toggle("Tag Self");
+                return;
             }
             else
             {
@@ -340,21 +373,18 @@ namespace Arrakis.Mods
         {
             if (PhotonNetwork.LocalPlayer.IsMasterClient)
             {
-                foreach (GorillaTagManager tag in GameObject.FindObjectsByType<GorillaTagManager>(FindObjectsSortMode.None))
+                if (!tagManager.currentInfected.Contains(NetworkSystem.Instance.LocalPlayer))
                 {
-                    if (!tag.currentInfected.Contains(NetworkSystem.Instance.LocalPlayer))
+                    PhotonHandler handler = GameObject.Find("PhotonMono").GetComponent<PhotonHandler>();
+                    Traverse.Create(handler).Field("nextSendTickCountOnSerialize").SetValue((int)(Time.realtimeSinceStartup * 9999));
+                    List<int> Targets = new List<int>();
+                    foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerListOthers)
                     {
-                        PhotonHandler handler = GameObject.Find("PhotonMono").GetComponent<PhotonHandler>();
-                        Traverse.Create(handler).Field("nextSendTickCountOnSerialize").SetValue((int)(Time.realtimeSinceStartup * 9999));
-                        List<int> Targets = new List<int>();
-                        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerListOthers)
-                        {
-                            if (player.IsMasterClient)
-                                continue;
-                            Targets.Add(player.ActorNumber);
-                        }
-                        Experimental.SendSerialize(GorillaTagger.Instance.myVRRig.GetView, new RaiseEventOptions { TargetActors = Targets.ToArray() });
+                        if (player.IsMasterClient)
+                            continue;
+                        Targets.Add(player.ActorNumber);
                     }
+                    Experimental.SendSerialize(GorillaTagger.Instance.myVRRig.GetView, new RaiseEventOptions { TargetActors = Targets.ToArray() });
                 }
             }
             else
@@ -443,6 +473,22 @@ namespace Arrakis.Mods
                     closestDistance = distance;
                     float Power = Mathf.Clamp(distance, 1f, 15f) / 15f;
                     PhotonNetwork.SerializationRate = 4 + (int)Math.Ceiling(Power * 5f);
+                }
+            }
+        }
+
+
+        public static void TagHuntTarget()
+        {
+            if (PhotonNetwork.InRoom)
+            {
+                if (huntManager.currentTarget != null)
+                {
+
+                }
+                else
+                {
+                    VRRig.LocalRig.enabled = true;
                 }
             }
         }
