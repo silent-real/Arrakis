@@ -447,7 +447,7 @@ namespace Arrakis
         public static int currentTheme = 0;
         public static void ChangeMenuTheme(bool increment = true)
         {
-            const int value = 100;
+            const int value = 125;
             if (increment)
             {
                 currentTheme = (currentTheme + 1) % value;
@@ -1258,6 +1258,206 @@ namespace Arrakis
                     textColors[0] = Color.white;
                     textColors[1] = Color.white;
                     GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Scarlet</color>]</color>";
+                    break;
+                case 100: // Sapphire
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(new Color(0.1f, 0.2f, 0.7f), new Color(0.02f, 0.05f, 0.25f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.03f, 0.05f, 0.15f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.25f, 0.45f, 1f)) };
+                    textColors[0] = new Color(0.7f, 0.8f, 1f);
+                    textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Sapphire</color>]</color>";
+                    break;
+                case 101: // Mocha
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(new Color(0.35f, 0.25f, 0.18f), new Color(0.12f, 0.08f, 0.05f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.09f, 0.06f, 0.04f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.65f, 0.45f, 0.3f)) };
+                    textColors[0] = new Color(0.95f, 0.85f, 0.75f);
+                    textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Mocha</color>]</color>";
+                    break;
+                case 102: // Glacier
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(new Color(0.75f, 0.9f, 0.95f), new Color(0.35f, 0.55f, 0.65f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.15f, 0.25f, 0.3f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.6f, 0.85f, 0.95f)) };
+                    textColors[0] = Color.black;
+                    textColors[1] = Color.black;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Glacier</color>]</color>";
+                    break;
+                case 103: // Sulfur
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(new Color(0.85f, 0.8f, 0.1f), new Color(0.25f, 0.22f, 0.02f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.12f, 0.1f, 0.01f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.9f, 0.85f, 0.2f)) };
+                    textColors[0] = Color.black;
+                    textColors[1] = Color.black;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Sulfur</color>]</color>";
+                    break;
+                case 104: // Cherry
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(new Color(0.8f, 0.05f, 0.2f), new Color(0.25f, 0f, 0.08f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.15f, 0f, 0.05f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(1f, 0.15f, 0.35f)) };
+                    textColors[0] = new Color(1f, 0.8f, 0.85f);
+                    textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Cherry</color>]</color>";
+                    break;
+                case 105: // Cobalt
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(new Color(0f, 0.25f, 0.55f), new Color(0f, 0.05f, 0.18f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0f, 0.03f, 0.12f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.1f, 0.5f, 1f)) };
+                    textColors[0] = Color.white;
+                    textColors[1] = Color.black;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Cobalt</color>]</color>";
+                    break;
+                case 106: // Terracotta
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(new Color(0.8f, 0.4f, 0.28f), new Color(0.35f, 0.15f, 0.1f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.2f, 0.09f, 0.06f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.9f, 0.5f, 0.35f)) };
+                    textColors[0] = Color.white;
+                    textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Terracotta</color>]</color>";
+                    break;
+                case 107: // Mauve
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(new Color(0.55f, 0.4f, 0.55f), new Color(0.2f, 0.12f, 0.22f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.14f, 0.08f, 0.16f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.7f, 0.5f, 0.7f)) };
+                    textColors[0] = Color.white;
+                    textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Mauve</color>]</color>";
+                    break;
+                case 108: // Seafoam
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(new Color(0.5f, 0.9f, 0.75f), new Color(0.15f, 0.4f, 0.35f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.06f, 0.18f, 0.15f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.4f, 0.9f, 0.7f)) };
+                    textColors[0] = Color.black;
+                    textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Seafoam</color>]</color>";
+                    break;
+                case 109: // Ultraviolet
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(new Color(0.35f, 0f, 0.7f), new Color(0.08f, 0f, 0.18f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.05f, 0f, 0.12f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.6f, 0.1f, 1f)) };
+                    textColors[0] = new Color(0.8f, 0.6f, 1f);
+                    textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Ultraviolet</color>]</color>";
+                    break;
+                case 110: // Bronze
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(new Color(0.6f, 0.42f, 0.2f), new Color(0.2f, 0.13f, 0.05f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.12f, 0.08f, 0.03f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.8f, 0.55f, 0.25f)) };
+                    textColors[0] = new Color(1f, 0.85f, 0.6f);
+                    textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Bronze</color>]</color>";
+                    break;
+                case 111: // Pistachio
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(new Color(0.65f, 0.8f, 0.45f), new Color(0.25f, 0.35f, 0.15f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.1f, 0.15f, 0.06f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.7f, 0.9f, 0.5f)) };
+                    textColors[0] = Color.black;
+                    textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Pistachio</color>]</color>";
+                    break;
+                case 112: // Raspberry
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(new Color(0.75f, 0.1f, 0.4f), new Color(0.25f, 0.02f, 0.14f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.16f, 0.01f, 0.09f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.95f, 0.2f, 0.55f)) };
+                    textColors[0] = Color.white;
+                    textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Raspberry</color>]</color>";
+                    break;
+                case 113: // Gunmetal
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(new Color(0.18f, 0.2f, 0.23f), new Color(0.05f, 0.06f, 0.08f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.04f, 0.05f, 0.06f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.45f, 0.5f, 0.55f)) };
+                    textColors[0] = Color.white;
+                    textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Gunmetal</color>]</color>";
+                    break;
+                case 114: // Periwinkle
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(new Color(0.6f, 0.65f, 0.95f), new Color(0.25f, 0.28f, 0.55f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.12f, 0.14f, 0.3f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.65f, 0.7f, 1f)) };
+                    textColors[0] = Color.white;
+                    textColors[1] = Color.black;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Periwinkle</color>]</color>";
+                    break;
+                case 115: // Saffron
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(new Color(1f, 0.6f, 0.05f), new Color(0.5f, 0.25f, 0f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.28f, 0.14f, 0f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(1f, 0.7f, 0.1f)) };
+                    textColors[0] = Color.white;
+                    textColors[1] = Color.black;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Saffron</color>]</color>";
+                    break;
+                case 116: // Hologram
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(new Color(0.4f, 0.9f, 0.95f), new Color(0.8f, 0.5f, 1f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.08f, 0.1f, 0.18f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.5f, 0.85f, 1f)) };
+                    textColors[0] = Color.white;
+                    textColors[1] = Color.black;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Hologram</color>]</color>";
+                    break;
+                case 117: // Maroon
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.25f, 0.03f, 0.08f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.14f, 0.01f, 0.04f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.6f, 0.1f, 0.2f)) };
+                    textColors[0] = new Color(1f, 0.75f, 0.78f);
+                    textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Maroon</color>]</color>";
+                    break;
+                case 118: // Cotton Candy
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(new Color(1f, 0.7f, 0.85f), new Color(0.65f, 0.8f, 1f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.25f, 0.2f, 0.35f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(1f, 0.75f, 0.9f)) };
+                    textColors[0] = Color.white;
+                    textColors[1] = Color.black;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Cotton Candy</color>]</color>";
+                    break;
+                case 119: // Verdigris
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(new Color(0.2f, 0.6f, 0.55f), new Color(0.05f, 0.2f, 0.18f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.03f, 0.12f, 0.1f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.3f, 0.75f, 0.68f)) };
+                    textColors[0] = Color.white;
+                    textColors[1] = Color.black;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Verdigris</color>]</color>";
+                    break;
+                case 120: // Blaze
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(new Color(1f, 0.8f, 0f), new Color(0.9f, 0.15f, 0f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.2f, 0.03f, 0f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(1f, 0.5f, 0f)) };
+                    textColors[0] = Color.white;
+                    textColors[1] = Color.black;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Blaze</color>]</color>";
+                    break;
+                case 121: // Denim
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(new Color(0.25f, 0.35f, 0.55f), new Color(0.1f, 0.14f, 0.25f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.07f, 0.1f, 0.18f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.4f, 0.55f, 0.8f)) };
+                    textColors[0] = Color.white;
+                    textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Denim</color>]</color>";
+                    break;
+                case 122: // Pearl
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(new Color(0.97f, 0.96f, 0.98f), new Color(0.8f, 0.82f, 0.88f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.88f, 0.88f, 0.92f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.6f, 0.55f, 0.7f)) };
+                    textColors[0] = Color.black;
+                    textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Pearl</color>]</color>";
+                    break;
+                case 123: // Oblivion
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.01f, 0.01f, 0.02f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.04f, 0.04f, 0.06f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.5f, 0f, 0.15f)) };
+                    textColors[0] = new Color(0.7f, 0.1f, 0.2f);
+                    textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Oblivion</color>]</color>";
+                    break;
+                case 124: // Sunrise
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(new Color(1f, 0.85f, 0.4f), new Color(0.9f, 0.35f, 0.5f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.3f, 0.1f, 0.2f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(1f, 0.6f, 0.4f)) };
+                    textColors[0] = Color.white;
+                    textColors[1] = Color.black;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Sunrise</color>]</color>";
                     break;
             }
         }
