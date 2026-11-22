@@ -2624,12 +2624,28 @@ namespace Arrakis.Menu
         public static void LoadRooms()
         {
             string currentRoom = PhotonNetwork.InRoom ? PhotonNetwork.CurrentRoom.Name : null;
+            string roomsPath = $"{PluginInfo.BaseDirectory}\\Rooms";
             CurrentCategoryName = "Rooms";
             pageNumber = 0;
             List<ButtonInfo> buttons = new List<ButtonInfo>
             {
-                new ButtonInfo { buttonText = "Exit Rooms", method = () => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." }
-            };
+                new ButtonInfo { buttonText = "Exit Rooms", method = () => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+                new ButtonInfo { buttonText = "Delete All Rooms",
+                method = () =>
+                {
+                    Prompt($"Are you sure you want to delete all saved room files in {roomsPath}", () =>
+                    {
+                        if (Directory.Exists(roomsPath))
+                        {
+                            foreach (string file in Directory.GetFiles(roomsPath))
+                            {
+                                File.Delete(file);
+                            }
+                        }
+                        LoadRooms();
+                        NotificationManager.SendNotification("<color=grey>[</color><color=red>INFO</color><color=grey>]</color> Deleted all saved rooms.");
+                    });
+                }, isTogglable = false, toolTip = "Deletes all saved room files." } };
             foreach (var roomFile in new DirectoryInfo($"{PluginInfo.BaseDirectory}\\Rooms").GetFiles())
             {
                 string roomName = Path.GetFileNameWithoutExtension(roomFile.Name);
