@@ -159,7 +159,7 @@ namespace Arrakis.Mods
         public static void ClearNotis() =>
             NotificationManager.ClearAllNotifications();
 
-        private static string[] goodCosmeticIds =
+        private static readonly HashSet<string> GoodCosmeticIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
             "LBAAK.", "LMAPY.", "LBAAD.",
             "LBADE.", "LBAGS.", "LBANI."
@@ -167,18 +167,12 @@ namespace Arrakis.Mods
         public static void SavePlayerInfo()
         {
             if (!PhotonNetwork.InRoom)
-            {
                 return;
-            }
-            string path = PluginInfo.BaseDirectory + "/RoomInfo";
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            string roomname = PhotonNetwork.CurrentRoom.Name;
-            StringBuilder info = new StringBuilder();
-            info.AppendLine($"---Dumped {roomname} @ {DateTime.Now:yyyy-MM-dd HH:mm:ss}---");
-            info.AppendLine($"PlayerCount: {PhotonNetwork.CurrentRoom.PlayerCount}");
+            string path = Path.Combine(PluginInfo.BaseDirectory, "RoomInfo");
+            Directory.CreateDirectory(path);
+            string roomName = PhotonNetwork.CurrentRoom.Name;
+            var info = new StringBuilder();
+            info.AppendLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Players: {PhotonNetwork.CurrentRoom.PlayerCount}");
             info.AppendLine("--------------------");
             foreach (Photon.Realtime.Player plr in PhotonNetwork.PlayerList)
             {
@@ -186,25 +180,34 @@ namespace Arrakis.Mods
                 info.AppendLine($"UserId: {plr.UserId}");
                 info.AppendLine($"MasterClient: {plr.IsMasterClient}");
                 foreach (DictionaryEntry entry in plr.CustomProperties)
-                {
-                    string valStr = FormatPropValue(entry.Value);
-                    info.AppendLine($"[{entry.Key}] = {valStr}");
-                }
+                    info.AppendLine($"[{entry.Key}] = {FormatPropValue(entry.Value)}");
                 info.AppendLine("---COSMETICS---");
-                var cosmetics = GorillaGameManager.StaticFindRigForPlayer(plr)._playerOwnedCosmetics;
-                if (cosmetics == null)
+                var rig = GorillaGameManager.StaticFindRigForPlayer(plr);
+                var cosmetics = rig?._playerOwnedCosmetics;
+                if (cosmetics == null || cosmetics.Count == 0)
+                {
+                    info.AppendLine("Cosmetics: <none>");
+                    info.AppendLine();
                     continue;
+                }
                 foreach (string cosmeticId in cosmetics)
                 {
-                    if (goodCosmeticIds.Contains(cosmeticId))
+                    if (GoodCosmeticIds.Contains(cosmeticId))
                         info.AppendLine($"!!SPECIAL COSMETIC!! : {cosmeticId}");
                 }
                 info.AppendLine("Cosmetics: " + string.Join(", ", cosmetics));
                 info.AppendLine();
             }
-            string final = System.IO.Path.Combine(path, roomname + ".txt");
-            File.AppendAllText(final, info.ToString());
-            NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>INFO</color><color=grey>]</color> Saved player info to: {final}.");
+            string finalPath = Path.Combine(path, SanitizeFileName(roomName) + ".txt");
+            File.AppendAllText(finalPath, info.ToString());
+            NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>INFO</color><color=grey>]</color> Saved player info to: {finalPath}.");
+        }
+
+        private static string SanitizeFileName(string name)
+        {
+            foreach (char c in Path.GetInvalidFileNameChars())
+                name = name.Replace(c, '_');
+            return name;
         }
 
         private static string FormatPropValue(object value)
