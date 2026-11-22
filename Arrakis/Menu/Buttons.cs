@@ -406,6 +406,10 @@ namespace Arrakis.Menu
                 new() { buttonText = "Slip Slap", enableMethod =() => Movement.SlipSlap(), disableMethod =() => Movement.DisableSlipSlap(), isTogglable = true, toolTip = "Brings back the old glitch that let syou slip slap." },
 
                 new() { buttonText = "Teleport To Random", method =() => Movement.TeleportToRandom(), isTogglable = false, toolTip = "Lets you teleport to a random player." },
+
+                new() { buttonText = "Low Gravity", method =() => Movement.LowGravity(), isTogglable = true, toolTip = "Gives you low gravity." },
+                new() { buttonText = "Zero Gravity", method =() => Movement.ZeroGravity(), isTogglable = true, toolTip = "Gives you zero gravity." },
+                new() { buttonText = "High Gravity", method =() => Movement.HighGravity(), isTogglable = true, toolTip = "Gives you high gravity." },
             },
 
             new ButtonInfo[] { // VRRig

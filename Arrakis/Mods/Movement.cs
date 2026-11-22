@@ -920,5 +920,14 @@ namespace Arrakis.Mods
                 GTPlayer.Instance.TeleportTo(rig.transform.position - GTPlayer.Instance.bodyCollider.transform.position + GTPlayer.Instance.transform.position, new Quaternion(0, 0, 0, 0));
             }
         }
+
+        public static void LowGravity() =>
+           GorillaTagger.Instance.rigidbody.AddForce(Vector3.up * 6.55f, ForceMode.Acceleration);
+
+        public static void ZeroGravity() =>
+            GorillaTagger.Instance.rigidbody.AddForce(-Physics.gravity, ForceMode.Acceleration);
+
+        public static void HighGravity() =>
+            GorillaTagger.Instance.rigidbody.AddForce(Vector3.down * 7.66f, ForceMode.Acceleration);
     }
 }
