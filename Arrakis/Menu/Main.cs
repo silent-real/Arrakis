@@ -2795,7 +2795,7 @@ namespace Arrakis.Menu
             stumpText.richText = true;
             stumpText.alignment = TextAlignmentOptions.Center;
             stumpText.fontSize = 1.2f;
-            stumpText.text = $"<color=yellow>[ARRAKIS]</color>\nThank you for using arrakis\nVersion: <color=#00ffff>[{PluginInfo.Version}]</color> | Status: <color=#00ffff>[{ServerData.menustate.ToUpper()}]</color>";
+            stumpText.text = $"<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color>\nThank you for using arrakis\nVersion: <color=grey>[</color><color=#00ffff>{PluginInfo.Version}</color><color=grey>]</color> | Status: <color=grey>[</color><color=#00ffff>{ServerData.menustate.ToUpper()}</color><color=grey>]</color>";
         }
 
         public static string NoRichtextTags(string input, string replace = "")
