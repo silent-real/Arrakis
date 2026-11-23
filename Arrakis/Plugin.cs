@@ -19,6 +19,7 @@ using static Arrakis.HarmonyLoader;
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections;
 using System.IO;
 using Arrakis.Classes;
@@ -41,6 +42,7 @@ namespace Arrakis
 
         public void Awake()
         {
+            Console.Title = $"Arrakis V{PluginInfo.Version}";
             HarmonyLoader.ApplyPatches();
             CustomConsole.LoadStart();
 
