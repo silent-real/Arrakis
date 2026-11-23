@@ -48,7 +48,7 @@ namespace Arrakis.Classes.Menu
         {
             if (!Settings.disablediscordrpc)
                 return;
-            CustomConsole.Log("Loading Discord RPC", CustomConsole.LogType.Debug);
+            CustomConsole.Log("Starting Discord RPC.", CustomConsole.LogType.Info);
             if (TryLinux() || TryWindows())
             {
                 connected = true;
@@ -64,7 +64,7 @@ namespace Arrakis.Classes.Menu
                     Shutdown();
                     return;
                 }
-                CustomConsole.Log("Discord RPC Loaded.", CustomConsole.LogType.Info);
+                CustomConsole.Log("Started Discord RPC.", CustomConsole.LogType.Info);
                 Update();
                 return;
             }
@@ -92,7 +92,7 @@ namespace Arrakis.Classes.Menu
                 }
                 catch (Exception ex)
                 {
-                    CustomConsole.Log($"Linux IPC failed for {path}: {ex.Message}", CustomConsole.LogType.Debug);
+                    CustomConsole.Log($"Linux IPC failed for {path}: {ex.Message}", CustomConsole.LogType.Error);
                     try { linuxSocket?.Dispose(); } catch { }
                     linuxSocket = null;
                 }
@@ -118,7 +118,7 @@ namespace Arrakis.Classes.Menu
                 }
                 catch (Exception ex)
                 {
-                    CustomConsole.Log($"Windows IPC pipe {i} failed: {ex.Message}", CustomConsole.LogType.Debug);
+                    CustomConsole.Log($"Windows IPC pipe {i} failed: {ex.Message}", CustomConsole.LogType.Error);
                     try { windowsPipe?.Dispose(); } catch { }
                     windowsPipe = null;
                 }
@@ -180,7 +180,7 @@ namespace Arrakis.Classes.Menu
             }
             catch (Exception ex)
             {
-                CustomConsole.Log($"Could not determine Linux user ID: {ex.Message}", CustomConsole.LogType.Debug);
+                CustomConsole.Log($"Could not determine Linux user ID: {ex.Message}", CustomConsole.LogType.Error);
             }
             return null;
         }
@@ -319,7 +319,7 @@ namespace Arrakis.Classes.Menu
                 payload = Encoding.UTF8.GetString(body);
                 if (opcode == OpClose)
                 {
-                    CustomConsole.Log($"Discord closed the connection: {payload}", CustomConsole.LogType.Warning);
+                    CustomConsole.Log($"Discord closed the connection: {payload}", CustomConsole.LogType.Info);
                     connected = false;
                     return false;
                 }
@@ -327,7 +327,7 @@ namespace Arrakis.Classes.Menu
             }
             catch (Exception ex)
             {
-                CustomConsole.Log($"Discord RPC read failed: {ex.Message}", CustomConsole.LogType.Warning);
+                CustomConsole.Log($"Discord RPC read failed: {ex.Message}", CustomConsole.LogType.Error);
                 connected = false;
                 return false;
             }
