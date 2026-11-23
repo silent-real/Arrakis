@@ -29,7 +29,11 @@ using System.Text;
 
 namespace Arrakis.Classes.Menu
 {
-    public class DiscordRpc // i made og for bunny.lol pcvr then FOR SOME REASON it didnt work, asked AI to add linux support (nw rn) and fix windows -sleepy
+    /// <summary>
+    /// Sleepy made this originally for her copy dll (bunny.lol)
+    /// Its now got linux support and works with windows better
+    /// </summary>
+    public class DiscordRpc
     {
         private const string ClientId = "1557416786758992052";
 
