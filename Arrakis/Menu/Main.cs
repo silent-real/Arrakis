@@ -2787,6 +2787,7 @@ namespace Arrakis.Menu
 
         private static bool stumptextonce = false;
         public static TextMeshPro stumpText;
+
         public static void CreateStumpText()
         {
             stumpText = new GameObject().AddComponent<TextMeshPro>();
@@ -2795,7 +2796,9 @@ namespace Arrakis.Menu
             stumpText.richText = true;
             stumpText.alignment = TextAlignmentOptions.Center;
             stumpText.fontSize = 1.2f;
-            stumpText.text = $"<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color>\nThank you for using arrakis\nVersion: <color=grey>[</color><color=#00ffff>{PluginInfo.Version}</color><color=grey>]</color> | Status: <color=grey>[</color><color=#00ffff>{ServerData.menustate.ToUpper()}</color><color=grey>]</color>";
+            stumpText.enableVertexGradient = true;
+            stumpText.colorGradient = new VertexGradient(Color.magenta, Color.magenta, Color.blue, Color.blue);
+            stumpText.text = $"ARRAKIS\nThank you for using arrakis\nVersion: {PluginInfo.Version} | Status: {ServerData.menustate.ToUpper() ?? "Not Loaded"}";
         }
 
         public static string NoRichtextTags(string input, string replace = "")
