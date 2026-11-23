@@ -1463,7 +1463,6 @@ namespace Arrakis.Mods
                     beaconPool[rig] = line;
                 }
                 Color color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f) : rig.playerColor;
-                color.a = 0.18f;
                 line.material.color = color;
                 line.SetPosition(0, rig.transform.position + new Vector3(0f, 999f, 0f));
                 line.SetPosition(1, rig.transform.position + new Vector3(0f, -999f, 0f));

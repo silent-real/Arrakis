@@ -453,7 +453,7 @@ namespace Arrakis.Menu
                 new() { buttonText = "Self Wireframe ESP", enableMethod =() => Visual.EnableSelfWireframeMesh(), method =() => Visual.UpdateSelfWireframeColor(), disableMethod =() => Visual.DisableSelfWireframeMesh(), isTogglable = true, toolTip = "Wireframe ESP on yourself." },
                 new() { buttonText = "Redact", method =() => Visual.Redact(), disableMethod =() => Visual.DisableRedact(), isTogglable = true, toolTip = "Redacts people faces with a black pixel like in the game BodyCam." },
 
-                new() { buttonText = "Beacon", method =() => Visual.Beacons(), disableMethod =() => Visual.DisableBeacons(), isTogglable = true, toolTip = "Puts a beacon on everyone." },
+                new() { buttonText = "Beacons", method =() => Visual.Beacons(), disableMethod =() => Visual.DisableBeacons(), isTogglable = true, toolTip = "Puts a beacon on everyone." },
                 new() { buttonText = "Hunt Target Beacon", method =() => Advantage.HuntTargetBeacon(), isTogglable = true, toolTip = "Puts a beacon on your hunt target." },
 
                 new() { buttonText = "Breadcrumbs", method =() => Visual.Breadcrumbs(), disableMethod =() => Visual.DisableBreadcrumbs(), toolTip = "Puts trails on players.", isTogglable = true },
