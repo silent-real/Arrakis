@@ -455,6 +455,7 @@ namespace Arrakis.Menu
 
                 new() { buttonText = "Beacons", method =() => Visual.Beacons(), disableMethod =() => Visual.DisableBeacons(), isTogglable = true, toolTip = "Puts a beacon on everyone." },
                 new() { buttonText = "Hunt Target Beacon", method =() => Advantage.HuntTargetBeacon(), isTogglable = true, toolTip = "Puts a beacon on your hunt target." },
+                new() { buttonText = "Hunt Target ESP", method =() => Advantage.HuntTargetESP(), disableMethod =() => Advantage.DisableHuntESP(), isTogglable = true, toolTip = "Puts esp on your hunt target." },
 
                 new() { buttonText = "Breadcrumbs", method =() => Visual.Breadcrumbs(), disableMethod =() => Visual.DisableBreadcrumbs(), toolTip = "Puts trails on players.", isTogglable = true },
                 new() { buttonText = "Ring", method =() => Visual.Ring(), disableMethod =() => Visual.DisableRing(), toolTip = "Makes other people have a ring under them.", isTogglable = true },

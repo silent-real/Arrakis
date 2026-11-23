@@ -18,9 +18,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Arrakis.Extensions;
 using Arrakis.Managers;
 using Arrakis.Notifications;
@@ -28,12 +25,18 @@ using Arrakis.Patches.Patchers;
 using ExitGames.Client.Photon;
 using GorillaGameModes;
 using GorillaLocomotion;
+using GorillaNetworking;
 using HarmonyLib;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.XR;
 using static Arrakis.Menu.Main;
+using static Modio.API.ModioAPI;
 
 namespace Arrakis.Mods
 {
@@ -477,6 +480,44 @@ namespace Arrakis.Mods
             }
         }
 
+
+        public static void HuntTargetESP()
+        {
+            if (NetworkSystem.Instance.InRoom)
+            {
+                foreach (VRRig rig in VRRigCache.ActiveRigs)
+                {
+                    if (!rig.IsLocal() && GorillaComputer.instance.currentGameMode.Value.ToLower() == "huntdown")
+                    {
+                        if (huntManager.GetTargetOf(NetworkSystem.Instance.LocalPlayer) == rig.Creator)
+                        {
+                            rig.mainSkin.material.shader = Shader.Find("GUI/Text Shader");
+                            rig.mainSkin.material.color = new Color(0.6f, 0f, 0f, 0.6f);
+                        }
+                        else
+                        {
+                            rig.mainSkin.material.shader = Shader.Find("GorillaTag/UberShader");
+                            rig.mainSkin.material.color = rig.playerColor;
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void DisableHuntESP()
+        {
+            if (NetworkSystem.Instance.InRoom)
+            {
+                foreach (VRRig rig in VRRigCache.ActiveRigs)
+                {
+                    if (!rig.IsLocal() && GorillaComputer.instance.currentGameMode.Value.ToLower() == "huntdown")
+                    {
+                        rig.mainSkin.material.shader = Shader.Find("GorillaTag/UberShader");
+                        rig.mainSkin.material.color = rig.playerColor;
+                    }
+                }
+            }
+        }
 
         public static void HuntTargetBeacon()
         {
