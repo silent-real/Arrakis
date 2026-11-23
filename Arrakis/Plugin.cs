@@ -37,7 +37,7 @@ namespace Arrakis
     public class Plugin : BaseUnityPlugin
     {
         public static GameObject holder;
-        public static Coroutine discordC;
+        public static Coroutine DiscordRPCCoroutine;
 
         public void Awake()
         {
@@ -49,7 +49,7 @@ namespace Arrakis
             GorillaTagger.OnPlayerSpawned(OnPlayerSpawned);
         }
 
-        public static IEnumerator DRPC()
+        public static IEnumerator DiscordRpc()
         {
             var retry = new WaitForSeconds(10f);
             var refresh = new WaitForSeconds(60f);
@@ -58,7 +58,7 @@ namespace Arrakis
                 if (Settings.disablediscordrpc)
                 {
                     DiscordRPC.Shutdown();
-                    discordC = null;
+                    DiscordRPCCoroutine = null;
                     yield break;
                 }
                 if (!DiscordRPC.Connected)
@@ -111,7 +111,7 @@ namespace Arrakis
             }
 
             if (!Settings.disablediscordrpc)
-                discordC = CRunner.instance.StartCoroutine(DRPC());
+                DiscordRPCCoroutine = CRunner.instance.StartCoroutine(DiscordRpc());
         }
 
         public void OnDisable()

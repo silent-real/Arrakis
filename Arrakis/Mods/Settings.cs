@@ -113,7 +113,7 @@ namespace Arrakis
         {
             disablediscordrpc = false;
             DiscordRPC.Initialize();
-            Plugin.discordC = CRunner.instance.StartCoroutine(Plugin.DRPC());
+            Plugin.DiscordRPCCoroutine = CRunner.instance.StartCoroutine(Plugin.DiscordRpc());
         }
 
         public static string animTitleSource = "";
