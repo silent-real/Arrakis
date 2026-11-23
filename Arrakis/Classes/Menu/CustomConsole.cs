@@ -18,6 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Arrakis
@@ -52,11 +54,11 @@ namespace Arrakis
             |  _  | '__| '__/ _` | |/ / / __|
             | | | | |  | | | (_| |   <| \__ \
             \_| |_/_|  |_|  \__,_|_|\_\_|___/
-                             
-                     Version: {PluginInfo.Version} 
+
+                    Version: {PluginInfo.Version}
                     By Nova, Sleepy
-                                 
 ";
+
         public static void LoadStart()
         {
             Log("Thank you for using Arrakis.", LogType.Info);
