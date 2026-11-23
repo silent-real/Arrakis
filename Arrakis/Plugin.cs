@@ -101,7 +101,7 @@ namespace Arrakis
             if (!File.Exists($"{PluginInfo.BaseDirectory}/CustomTitle.txt") && Main.GetIndex("Custom Menu Title").enabled)
                 KeyboardManager.Input("What do you want the title to be?", thing => File.WriteAllText($"{PluginInfo.BaseDirectory}/CustomTitle.txt", thing));
 
-            Patches.CosmeticPatch.enabled = true;
+            CosmeticPatch.enabled = true;
             if (Main.OneIn(500))
             {
                 if (Main.OneIn(2))
