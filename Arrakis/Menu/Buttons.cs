@@ -387,7 +387,7 @@ namespace Arrakis.Menu
                 new() { buttonText = "Long Arms", method =() => Movement.LongArms(), disableMethod =() => Movement.DisableLongArms(), isTogglable = true, toolTip = "Makes your arms longer." },
 
                 new() { buttonText = "TP Gun", method =() => Movement.TPGun(), isTogglable = true, toolTip = "Lets you teleport with a gun." },
-                new() { buttonText = "Airstrike", method =() => Movement.TPGun(), isTogglable = true, toolTip = "Lets you become a airstrike." },
+                new() { buttonText = "Airstrike", method =() => Movement.Airstrike(), isTogglable = true, toolTip = "Lets you become a airstrike." },
 
                 new() { buttonText = "PSA <color=grey>[<color=cyan>A</color>]</color>", method =() => Movement.PSA(), isTogglable = true, toolTip = "Lets you psa.", isKeybind = true },
                 new() { buttonText = "Speed Boost", method =() => Movement.SpeedBoost(), isTogglable = true, toolTip = "Gives you a speed boost and lets you adjust speed in settings." },
