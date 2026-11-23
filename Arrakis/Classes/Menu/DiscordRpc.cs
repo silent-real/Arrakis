@@ -1,5 +1,5 @@
 /*
- * Arrakis | Classes/Menu/DiscordRpc.cs
+ * Arrakis | Classes/Menu/DiscordRPC.cs
  *
  * Copyright (C) 2026 Arrakis
  * https://github.com/silent-real/Arrakis
@@ -33,7 +33,7 @@ namespace Arrakis.Classes.Menu
     /// Sleepy made this originally for her copy dll (bunny.lol)
     /// Its now got linux support and works with windows better
     /// </summary>
-    public class DiscordRpc
+    public class DiscordRPC
     {
         private const string ClientId = "1557416786758992052";
 
@@ -397,9 +397,9 @@ namespace Arrakis.Classes.Menu
 
     public class RpcRoomWatcher : MonoBehaviourPunCallbacks
     {
-        public override void OnJoinedRoom() => DiscordRpc.Update();
-        public override void OnLeftRoom() => DiscordRpc.Update();
-        public override void OnPlayerEnteredRoom(Photon.Realtime.Player _) => DiscordRpc.Update();
-        public override void OnPlayerLeftRoom(Photon.Realtime.Player _) => DiscordRpc.Update();
+        public override void OnJoinedRoom() => DiscordRPC.Update();
+        public override void OnLeftRoom() => DiscordRPC.Update();
+        public override void OnPlayerEnteredRoom(Photon.Realtime.Player _) => DiscordRPC.Update();
+        public override void OnPlayerLeftRoom(Photon.Realtime.Player _) => DiscordRPC.Update();
     }
 }

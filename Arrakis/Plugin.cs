@@ -44,7 +44,7 @@ namespace Arrakis
             HarmonyLoader.ApplyPatches();
             CustomConsole.LoadStart();
 
-            DiscordRpc.Initialize();
+            DiscordRPC.Initialize();
 
             GorillaTagger.OnPlayerSpawned(OnPlayerSpawned);
         }
@@ -57,18 +57,18 @@ namespace Arrakis
             {
                 if (Settings.disablediscordrpc)
                 {
-                    DiscordRpc.Shutdown();
+                    DiscordRPC.Shutdown();
                     discordC = null;
                     yield break;
                 }
-                if (!DiscordRpc.Connected)
+                if (!DiscordRPC.Connected)
                 {
-                    DiscordRpc.Initialize();
+                    DiscordRPC.Initialize();
                     yield return retry;
                 }
                 else
                 {
-                    DiscordRpc.Update();
+                    DiscordRPC.Update();
                     yield return refresh;
                 }
             }
@@ -117,7 +117,7 @@ namespace Arrakis
         public void OnDisable()
         {
             HarmonyLoader.RemovePatches();
-            DiscordRpc.Shutdown();
+            DiscordRPC.Shutdown();
             Advantage.TagOnJoin();
         }
     }

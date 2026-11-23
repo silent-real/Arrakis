@@ -112,7 +112,7 @@ namespace Arrakis
         public static void EnableDiscordRPC()
         {
             disablediscordrpc = false;
-            DiscordRpc.Initialize();
+            DiscordRPC.Initialize();
             Plugin.discordC = CRunner.instance.StartCoroutine(Plugin.DRPC());
         }
 
