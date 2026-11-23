@@ -49,10 +49,10 @@ namespace Arrakis
                 catch (Exception ex)
                 {
                     failed++;
-                    CustomConsole.Log($"[PATCH FAILED] {type.FullName} — {ex.GetType().Name}: {ex.Message}");
+                    CustomConsole.Log($"[PATCH FAILED] {type.FullName} — {ex.GetType().Name}: {ex.Message}.");
                 }
             }
-            CustomConsole.Log($"Patched — {success} succeeded, {failed} failed");
+            CustomConsole.Log($"Patched — {success} succeeded, {failed} failed.");
         }
 
         public static void RemovePatches()
@@ -60,9 +60,9 @@ namespace Arrakis
             if (!patched)
                 return;
             patched = false;
-            CustomConsole.Log("Removing patches");
+            CustomConsole.Log("Removing patches.");
             harmony.UnpatchSelf();
-            CustomConsole.Log("Removed harmony patches");
+            CustomConsole.Log("Removed harmony patches.");
         }
     }
 }

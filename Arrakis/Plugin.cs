@@ -43,6 +43,7 @@ namespace Arrakis
         public void Awake()
         {
             Console.Title = $"Arrakis V{PluginInfo.Version}";
+
             HarmonyLoader.ApplyPatches();
             CustomConsole.LoadStart();
 
