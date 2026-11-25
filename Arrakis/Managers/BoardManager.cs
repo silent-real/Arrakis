@@ -214,7 +214,7 @@ namespace Arrakis.Managers
         }
 
         private const int stumpValue = 8;
-        private const int forestValue = 7;
+        private const int forestValue = 8;
 
         public static GameObject _boards;
         public static GameObject boards
