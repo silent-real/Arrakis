@@ -94,7 +94,7 @@ namespace Arrakis.Mods
                         if (triggered) break;
                         float disR = Vector3.Distance(reportButton.position, rig.rightHandTransform.position);
                         float disL = Vector3.Distance(reportButton.position, rig.leftHandTransform.position);
-                        if (disR < AntiReportRange || disL < AntiReportRange)
+                        if (disR < 0.25f || disL < 0.25f)
                         {
                             triggered = true;
                             NotificationManager.SendNotification($"<color=yellow>[ANTIREPORT]</color> {rig.Creator.NickName} Attempted to report you.");
