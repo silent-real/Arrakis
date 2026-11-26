@@ -21,6 +21,7 @@
 using System;
 using System.Linq;
 using GorillaGameModes;
+using GorillaTagScripts;
 using Photon.Pun;
 using UnityEngine;
 
@@ -85,8 +86,10 @@ namespace Arrakis.Extensions
             switch (tagManager.GameType())
             {
                 case GameModeType.Infection:
+                case GameModeType.InfectionCompetitive:
                 case GameModeType.SuperInfect:
                 case GameModeType.Ambush:
+                case GameModeType.FreezeTag:
                 case GameModeType.Ghost:
                     return tagManager.isCurrentlyTag ? tagManager.currentIt == rig.Creator :
                         tagManager.currentInfected != null && tagManager.currentInfected.Contains(rig.Creator);
