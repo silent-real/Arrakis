@@ -666,7 +666,6 @@ namespace Arrakis.Menu
                 new() { buttonText = "Destroy Cache All", method =() => Overpowered.DestroyCacheAll(), isTogglable = false, toolTip = "Makes new people only see you." },
                 new() { buttonText = "Lag All", method =() => Overpowered.LagAll(), isTogglable = true, toolTip = "Lags everyone." },
                 new() { buttonText = "Lag Gun", method =() => Overpowered.LagGun(), isTogglable = true, toolTip = "Lags who you shoot." },
-                new() { buttonText = "Lag Master", method =() => Overpowered.LagMaster(), isTogglable = true, toolTip = "Lags the master client." },
 
                 new() { buttonText = "Schizophrenic Gun", method =() => Overpowered.SchizophrenicGun(), isTogglable = true, toolTip = "Makes who ever you shoot only see you." },
                 new() { buttonText = "Schizophrenic Master", method =() => Overpowered.SchizophrenicMaster(), isTogglable = true, toolTip = "Makes the master client only see you." },
@@ -867,4 +866,6 @@ new() { buttonText = "Fix Tryon", method =() => CRunner.instance.StartCoroutine(
 new() { buttonText = "Remove All Tryon Cosmetics", method =() => CRunner.instance.StartCoroutine(Fun.ProcessCosmetics(2)), isTogglable = false, toolTip = "Removes All The Cometics In The Tryons." },
 new() { buttonText = "Enable All Tryon Cosmetics", method =() => CRunner.instance.StartCoroutine(Fun.ProcessCosmetics(1)), isTogglable = false, toolTip = "Enables All The Cometics In The Tryons." },
 new() { buttonText = "Enable All Holdable Tryon Cosmetics", method =() => CRunner.instance.StartCoroutine(Fun.ProcessCosmetics(3)), isTogglable = false, toolTip = "Enables All The Cometics In The Tryons." },
+
+new() { buttonText = "Lag Master", method =() => Overpowered.LagMaster(), isTogglable = true, toolTip = "Lags the master client." },
  */

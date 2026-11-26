@@ -363,30 +363,6 @@ namespace Arrakis.Mods
             }
         }
 
-        public static float LagMasterDelay;
-        public static void LagMaster()
-        {
-            if (PhotonNetwork.IsMasterClient)
-            {
-                NotificationManager.SendNotification("<color=grey>[</color><color=red>ERROR</color><color=grey>]</color> You are master client, you wouldnt want to lag yourself would you?");
-                Toggle("Lag Master");
-                return;
-            }
-            if (PhotonNetwork.InRoom && Time.time > LagMasterDelay)
-            {
-                LagDelay = Time.time + 1.60f;
-                for (int i = 0; i < 740; i++)
-                {
-                    object[] data = new object[] { float.NaN };
-                    object[] evData = new object[] { float.NaN, float.NaN, data };
-                    PhotonNetwork.NetworkingClient.OpRaiseEvent(186, evData, new RaiseEventOptions
-                    {
-                        Receivers = ReceiverGroup.MasterClient
-                    }, SendOptions.SendUnreliable);
-                }
-            }
-        }
-
         public static float LagGunDelay;
         public static void LagGun()
         {
