@@ -143,53 +143,47 @@ namespace Arrakis.Mods
 
         private static float y;
         private static float p;
-        private static Vector3 pos = Vector3.zero;
         public static void WasdFly()
         {
             if (searching)
                 return;
 
-            bool w, a, s, d, space, control, shift;
-            w = Keyboard.current.wKey.isPressed;
-            a = Keyboard.current.aKey.isPressed;
-            s = Keyboard.current.sKey.isPressed;
-            d = Keyboard.current.dKey.isPressed;
-            space = Keyboard.current.spaceKey.isPressed;
-            control = Keyboard.current.leftCtrlKey.isPressed;
-            shift = Keyboard.current.leftShiftKey.isPressed;
+            Transform parent = GTPlayer.Instance.GetControllerTransform(false).parent;
+
+            bool w = Keyboard.current.wKey.isPressed;
+            bool a = Keyboard.current.aKey.isPressed;
+            bool s = Keyboard.current.sKey.isPressed;
+            bool d = Keyboard.current.dKey.isPressed;
+            bool space = Keyboard.current.spaceKey.isPressed;
+            bool control = Keyboard.current.leftCtrlKey.isPressed;
+            bool shift = Keyboard.current.leftShiftKey.isPressed;
+
             GorillaTagger.Instance.rigidbody.useGravity = false;
             GorillaTagger.Instance.rigidbody.linearVelocity = Vector3.zero;
-            if (w)
-                GorillaTagger.Instance.rigidbody.transform.position += GTPlayer.Instance.GetControllerTransform(false).parent.forward * Time.deltaTime * Settings.wasdflyspeed;
-            if (s)
-                GorillaTagger.Instance.rigidbody.transform.position += -GTPlayer.Instance.GetControllerTransform(false).parent.forward * Time.deltaTime * Settings.wasdflyspeed;
-            if (a)
-                GorillaTagger.Instance.rigidbody.transform.position += -GTPlayer.Instance.GetControllerTransform(false).parent.right * Time.deltaTime * Settings.wasdflyspeed;
-            if (d)
-                GorillaTagger.Instance.rigidbody.transform.position += GTPlayer.Instance.GetControllerTransform(false).parent.right * Time.deltaTime * Settings.wasdflyspeed;
-            if (space)
-                GorillaTagger.Instance.rigidbody.transform.position += GTPlayer.Instance.GetControllerTransform(false).parent.up * Time.deltaTime * Settings.wasdflyspeed;
-            if (control)
-                GorillaTagger.Instance.rigidbody.transform.position += -GTPlayer.Instance.GetControllerTransform(false).parent.up * Time.deltaTime * Settings.wasdflyspeed;
-            if (shift)
-                Settings.wasdflyspeed = 20f;
-            else
-                Settings.wasdflyspeed = 10f;
+
+            float speed = shift ? 20f : 10f;
+            Vector3 movement = Vector3.zero;
+
+            if (w) movement += parent.forward;
+            if (s) movement -= parent.forward;
+            if (a) movement -= parent.right;
+            if (d) movement += parent.right;
+            if (space) movement += parent.up;
+            if (control) movement -= parent.up;
+
+            if (movement != Vector3.zero)
+                GorillaTagger.Instance.rigidbody.position += movement.normalized * speed * Time.deltaTime;
+            
             if (Mouse.current.rightButton.isPressed)
             {
                 Vector2 m = Mouse.current.delta.ReadValue();
                 y += m.x * 0.2f;
                 p -= m.y * 0.2f;
                 p = Mathf.Clamp(p, -89f, 89f);
-                GTPlayer.Instance.GetControllerTransform(false).parent.rotation = Quaternion.Euler(p, y, 0f);
+                parent.rotation = Quaternion.Euler(p, y, 0f);
             }
             VRRig.LocalRig.head.rigTarget.transform.rotation = GorillaTagger.Instance.headCollider.transform.rotation;
-            if (!w && !a && !s && !d && !space && !control && pos != Vector3.zero)
-                GorillaTagger.Instance.rigidbody.transform.position = pos;
-            else
-                pos = GorillaTagger.Instance.rigidbody.transform.position;
         }
-
 
         private static GameObject platR = null;
         private static GameObject platL = null;
