@@ -216,7 +216,6 @@ namespace Arrakis.Mods
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
                 if (rig == null || rig.IsLocal() || rig.mainSkin == null) continue;
-                if ((rig.transform.position - cam.transform.position).sqrMagnitude > 225f) continue;
                 Material body = rig.mainSkin.material;
                 Color chamColor = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f, 0.6f) : new Color(0.46f, 0.6f, 0.6f, 0.6f);
                 switch (type)
