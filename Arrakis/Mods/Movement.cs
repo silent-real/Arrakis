@@ -73,9 +73,10 @@ namespace Arrakis.Mods
 
         public static void HoverFly()
         {
-            GTPlayer.Instance.bodyCollider.attachedRigidbody.linearVelocity = Vector3.zero;
+            GorillaTagger.Instance.rigidbody.linearVelocity = Vector3.zero;
+            GorillaTagger.Instance.rigidbody.useGravity = false;
             if (InputManager.GetInput(InputManager.InputType.Primary, InputManager.Hand.Right, !XRSettings.isDeviceActive))
-                GTPlayer.Instance.transform.position += GTPlayer.Instance.headCollider.transform.forward * Time.deltaTime * Settings.flyspeed;
+                GorillaTagger.Instance.transform.position += GorillaTagger.Instance.headCollider.transform.forward * Time.deltaTime * 23f;
         }
 
         public static int currentSpeedBoostIndex = 0;
