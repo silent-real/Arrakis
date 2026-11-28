@@ -162,6 +162,7 @@ namespace Arrakis.Mods
             bool shift = Keyboard.current.leftShiftKey.isPressed;
 
             rb.useGravity = false;
+            rb.AddForce(-Physics.gravity, ForceMode.Acceleration);
 
             float speed = shift ? 20f : 10f;
 
@@ -177,7 +178,7 @@ namespace Arrakis.Mods
             Vector3 velocity = movement.normalized * speed;
             if (movement.sqrMagnitude > 0.001f)
             {
-                rb.linearVelocity = velocity;
+                rb.linearVelocity = movement.normalized * speed;
             }
             else
             {
