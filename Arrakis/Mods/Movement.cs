@@ -141,13 +141,16 @@ namespace Arrakis.Mods
                 GTPlayer.Instance.bodyCollider.attachedRigidbody.linearVelocity += -GTPlayer.Instance.LeftHand.controllerTransform.right / 2f;
         }
 
+
         private static float y;
         private static float p;
+
         public static void WasdFly()
         {
             if (searching)
                 return;
 
+            Rigidbody rb = GorillaTagger.Instance.rigidbody;
             Transform parent = GTPlayer.Instance.GetControllerTransform(false).parent;
 
             bool w = Keyboard.current.wKey.isPressed;
@@ -158,10 +161,10 @@ namespace Arrakis.Mods
             bool control = Keyboard.current.leftCtrlKey.isPressed;
             bool shift = Keyboard.current.leftShiftKey.isPressed;
 
-            GorillaTagger.Instance.rigidbody.useGravity = false;
-            GorillaTagger.Instance.rigidbody.linearVelocity = Vector3.zero;
+            rb.useGravity = false;
 
             float speed = shift ? 20f : 10f;
+
             Vector3 movement = Vector3.zero;
 
             if (w) movement += parent.forward;
@@ -171,12 +174,19 @@ namespace Arrakis.Mods
             if (space) movement += parent.up;
             if (control) movement -= parent.up;
 
-            if (movement != Vector3.zero)
-                GorillaTagger.Instance.rigidbody.position += movement.normalized * speed * Time.deltaTime;
-            
+            Vector3 velocity = movement.normalized * speed;
+            if (movement.sqrMagnitude > 0.001f)
+            {
+                rb.linearVelocity = velocity;
+            }
+            else
+            {
+                rb.linearVelocity = Vector3.zero;
+            }
             if (Mouse.current.rightButton.isPressed)
             {
                 Vector2 m = Mouse.current.delta.ReadValue();
+
                 y += m.x * 0.2f;
                 p -= m.y * 0.2f;
                 p = Mathf.Clamp(p, -89f, 89f);
@@ -184,6 +194,7 @@ namespace Arrakis.Mods
             }
             VRRig.LocalRig.head.rigTarget.transform.rotation = GorillaTagger.Instance.headCollider.transform.rotation;
         }
+
 
         private static GameObject platR = null;
         private static GameObject platL = null;
