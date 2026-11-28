@@ -75,6 +75,7 @@ namespace Arrakis.Mods
         {
             GorillaTagger.Instance.rigidbody.linearVelocity = Vector3.zero;
             GorillaTagger.Instance.rigidbody.useGravity = false;
+            GorillaTagger.Instance.rigidbody.AddForce(-Physics.gravity, ForceMode.Acceleration);
             if (InputManager.GetInput(InputManager.InputType.Primary, InputManager.Hand.Right, !XRSettings.isDeviceActive))
                 GorillaTagger.Instance.transform.position += GorillaTagger.Instance.headCollider.transform.forward * Time.deltaTime * 23f;
         }
