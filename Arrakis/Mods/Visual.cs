@@ -778,7 +778,7 @@ namespace Arrakis.Mods
 
         private static TextMeshPro CreateText(Transform parent, TextAlignmentOptions alignment, string text, Color color, float scale)
         {
-            GameObject textHolder = new GameObject("nametag_arrakis");
+            GameObject textHolder = new GameObject("Arrakis_Tag");
             TextMeshPro textmesh = textHolder.GetOrAddComponent<TextMeshPro>();
             textmesh.text = text;
             textmesh.color = color;
